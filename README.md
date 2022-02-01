@@ -134,77 +134,191 @@ or as an object with one or more of the options listed below.
 ![room-card](https://raw.githubusercontent.com/marcokreeft87/room-card/master/example.png)
 
 ```yaml
-type: custom:room-card
-title: Attic
-entity: light.attic
-icon: mdi:lightbulb-outline
-tap_action:
-  action: toggle
+- type: custom:room-card
+  title: Mancave
+  entity: group.mancave_lights
+  icon: mdi:lightbulb-outline
+  tap_action:
+    action: toggle
+  entities:
+    - entity: light.mancave
+      name: Ceiling
+      tap_action:
+        action: toggle
+    - entity: light.desk
+      name: Desk
+      icon: mdi:desk
+      tap_action:
+        action: toggle
+    - entity: light.wardrobe
+      name: Wardrobe
+      icon: mdi:wardrobe-outline
+      tap_action:
+        action: toggle
+    - entity: light.monitor
+      name: Monitor
+      icon: mdi:monitor-shimmer
+      tap_action:
+        action: toggle
+    - entity: climate.radiator
+      name: Radiator
+      tap_action:
+        action: toggle
+  info_entities:
+    - entity: binary_sensor.motion_sensor
+      show_icon: true
+    - entity: binary_sensor.window
+      show_icon: true
+      icon: mdi:window-closed
+    - sensor.motion_sensor_illuminance
+    - sensor.motion_sensor_temperature
+  cards:
+    - type: custom:simple-thermostat
+      entity: climate.radiator_mancave
+      show_states:
+        - heat
+      name: Radiator
+      title: Mancave
+      control:
+        _headings: true
+        _icons: true
+        _names: true
+        hvac:
+          heat:
+            icon: mdi:fire
+            name: On
+          'off':
+            icon: mdi:power
+            name: Off
 
-type: custom:room-card
-title: Attic
-entity: light.attic
-icon: mdi:lightbulb-outline
-tap_action:
-  action: toggle
-info_entities:
-  - entity: binary_sensor.motion_sensor_attic
-    show_icon: true
-  - entity: binary_sensor.window
-    show_icon: true
-    icon: mdi:window-closed
-  - sensor.motion_sensor_illuminance
-  - sensor.motion_sensor_air_temperature
+- type: custom:room-card
+  title: Living
+  entity: group.living_lights
+  tap_action:
+    action: toggle
+  icon: mdi:lightbulb-outline
+  entities:
+    - entity: light.couch
+      name: Couch
+      icon: mdi:sofa-outline
+      tap_action:
+        action: toggle
+    - entity: light.table
+      name: Table
+      icon: mdi:table-chair
+      tap_action:
+        action: toggle
+    - entity: light.tv
+      name: TV
+      icon: mdi:television
+      tap_action:
+        action: toggle
+    - entity: light.living_ceiling
+      name: Ceiling
+      icon: mdi:wall-sconce-flat
+      tap_action:
+        action: toggle
+    - entity: media_player.chromecast_living
+      name: Chromecast
+    - entity: media_player.stb_arris_uhd
+      name: Ziggo
+  info_entities:
+    - entity: media_player.googlehome
+      show_icon: true
+      icon: mdi:google-home
+    - entity: binary_sensor.smoke_sensor
+      show_icon: true
+    - sensor.smoke_sensor_air_temperature
+  cards:
+    - type: custom:mini-media-player
+      entity: media_player.chromecast_living
+      show_states:
+        - playing
+        - paused
+    - type: custom:mini-media-player
+      entity: media_player.stb_arris_uhd
+      show_states:
+        - playing
+        - paused
+    - type: custom:mini-media-player
+      entity: media_player.googlehome
+      show_states:
+        - playing
+        - paused
 
-type: custom:room-card
-title: Living room
-entity: group.living_lights
-tap_action:
-  action: toggle
-icon: mdi:lightbulb-outline
-entities:
-  - entity: light.light_couch
-    name: Couch
-    icon: mdi:sofa-outline
-    tap_action:
-      action: toggle
-  - entity: light.light_table
-    name: Table
-    icon: mdi:table-chair
-    tap_action:
-      action: toggle
-  - entity: light.light_television
-    name: TV
-    icon: mdi:television
-    tap_action:
-      action: toggle
-  - entity: light.light_ceiling
-    name: Ceiling
-    icon: mdi:wall-sconce-flat
-    tap_action:
-      action: toggle
-  - entity: media_player.lving
-    name: Chromecast
-  - entity: media_player.stb_arris_uhd
-    name: Ziggo
-info_entities:
-  - entity: binary_sensor.smoke_sensor_living_smoke_alarm_smoke_detected
-    show_icon: true
-  - sensor.smoke_sensor_living_air_temperature
-cards:
-  - type: custom:mini-media-player
-    entity: media_player.living
-    show_states:
-      - playing
-      - paused
-  - type: custom:mini-media-player
-    entity: media_player.stb_arris_uhd
-    show_states:
-      - playing
-      - paused
-  - type: custom:mini-media-player
-    entity: media_player.googlehome
-    show_states:
-      - playing
-      - paused
+- type: custom:room-card
+  title: Hall
+  icon: mdi:wall-sconce-flat
+  entity: light.lamp_overloop
+  tap_action:
+    action: toggle
+  info_entities:
+    - entity: binary_sensor.smoke_sensor
+      show_icon: true
+    - entity: binary_sensor.motion_sensor
+      show_icon: true
+    - sensor.motion_sensor_illuminance_2
+    - sensor.motion_sensor_air_temperature_2
+- type: custom:room-card
+  title: Bedroom
+  entity: group.bedroom_lights
+  icon: mdi:floor-lamp-outline
+  tap_action:
+    action: toggle
+  entities:
+    - entity: light.left
+      name: Left
+      icon: mdi:floor-lamp-outline
+      tap_action:
+        action: toggle
+    - entity: light.right
+      name: Right
+      icon: mdi:floor-lamp-outline
+      tap_action:
+        action: toggle
+    - entity: media_player.chromecast
+      name: Chromecast
+    - entity: media_player.google_home
+      icon: mdi:google-home
+      name: Google
+  cards:
+    - type: custom:mini-media-player
+      entity: media_player.chromecast
+      show_states:
+        - playing
+    - type: custom:mini-media-player
+      entity: media_player.google_home
+      show_states:
+        - playing
+        - paused
+    - title: null
+      type: glance
+      entity: binary_sensor.hp_printer_connectivity
+      entities:
+        - entity: binary_sensor.hp_printer_connectivity
+          name: Connected
+        - entity: sensor.hp_printer_status
+          name: Status
+        - entity: sensor.hp_printer_inkcartridge_black
+          name: Black
+        - entity: sensor.hp_printer_inkcartridge_cyanmagentayellow
+          name: Color
+
+- type: custom:room-card
+  title: Attic + Garden
+  entity: light.attic
+  icon: mdi:lightbulb-outline
+  tap_action:
+    action: toggle
+  info_entities:
+    - entity: light.attic
+      icon: mdi:wall-sconce-flat
+      show_icon: true
+      tap_action:
+        action: toggle
+    - entity: light.garden
+      icon: mdi:outdoor-lamp
+      show_icon: true
+      tap_action:
+        action: toggle
 ```
