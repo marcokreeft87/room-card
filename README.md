@@ -17,13 +17,13 @@ lovelace:
       type: module
 ```
 
-_OR_ install using [HACS](https://hacs.xyz/) and add this (if in YAML mode):
+<!-- _OR_ install using [HACS](https://hacs.xyz/) and add this (if in YAML mode):
 ```yaml
 lovelace:
   resources:
     - url: /hacsfiles/room-card/room-card.js
       type: module
-```
+``` -->
 
 The above configuration can be managed directly in the Configuration -> Lovelace Dashboards -> Resources panel when not using YAML mode,
 or added by clicking the "Add to lovelace" button on the HACS dashboard after installing the plugin.
