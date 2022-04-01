@@ -56,4 +56,7 @@ export const style = (css) => css`
         float: left;
         margin-right: 10px;
     }
+    .main-state > ha-state-icon > ha-svg-icon {
+        vertical-align: baseline;
+    }
 `;
