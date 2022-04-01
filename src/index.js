@@ -172,7 +172,7 @@ class RoomCard extends LitElement {
             @dblclick="${onDblClick}"
         >
             ${this.entities.length === 0 || this.config.icon
-                ? this.renderIcon(this.stateObj, this.config)
+                ? this.renderIcon(this.stateObj, this.config, "main-icon")
                 : this.renderValue(this.stateObj, this.config)}
         </div>`;
     }
@@ -209,9 +209,9 @@ class RoomCard extends LitElement {
         return entityStateDisplay(this._hass, stateObj, config);
     }
 
-    renderIcon(stateObj, config) {
+    renderIcon(stateObj, config, classes) {
         return html`<state-badge
-            class="icon-small"
+            class="icon-small ${classes}"
             .stateObj="${stateObj}"
             .overrideIcon="${config.icon === true ? stateObj.attributes.icon || null : config.icon}"
             .stateColor="${config.state_color}"

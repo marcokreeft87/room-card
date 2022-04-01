@@ -59,4 +59,8 @@ export const style = (css) => css`
     .main-state > ha-state-icon > ha-svg-icon {
         vertical-align: baseline;
     }
+    .main-icon {
+        vertical-align: baseline;
+        font-size: 30px;
+    }
 `;
