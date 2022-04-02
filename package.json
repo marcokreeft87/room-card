@@ -16,7 +16,8 @@
   "dependencies": {
     "custom-card-helpers": "^1.8.0",
     "lit": "^2.0.2",
-    "memoize-one": "^6.0.0"
+    "memoize-one": "^6.0.0",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
