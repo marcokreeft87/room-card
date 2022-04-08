@@ -38,6 +38,7 @@ export const hideIf = (stateObj, config) => {
 export const getEntityIds = (config) =>
     [config.entity, config.entities, config.info_entities]
         .concat(config.entities?.map((entity) => (typeof entity === 'string' ? entity : entity.entity)))
+        .concat(config.info_entities?.map((entity) => (typeof entity === 'string' ? entity : entity.entity)))
         .filter((entity) => entity);
 
 export const hasConfigOrEntitiesChanged = (node, changedProps) => {
