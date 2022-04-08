@@ -1,6 +1,6 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
-import { computeStateDisplay } from './lib/compute_state_display';
+import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { isObject, isUnavailable } from './util';
 
 export const checkEntity = (config) => {
@@ -23,6 +23,19 @@ export const entityName = (stateObj, config) => {
         null
     );
 };
+
+export const entityIcon = (stateObj, config) => {
+    if (config.icon === true) return stateObj.attributes.icon || null;
+    if (!('icon' in config)) return config.icon;
+
+    var domain = computeStateDomain(stateObj);
+
+    switch(domain) {
+        case 'light':
+        case 'switch':
+            return stateObj.state === 'on' ? config.icon.state_on : config.icon.state_off;
+    }
+}
 
 export const entityStateDisplay = (hass, stateObj, config) => {
     if (isUnavailable(stateObj)) {

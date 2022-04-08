@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { handleClick } from 'custom-card-helpers';
 
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
-import { checkEntity, entityName, entityStateDisplay, entityStyles } from './entity';
+import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
 import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
@@ -137,6 +137,7 @@ class RoomCard extends LitElement {
     }
 
     renderInfoEntity(stateObj, config) {
+        console.log(stateObj);
         if (!stateObj || hideIf(stateObj, config)) {
             return null;
         }
@@ -146,6 +147,7 @@ class RoomCard extends LitElement {
     }
 
     renderEntity(stateObj, config) {
+        console.log(stateObj);
         if (!stateObj || hideIf(stateObj, config)) {
             return null;
         }
@@ -213,7 +215,7 @@ class RoomCard extends LitElement {
         return html`<state-badge
             class="icon-small ${classes}"
             .stateObj="${stateObj}"
-            .overrideIcon="${config.icon === true ? stateObj.attributes.icon || null : config.icon}"
+            .overrideIcon="${entityIcon(stateObj, config)}"
             .stateColor="${config.state_color}"
         ></state-badge>`;
     }

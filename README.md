@@ -79,6 +79,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | unit             | string/bool | `unit_of_measurement`       | Override entity unit of measurement (or `false` to hide)           |
 | toggle           | bool        | `false`                     | Display a toggle if supported by domain                            |
 | icon             | string/bool | `false`                     | Display default or custom icon instead of state or attribute value |
+|                  | object      |                             | Override the on or off state icon with state_on / state_off        |
 | state_color      | bool        | `false`                     | Enable colored icon when entity is active                          |
 | hide_unavailable | bool        | `false`                     | Hide entity if unavailable or not found                            |
 | hide_if          | object/any  | _[Hiding](#hiding)_         | Hide entity if its value matches specified value or criteria       |
@@ -175,7 +176,9 @@ or as an object with one or more of the options listed below.
       show_icon: true
     - entity: binary_sensor.window
       show_icon: true
-      icon: mdi:window-closed
+      icon:
+        state_on: mdi:window-open
+        state_off: mdi:window-closed
     - sensor.motion_sensor_illuminance
     - sensor.motion_sensor_temperature
   cards:
