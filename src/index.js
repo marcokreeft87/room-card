@@ -137,7 +137,6 @@ class RoomCard extends LitElement {
     }
 
     renderInfoEntity(stateObj, config) {
-        console.log(stateObj);
         if (!stateObj || hideIf(stateObj, config)) {
             return null;
         }
@@ -147,7 +146,6 @@ class RoomCard extends LitElement {
     }
 
     renderEntity(stateObj, config) {
-        console.log(stateObj);
         if (!stateObj || hideIf(stateObj, config)) {
             return null;
         }
