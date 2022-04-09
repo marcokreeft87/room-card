@@ -25,8 +25,8 @@ export const entityName = (stateObj, config) => {
 };
 
 export const entityIcon = (stateObj, config) => {
-    if (config.icon === true) return stateObj.attributes.icon || null;
-    if (!('icon' in config)) return config.icon;
+    if (!('icon' in config)) return stateObj.attributes.icon || null;
+    if (typeof config.icon === 'string') return config.icon || null;
 
     var domain = computeStateDomain(stateObj);
 
