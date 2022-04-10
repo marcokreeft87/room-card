@@ -29,10 +29,11 @@ export const entityIcon = (stateObj, config) => {
     if (typeof config.icon === 'string') return config.icon || null;
 
     var domain = computeStateDomain(stateObj);
-
+    
     switch(domain) {
         case 'light':
         case 'switch':
+        case 'binary_sensor':
             return stateObj.state === 'on' ? config.icon.state_on : config.icon.state_off;
     }
 }
