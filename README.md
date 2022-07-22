@@ -58,7 +58,6 @@ This card produces an `room-card` and must therefore be configured as an entity 
 | info_entities     | list          | _[Entity Objects](#entity-objects)_ | Custom `info_entities` entity                   |
 |                   |
 | tap_action        | object        | _[Actions](#actions)_               | Custom tap action on entity row and state value  |
-| hold_action       | object        |                                     | Custom hold action on entity row                 |
 | double_tap_action | object        |                                     | Custom double tap action on entity row           |
 
 ### Entity Objects
