@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 8  %}
+- Added `custom state icons for binary_sensor (icon > state_on / state_off )`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 5  %}
 - Added `custom state icons for light and switch domain (icon > state_on / state_off )`
 {% endif %}
