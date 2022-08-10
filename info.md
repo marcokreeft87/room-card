@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 9  %}
+- Added `hiding entity or info_entity based on an attribute of an entity`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 8  %}
 - Added `custom state icons for binary_sensor (icon > state_on / state_off )`
 {% endif %}
