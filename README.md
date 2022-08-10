@@ -134,6 +134,8 @@ or as an object with one or more of the options listed below.
 | above   | number   | Hidden if entity _number_ value is above the specified value    |
 | below   | number   | Hidden if entity _number_ value is below the specified value    |
 | value   | list/any | Hidden if value matches specified value or any value in a list  |
+| entity  | string   | Name of the entity the state will hide the entity in the card   |
+| state   | string   | State of the entity the state will hide the entity in the card  |
 
 ## Examples
 
@@ -149,6 +151,9 @@ or as an object with one or more of the options listed below.
   entities:
     - entity: light.mancave
       name: Ceiling
+      hide_if:
+        entity: sensor.light_unavailable
+        state: true
       tap_action:
         action: toggle
     - entity: light.desk
@@ -173,6 +178,9 @@ or as an object with one or more of the options listed below.
   info_entities:
     - entity: binary_sensor.motion_sensor
       show_icon: true
+      hide_if:
+        entity: sensor.motion_sensor_unavailable
+        state: true
     - entity: binary_sensor.window
       show_icon: true
       icon:

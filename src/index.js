@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 0.0.8 ',
+    '%c ROOM-CARD %c 0.0.9 ',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -137,7 +137,7 @@ class RoomCard extends LitElement {
     }
 
     renderInfoEntity(stateObj, config) {
-        if (!stateObj || hideIf(stateObj, config)) {
+        if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
 
@@ -146,7 +146,7 @@ class RoomCard extends LitElement {
     }
 
     renderEntity(stateObj, config) {
-        if (!stateObj || hideIf(stateObj, config)) {
+        if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
 
