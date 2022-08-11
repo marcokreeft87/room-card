@@ -25,13 +25,3 @@ jobs:
         with:
           category: "plugin"
           ignore: brands
-
-  hassfest:
-    runs-on: ubuntu-latest
-    name: Hassfest
-    steps:
-      - name: Check out the repository
-        uses: "actions/checkout@v3"
-
-      - name: Hassfest validation
-        uses: "home-assistant/actions/hassfest@master"
