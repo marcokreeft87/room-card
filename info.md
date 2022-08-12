@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 10  %}
+- Added `Fixed padding for icons on info-entities row`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 9  %}
 - Added `hiding entity or info_entity based on an attribute of an entity`
 {% endif %}
