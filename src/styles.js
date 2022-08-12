@@ -22,7 +22,7 @@ export const style = (css) => css`
     }
     .entities-row .entity {
         margin-right: 16px;
-    }
+    }    
     .entities-row .entity:last-of-type,
     .entities-info-row .entity:last-of-type {
         margin-right: 0;
@@ -51,6 +51,9 @@ export const style = (css) => css`
     }
     .entities-info-row .entity {
         margin-right: 16px;
+    }
+    .entities-info-row .entity.icon-entity {
+        margin-right: 0px;
     }
     .main-state {
         float: left;

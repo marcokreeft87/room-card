@@ -142,7 +142,7 @@ class RoomCard extends LitElement {
         }
 
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
-        return html`<div class="state entity" @click="${onClick}">${this.renderValue(stateObj, config)}</div>`;
+        return html`<div class="state entity ${config.show_icon === true ? 'icon-entity' : ''}" @click="${onClick}">${this.renderValue(stateObj, config)}</div>`;
     }
 
     renderEntity(stateObj, config) {
