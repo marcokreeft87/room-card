@@ -1,7 +1,6 @@
 # room-card
 
 [![GH-release](https://img.shields.io/github/v/release/marcokreeft87/room-card.svg?style=flat-square)](https://github.com/marcokreeft87/room-card/releases)
-[![GH-downloads](https://img.shields.io/github/downloads/marcokreeft87/room-card/total?style=flat-square)](https://github.com/marcokreeft87/room-card/releases)
 [![GH-last-commit](https://img.shields.io/github/last-commit/marcokreeft87/room-card.svg?style=flat-square)](https://github.com/marcokreeft87/room-card/commits/master)
 [![GH-code-size](https://img.shields.io/github/languages/code-size/marcokreeft87/room-card.svg?color=red&style=flat-square)](https://github.com/marcokreeft87/room-card)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
