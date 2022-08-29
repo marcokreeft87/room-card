@@ -13,20 +13,14 @@ Show multiple entity states, attributes and icons in a single card in Home Assis
 
 ## Installation
 
-Manually add [room-card.js](https://raw.githubusercontent.com/marcokreeft87/room-card/master/room-card.js)
+Install using [HACS](https://hacs.xyz/). Search for Room Card in the frontend list, click on download.
+
+_OR_ Manually add [room-card.js](https://raw.githubusercontent.com/marcokreeft87/room-card/master/room-card.js)
 to your `<config>/www/` folder and add the following to the `configuration.yaml` file:
 ```yaml
 lovelace:
   resources:
     - url: /local/room-card.js
-      type: module
-```
-
-_OR_ install using [HACS](https://hacs.xyz/) and add this (if in YAML mode):
-```yaml
-lovelace:
-  resources:
-    - url: /hacsfiles/room-card/room-card.js
       type: module
 ```
 
