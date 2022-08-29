@@ -24,9 +24,6 @@ lovelace:
       type: module
 ```
 
-The above configuration can be managed directly in the Configuration -> Lovelace Dashboards -> Resources panel when not using YAML mode,
-or added by clicking the "Add to lovelace" button on the HACS dashboard after installing the plugin.
-
 ## Configuration
 
 This card produces an `room-card` and must therefore be configured as an entity in an [entities](https://www.home-assistant.io/lovelace/entities/) card.
