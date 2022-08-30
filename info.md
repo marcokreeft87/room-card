@@ -2,6 +2,11 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 11  %}
+- Added `Fixed styles config now working for info entities`
+- Added `When there are too many entities for one row, the extra entities will be rendered on a new row. Thnx @mihsu81`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10  %}
 - Added `Fixed padding for icons on info-entities row`
 {% endif %}
