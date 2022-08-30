@@ -11,7 +11,6 @@ export const style = (css) => css`
     }
     .entity span {
         font-size: 10px;
-        color: var(--secondary-text-color);
     }
     .entities-row {
         flex-direction: row;
