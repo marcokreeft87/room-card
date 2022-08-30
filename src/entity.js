@@ -85,9 +85,9 @@ export const entityStateDisplay = (hass, stateObj, config) => {
     return computeStateDisplay(hass.localize, modifiedStateObj, hass.locale);
 };
 
-export const entityStyles = (config) =>
+export const entityStyles = (config) => 
     isObject(config?.styles)
         ? Object.keys(config.styles)
-              .map((key) => `${key}: ${config.styles[key]};`)
-              .join('')
+            .map((key) => `${key}: ${config.styles[key]};`)
+            .join('') 
         : '';

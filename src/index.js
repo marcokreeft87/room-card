@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 0.0.10',
+    '%c ROOM-CARD %c 0.0.11',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -142,7 +142,7 @@ class RoomCard extends LitElement {
         }
 
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
-        return html`<div class="state entity ${config.show_icon === true ? 'icon-entity' : ''}" @click="${onClick}">${this.renderValue(stateObj, config)}</div>`;
+        return html`<div class="state entity ${config.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(config)}" @click="${onClick}">${this.renderValue(stateObj, config)}</div>`;
     }
 
     renderEntity(stateObj, config) {

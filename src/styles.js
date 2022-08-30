@@ -15,8 +15,9 @@ export const style = (css) => css`
     }
     .entities-row {
         flex-direction: row;
+        flex-wrap: wrap;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         padding: 0 20px 10px 20px;
     }
@@ -40,8 +41,9 @@ export const style = (css) => css`
 
     .entities-info-row {
         flex-direction: row;
+        flex-wrap: wrap;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         padding: 0 20px 10px 20px;
         font-size: 12px;
