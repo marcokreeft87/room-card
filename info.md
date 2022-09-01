@@ -2,6 +2,14 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 14  %}
+- Added `Support for empty title`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 12 %}
+- Fix for entity status color
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 11  %}
 - Added `Fixed styles config now working for info entities`
 - Added `When there are too many entities for one row, the extra entities will be rendered on a new row. Thnx @mihsu81`
