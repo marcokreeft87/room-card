@@ -67,4 +67,7 @@ export const style = (css) => css`
         vertical-align: baseline;
         font-size: 30px;
     }
+    .title {
+        min-height: 48px;
+    }
 `;

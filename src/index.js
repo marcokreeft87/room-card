@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 0.0.13',
+    '%c ROOM-CARD %c 0.0.14',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -123,7 +123,7 @@ class RoomCard extends LitElement {
         return html`
             <ha-card elevation="2" style="${entityStyles(this.config)}">
                 <div class="card-header">
-                    <div>${this.renderMainEntity()} ${this.config.title}</div>
+                    <div class="title">${this.renderMainEntity()} ${this.config.title}</div>
                     <div class="entities-info-row">
                         ${this.info_entities.map((entity) => this.renderInfoEntity(entity.stateObj, entity))}
                     </div>
