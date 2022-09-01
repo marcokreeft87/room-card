@@ -123,7 +123,7 @@ class RoomCard extends LitElement {
         return html`
             <ha-card elevation="2" style="${entityStyles(this.config)}">
                 <div class="card-header">
-                    <div>${this.renderMainEntity()} ${this.config.title}</div>
+                    <div class="title">${this.renderMainEntity()} ${this.config.title}</div>
                     <div class="entities-info-row">
                         ${this.info_entities.map((entity) => this.renderInfoEntity(entity.stateObj, entity))}
                     </div>
