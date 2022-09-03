@@ -16,7 +16,7 @@ export const style = (css) => css`
         flex-direction: row;
         flex-wrap: wrap;
         display: inline-flex;
-        justify-content: center;
+        justify-content: left;
         align-items: center;
         padding: 0 20px 10px 20px;
     }
