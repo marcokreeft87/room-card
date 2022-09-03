@@ -36,7 +36,7 @@ This card produces an `room-card` and must therefore be configured as an entity 
 | name              | string/bool   | `friendly_name`                     | Override entity friendly name                    |
 | unit              | string/bool   | `unit_of_measurement`               | Override entity unit of measurement              |
 | icon              | string        | `icon`                              | Override entity icon or image                    |
-|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#Conditions)_       |
+|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#icon-conditions)_       |
 | show_icon         | bool          | `false`                             | Show the icon instead of the text based state    |
 | image             | string        |                                     | Show an image instead of icon                    |
 | toggle            | bool          | `false`                             | Display a toggle (if supported) instead of state |
@@ -70,7 +70,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | unit             | string/bool | `unit_of_measurement`       | Override entity unit of measurement (or `false` to hide)           |
 | toggle           | bool        | `false`                     | Display a toggle if supported by domain                            |
 | icon             | string/bool | `false`                     | Display default or custom icon instead of state or attribute value |
-|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#Conditions)_       |
+|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#icon-conditions)_       |
 | show_icon         | bool          | `false`                              | Show the icon instead of the text based state    |
 | state_color      | bool        | `false`                     | Enable colored icon when entity is active                          |
 | hide_unavailable | bool        | `false`                     | Hide entity if unavailable or not found                            |
