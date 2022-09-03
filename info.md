@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 110  %}
+- Added `Support for conditional icons based on other entities`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 100  %}
 - Added `Support for conditional icons`
 - Added `Fixed icons aligning center when multiple rows`

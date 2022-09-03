@@ -78,6 +78,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | styles           | object      |                             | Add custom CSS styles to the entity element                        |
 | format           | string      | _[Formatting](#formatting)_ | Format entity value                                                |
 | tap_action       | object      | _[Actions](#actions)_       | Custom entity tap action                                           |
+| double)tap_action       | object      | _[Actions](#actions)_       | Custom entity double tap action                                           |
 
 Note that `hold_action` and `double_tap_action` are currently **not** supported on additional entities.
 
@@ -162,7 +163,11 @@ For example:
       - icon: mdi:car-arrow-left
         condition: equals
         attribute: state
-        value: 35.6
+        value: 35.6      
+      - icon: phu:lift-in-window-open1
+        condition: above
+        entity: sensor.bathroom1_window_sensor_tilt
+        value: 0
 
 ```
 

@@ -24,28 +24,39 @@ export const entityName = (stateObj, config) => {
     );
 };
 
-export const entityIcon = (stateObj, config) => {
+export const entityIcon = (stateObj, config, hass) => {
     if (!('icon' in config)) return stateObj.attributes.icon || null;
     if (typeof config.icon === 'string') return config.icon || null;
 
     if(config.icon.state_on) return renderCustomStateIcon(stateObj, config);
 
-    if(config.icon.conditions) {
-        
-        let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
-        let matchedConditions = config.icon.conditions.filter(item => {
-            if(item.condition == 'equals' && value == item.value) {
-                return true;
-            }
-            if(item.condition == 'above' && value > item.value) {
-                return true;
-            }
-            if(item.condition == 'below' && value < item.value) {
-                return true;
-            }
-        });
-        
-        return matchedConditions.pop().icon;
+    if(config.icon.conditions) return renderConditionIcons(stateObj, config, hass);
+}
+
+export const renderConditionIcons = (stateObj, config, hass) => {
+    let entityValue = stateObj.state;
+    let matchedConditions = config.icon.conditions.filter(item => {
+
+        if(item.entity) {
+            let entity = hass.states[item.entity];
+            entityValue = config.attribute ? entity.attributes[item.attribute] : entity.state;
+        }
+
+        return checkConditionalValue(item, entityValue);
+    });
+    
+    return matchedConditions.pop().icon;
+}
+
+export const checkConditionalValue = (item, checkValue) => {
+    if(item.condition == 'equals' && checkValue == item.value) {
+        return true;
+    }
+    if(item.condition == 'above' && checkValue > item.value) {
+        return true;
+    }
+    if(item.condition == 'below' && checkValue < item.value) {
+        return true;
     }
 }
 

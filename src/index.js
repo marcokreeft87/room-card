@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 1.0.0',
+    '%c ROOM-CARD %c 1.1.0',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -187,7 +187,7 @@ class RoomCard extends LitElement {
         }
 
         if (config.show_icon === true) {
-            return this.renderIcon(stateObj, config);
+            return this.renderIcon(stateObj, config, null);
         }
 
         if (config.attribute && [LAST_CHANGED, LAST_UPDATED].includes(config.attribute)) {
@@ -217,7 +217,7 @@ class RoomCard extends LitElement {
         return html`<state-badge
             class="icon-small ${classes}"
             .stateObj="${stateObj}"
-            .overrideIcon="${entityIcon(stateObj, config)}"
+            .overrideIcon="${entityIcon(stateObj, config, this._hass)}"
             .stateColor="${config.state_color}"
         ></state-badge>`;
     }
@@ -233,7 +233,11 @@ class RoomCard extends LitElement {
     }
 
     dblClickHandler(entity, actionConfig) {
-        return () => handleClick(this, this._hass, { entity, double_tap_action: actionConfig }, true, false);
+        return () => handleClick(this, this._hass, { entity, double_tap_action: actionConfig }, false, true);
+    }
+
+    holdHandler(entity, actionConfig) {
+        return () => handleClick(this, this._hass, { entity, hold_action: actionConfig }, true, false);
     }
 }
 
