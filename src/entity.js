@@ -28,6 +28,29 @@ export const entityIcon = (stateObj, config) => {
     if (!('icon' in config)) return stateObj.attributes.icon || null;
     if (typeof config.icon === 'string') return config.icon || null;
 
+    if(config.icon.state_on) return renderCustomStateIcon(stateObj, config);
+
+    if(config.icon.conditions) {
+        
+        let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+        let matchedConditions = config.icon.conditions.filter(item => {
+            console.log('item', item);
+            if(item.condition == 'equals' && value == item.value) {
+                return true;
+            }
+            if(item.condition == 'above' && value > item.value) {
+                return true;
+            }
+            if(item.condition == 'below' && value < item.value) {
+                return true;
+            }
+        });
+        
+        return matchedConditions.pop().icon;
+    }
+}
+
+export const renderCustomStateIcon = (stateObj, config) => {
     var domain = computeStateDomain(stateObj);
     
     switch(domain) {
