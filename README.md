@@ -36,7 +36,7 @@ This card produces an `room-card` and must therefore be configured as an entity 
 | name              | string/bool   | `friendly_name`                     | Override entity friendly name                    |
 | unit              | string/bool   | `unit_of_measurement`               | Override entity unit of measurement              |
 | icon              | string        | `icon`                              | Override entity icon or image                    |
-|                   | object        |                                     | Override the on or off state icon with state_on / state_off        |
+|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#Conditions)_       |
 | show_icon         | bool          | `false`                             | Show the icon instead of the text based state    |
 | image             | string        |                                     | Show an image instead of icon                    |
 | toggle            | bool          | `false`                             | Display a toggle (if supported) instead of state |
@@ -70,7 +70,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | unit             | string/bool | `unit_of_measurement`       | Override entity unit of measurement (or `false` to hide)           |
 | toggle           | bool        | `false`                     | Display a toggle if supported by domain                            |
 | icon             | string/bool | `false`                     | Display default or custom icon instead of state or attribute value |
-|                  | object      |                             | Override the on or off state icon with state_on / state_off        |
+|                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#Conditions)_       |
 | show_icon         | bool          | `false`                              | Show the icon instead of the text based state    |
 | state_color      | bool        | `false`                     | Enable colored icon when entity is active                          |
 | hide_unavailable | bool        | `false`                     | Hide entity if unavailable or not found                            |
@@ -129,6 +129,42 @@ or as an object with one or more of the options listed below.
 | value   | list/any | Hidden if value matches specified value or any value in a list  |
 | entity  | string   | Name of the entity the state will hide the entity in the card   |
 | state   | string   | State of the entity the state will hide the entity in the card  |
+
+
+### Icon conditions
+
+The `icon` can be customized based on conditions.
+
+| Name    | Type     | Description                                                     |
+| ------- | -------- | --------------------------------------------------------------- |
+| above   | any      | Use the given icon if the state or attribute above the specified value    |
+| below   | any      | Use the given icon if the state or attribute below the specified value    |
+| equals  | any      | Hidden if entity _number_ value is equal to the specified value    |
+| value   | any      | Hidden if value matches specified value or any value in a list  |
+| attribute   | string   | Use the value of this attribute to determine the above/below/equals equation  |
+
+For example:
+
+```yaml
+- entity: sensor.node_21_humidity
+  show_icon: true
+  icon:
+    conditions:
+      - icon: mdi:car
+        condition: above
+        value: 20
+      - icon: mdi:car-2-plus
+        condition: above
+        value: 30
+      - icon: mdi:car-3-plus
+        condition: below
+        value: 50
+      - icon: mdi:car-arrow-left
+        condition: equals
+        attribute: state
+        value: 35.6
+
+```
 
 ## Examples
 
