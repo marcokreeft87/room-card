@@ -2,6 +2,11 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 100  %}
+- Added `Support for conditional icons`
+- Added `Fixed icons aligning center when multiple rows`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 14  %}
 - Added `Support for empty title`
 {% endif %}

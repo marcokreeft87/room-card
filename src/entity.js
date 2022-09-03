@@ -34,7 +34,6 @@ export const entityIcon = (stateObj, config) => {
         
         let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
         let matchedConditions = config.icon.conditions.filter(item => {
-            console.log('item', item);
             if(item.condition == 'equals' && value == item.value) {
                 return true;
             }
