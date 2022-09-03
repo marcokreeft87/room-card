@@ -51,7 +51,7 @@ This card produces an `room-card` and must therefore be configured as an entity 
 | info_entities     | list          | _[Entity Objects](#entity-objects)_ | Custom `info_entities` entity                   |
 |                   |
 | tap_action        | object        | _[Actions](#actions)_               | Custom tap action on entity row and state value  |
-| double_tap_action | object        |                                     | Custom double tap action on entity row           |
+| double_tap_action | object        | _[Actions](#actions)_               | Custom double tap action on entity row           |
 
 ### Entity Objects
 
@@ -79,7 +79,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | styles           | object      |                             | Add custom CSS styles to the entity element                        |
 | format           | string      | _[Formatting](#formatting)_ | Format entity value                                                |
 | tap_action       | object      | _[Actions](#actions)_       | Custom entity tap action                                           |
-| double)tap_action       | object      | _[Actions](#actions)_       | Custom entity double tap action                                           |
+| double_tap_action       | object      | _[Actions](#actions)_       | Custom entity double tap action                                           |
 
 Note that `hold_action` and `double_tap_action` are currently **not** supported on additional entities.
 
