@@ -45,11 +45,14 @@ export const renderConditionIcons = (stateObj, config, hass) => {
         return checkConditionalValue(item, entityValue);
     });
     
-    return matchedConditions.pop().icon;
+    return matchedConditions.pop();
 }
 
 export const checkConditionalValue = (item, checkValue) => {
     if(item.condition == 'equals' && checkValue == item.value) {
+        return true;
+    }
+    if(item.condition == 'not_equals' && checkValue != item.value) {
         return true;
     }
     if(item.condition == 'above' && checkValue > item.value) {

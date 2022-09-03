@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 120  %}
+- Added `Added conditional styles to the icons`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 110  %}
 - Added `Support for conditional icons based on other entities`

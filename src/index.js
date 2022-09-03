@@ -3,11 +3,11 @@ import { handleClick } from 'custom-card-helpers';
 
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
-import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
+import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 1.1.1',
+    '%c ROOM-CARD %c 1.2.0',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -214,11 +214,14 @@ class RoomCard extends LitElement {
     }
 
     renderIcon(stateObj, config, classes) {
+        let customIcon = entityIcon(stateObj, config, this._hass);
+
         return html`<state-badge
             class="icon-small ${classes}"
             .stateObj="${stateObj}"
-            .overrideIcon="${entityIcon(stateObj, config, this._hass)}"
+            .overrideIcon="${isObject(customIcon) ? customIcon.icon : customIcon}"
             .stateColor="${config.state_color}"
+            style="${entityStyles(customIcon)}"
         ></state-badge>`;
     }
 

@@ -144,6 +144,7 @@ The `icon` can be customized based on conditions.
 | equals  | any      | Hidden if entity _number_ value is equal to the specified value    |
 | value   | any      | Hidden if value matches specified value or any value in a list  |
 | attribute   | string   | Use the value of this attribute to determine the above/below/equals equation  |
+| styles           | object      |                             | Add custom CSS styles to the icon                   |
 
 For example:
 
@@ -169,6 +170,10 @@ For example:
         condition: above
         entity: sensor.bathroom1_window_sensor_tilt
         value: 0
+      - condition: above
+        value: 70
+        styles:
+          color: green
 
 ```
 
