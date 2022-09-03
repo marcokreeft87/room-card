@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf } from './util';
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 1.1.0',
+    '%c ROOM-CARD %c 1.1.1',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
