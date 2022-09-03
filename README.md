@@ -33,6 +33,7 @@ This card produces an `room-card` and must therefore be configured as an entity 
 | type              | string        | **Required**                        | `custom:room-card`                     |
 | entity            | string        | **Required**                        | Entity ID (`domain.my_entity_id`)                |
 | attribute         | string        |                                     | Show an attribute instead of the state value     |
+| hide_title        | bool          | `false`                             | Hide the title                                   |
 | name              | string/bool   | `friendly_name`                     | Override entity friendly name                    |
 | unit              | string/bool   | `unit_of_measurement`               | Override entity unit of measurement              |
 | icon              | string        | `icon`                              | Override entity icon or image                    |
