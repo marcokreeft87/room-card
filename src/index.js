@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject } from './ut
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.0',
+    '%c ROOM-CARD %c 1.2.1',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -154,11 +154,13 @@ class RoomCard extends LitElement {
             return null;
         }
 
+        const entityValue = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
         const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);
         return html`<div class="entity" style="${entityStyles(config)}" @click="${onClick}" @dblclick="${onDblClick}">
             <span>${entityName(stateObj, config)}</span>
             <div>${this.renderIcon(stateObj, config)}</div>
+            ${config.show_state ? html`<span>${entityValue}</span>` : ''}
         </div>`;
     }
 

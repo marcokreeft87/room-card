@@ -73,6 +73,7 @@ attribute value instead of the state value. `icon` lets you display an icon inst
 | icon             | string/bool | `false`                     | Display default or custom icon instead of state or attribute value |
 |                   | object        |                                     | Override the on or off state icon with state_on / state_off or _[Conditions](#icon-conditions)_       |
 | show_icon         | bool          | `false`                              | Show the icon instead of the text based state    |
+| show_state       | bool        | `false`                     | Show the state beneath the entities (not info_entities)            |
 | state_color      | bool        | `false`                     | Enable colored icon when entity is active                          |
 | hide_unavailable | bool        | `false`                     | Hide entity if unavailable or not found                            |
 | hide_if          | object/any  | _[Hiding](#hiding)_         | Hide entity if its value matches specified value or criteria       |
