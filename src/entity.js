@@ -1,7 +1,7 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { isObject, isUnavailable } from './util';
+import { isObject, isUnavailable, getValue } from './util';
 
 export const checkEntity = (config) => {
     if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
@@ -79,7 +79,7 @@ export const entityStateDisplay = (hass, stateObj, config) => {
         return hass.localize(`state.default.${stateObj.state}`);
     }
 
-    let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+    let value = getValue(stateObj, config);
     let unit =
         config.unit === false
             ? undefined

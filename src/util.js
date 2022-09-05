@@ -8,6 +8,10 @@ export const hideUnavailable = (stateObj, config) =>
     config.hide_unavailable &&
     (isUnavailable(stateObj) || (config.attribute && stateObj.attributes[config.attribute] === undefined));
 
+export const getValue = (stateObj, config) => {
+    return config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+}
+
 export const hideIf = (stateObj, config, hass) => {
     if (hideUnavailable(stateObj, config)) {
         return true;
@@ -16,7 +20,7 @@ export const hideIf = (stateObj, config, hass) => {
         return false;
     }
 
-    const value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+    const value = getValue(stateObj, config);
     let hideValues = [];
 
     if (isObject(config.hide_if)) {

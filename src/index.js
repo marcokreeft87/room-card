@@ -3,7 +3,7 @@ import { handleClick } from 'custom-card-helpers';
 
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
-import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject } from './util';
+import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject, getValue } from './util';
 import { style } from './styles';
 
 console.info(
@@ -153,11 +153,30 @@ class RoomCard extends LitElement {
         if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
-
-        const entityValue = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+        
+        let interval = false;
+        let count = 1;
+        const entityValue = getValue(stateObj, config);
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
         const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);
-        return html`<div class="entity" style="${entityStyles(config)}" @click="${onClick}" @dblclick="${onDblClick}">
+        
+        let hasHold = config.hold_action !== undefined;
+        const start = () => {
+            if(!interval && hasHold){
+                interval =  window.setInterval(() => count++, 10)	
+            }
+        }
+        const stop = () => {
+            if(hasHold && count > 200) {
+                window.clearInterval(interval)            
+                this.holdHandler(stateObj.entity_id, config.hold_action)
+                interval = false;
+            }
+        }
+        
+        return html`<div class="entity" style="${entityStyles(config)}" @click="${onClick}" @dblclick="${onDblClick}"
+        ${hasHold ? html`@mousedown="${start}" @mouseup="${stop}" @touchstart="${start}" @touchend="${stop}" @touchcancel="${stop}` : ''}
+        ">
             <span>${entityName(stateObj, config)}</span>
             <div>${this.renderIcon(stateObj, config)}</div>
             ${config.show_state ? html`<span>${entityValue}</span>` : ''}
@@ -200,7 +219,7 @@ class RoomCard extends LitElement {
             ></ha-relative-time>`;
         }
         if (config.format && TIMESTAMP_FORMATS.includes(config.format)) {
-            const value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+            const value = getValue(stateObj, config);
             const timestamp = new Date(value);
             if (!(timestamp instanceof Date) || isNaN(timestamp.getTime())) {
                 return value;
