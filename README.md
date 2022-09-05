@@ -138,9 +138,10 @@ The `icon` can be customized based on conditions.
 | ------- | -------- | --------------------------------------------------------------- |
 | above   | any      | Use the given icon if the state or attribute above the specified value    |
 | below   | any      | Use the given icon if the state or attribute below the specified value    |
-| equals  | any      | Hidden if entity _number_ value is equal to the specified value    |
-| value   | any      | Hidden if value matches specified value or any value in a list  |
+| equals  | any      | Use the given icon if the value is equal to the specified value    |
+| value   | any      | Compare the value of the entity with this value  |
 | attribute   | string   | Use the value of this attribute to determine the above/below/equals equation  |
+| entity  | string   | Use the state or given attribute value of this entity to determine the above/below/equals equation |
 | styles           | object      |                             | Add custom CSS styles to the icon                   |
 
 For example:
