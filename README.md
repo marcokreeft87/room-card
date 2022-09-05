@@ -7,10 +7,6 @@
 
 Show multiple entity states, attributes and icons in a single card in Home Assistant's Lovelace UI
 
-**NOTE:** This card is base on the [multiple-entities-card](https://github.com/benct/lovelace-multiple-entity-row)
-
-**NOTE:** This is not a standalone lovelace card, but a row element for the [entities](https://www.home-assistant.io/lovelace/entities/) card.
-
 ## Installation
 
 Install using [HACS](https://hacs.xyz/). Search for Room Card in the frontend list, click on download.
