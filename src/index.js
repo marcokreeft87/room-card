@@ -7,7 +7,7 @@ import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject, getValue } 
 import { style } from './styles';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.1',
+    '%c ROOM-CARD %c 1.2.2',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -154,28 +154,47 @@ class RoomCard extends LitElement {
             return null;
         }
         
-        let interval = false;
-        let count = 1;
         const entityValue = getValue(stateObj, config);
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
-        const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);
+        const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);        
+        const onHold = this.holdHandler(stateObj.entity_id, config.hold_action);
         
-        let hasHold = config.hold_action !== undefined;
         const start = () => {
-            if(!interval && hasHold){
-                interval =  window.setInterval(() => count++, 10)	
+            this.held = false;
+            
+            this.timer = window.setTimeout(() => {
+              this.held = true;
+            }, 500);
+          };
+      
+        const end = (ev) => {
+            // Prevent mouse event if touch event
+            ev.preventDefault();
+            if (['touchend', 'touchcancel'].includes(ev.type) && this.timer === undefined) {
+              return;
             }
-        }
-        const stop = () => {
-            if(hasHold && count > 200) {
-                window.clearInterval(interval)            
-                this.holdHandler(stateObj.entity_id, config.hold_action)
-                interval = false;
+            window.clearTimeout(this.timer);
+            this.timer = undefined;
+            if (this.held) {
+                onHold();
+            } else if (config.double_tap_action !== undefined) {
+              if ((ev.type === 'click' && (ev).detail < 2) || !this.dblClickTimeout) {
+                this.dblClickTimeout = window.setTimeout(() => {
+                  this.dblClickTimeout = undefined;                  
+                  onClick();
+                }, 250);
+              } else {
+                window.clearTimeout(this.dblClickTimeout);
+                this.dblClickTimeout = undefined;
+                onDblClick();
+              }
+            } else {
+                onClick();
             }
-        }
-        
-        return html`<div class="entity" style="${entityStyles(config)}" @click="${onClick}" @dblclick="${onDblClick}"
-        ${hasHold ? html`@mousedown="${start}" @mouseup="${stop}" @touchstart="${start}" @touchend="${stop}" @touchcancel="${stop}` : ''}
+        };
+
+        return html`<div class="entity" style="${entityStyles(config)}"
+        @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}"
         ">
             <span>${entityName(stateObj, config)}</span>
             <div>${this.renderIcon(stateObj, config)}</div>

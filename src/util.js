@@ -61,3 +61,29 @@ export const hasConfigOrEntitiesChanged = (node, changedProps) => {
     }
     return false;
 };
+
+export const mouseEnd = (ev, onClick, onDblClick, onHold, config) => {
+    // Prevent mouse event if touch event
+    ev.preventDefault();
+    if (['touchend', 'touchcancel'].includes(ev.type) && this.timer === undefined) {
+      return;
+    }
+    window.clearTimeout(this.timer);
+    this.timer = undefined;
+    if (this.held) {
+        onHold();
+    } else if (config.double_tap_action !== undefined) {
+      if ((ev.type === 'click' && (ev).detail < 2) || !this.dblClickTimeout) {
+        this.dblClickTimeout = window.setTimeout(() => {
+          this.dblClickTimeout = undefined;          
+          onClick();
+        }, 250);
+      } else {
+        window.clearTimeout(this.dblClickTimeout);
+        this.dblClickTimeout = undefined;
+        onDblClick();
+      }
+    } else {
+        onClick();
+    }
+};
