@@ -13,7 +13,7 @@ export interface RoomCardEntity {
     format?: string;
     unit?: string;
     hide_unavailable?: boolean;
-    hide_if?: string | EntityCondition[];
+    hide_if?: string | HideIfConfig;
     stateObj: HomeAssistantEntity | undefined;
     attribute?: string;
     show_state?: boolean;
@@ -41,6 +41,10 @@ export interface RoomCardIcon {
     conditions?: EntityCondition[];
     state_on?: string;
     state_off?: string;
+}
+
+export interface HideIfConfig {    
+    conditions?: EntityCondition[];
 }
 
 export interface EntityCondition {

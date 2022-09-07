@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 125  %}
+- Added `Changed the configuration for hide if (check out https://github.com/marcokreeft87/room-card/wiki/Configuration#hiding)`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 123  %}
 - Added `Changed source code to Typescript`

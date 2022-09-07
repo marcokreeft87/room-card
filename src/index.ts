@@ -9,7 +9,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.4',
+    '%c ROOM-CARD %c 1.2.5',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );

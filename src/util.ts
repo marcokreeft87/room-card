@@ -1,7 +1,7 @@
 import { HomeAssistant } from 'custom-card-helpers';
 import { PropertyValues } from 'lit';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig } from './types/room-card-types';
 
 export const isObject = (obj: unknown) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
@@ -23,10 +23,10 @@ export const hideIf = (stateObj: HomeAssistantEntity, config: RoomCardEntity, ha
         return false;
     }
 
-    if (<EntityCondition[]>config.hide_if)
+    if (<HideIfConfig>config.hide_if)
     {
         let entityValue = stateObj.state;
-        const matchedConditions = (config.hide_if as EntityCondition[]).filter(item => {
+        const matchedConditions = (config.hide_if as HideIfConfig).conditions?.filter(item => {
     
             if(item.entity) {
                 const entity = hass.states[item.entity];
