@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'production',
-    entry: path.resolve(__dirname, 'src', 'index.js'),
+    entry: path.resolve(__dirname, 'src', 'index.ts'),
     output: {
         filename: 'room-card.js',
         path: path.resolve(__dirname),
@@ -20,6 +20,7 @@ module.exports = {
                     },
                 },
             },
+            { test: /\.tsx?$/, loader: "ts-loader" }
         ],
     },
     plugins: [
@@ -27,4 +28,7 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
     ],
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    }
 };

@@ -1,8 +1,8 @@
 // Source: https://github.com/home-assistant/frontend/blob/dev/src/common/datetime/seconds_to_duration.ts
 
-const leftPad = (num) => (num < 10 ? `0${num}` : num);
+const leftPad = (num: number) => (num < 10 ? `0${num}` : num);
 
-export function secondsToDuration(d) {
+export function secondsToDuration(d: number) {
     const h = Math.floor(d / 3600);
     const m = Math.floor((d % 3600) / 60);
     const s = Math.floor((d % 3600) % 60);

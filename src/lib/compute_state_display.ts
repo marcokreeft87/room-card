@@ -5,10 +5,12 @@ import { formatDate } from './format_date';
 import { formatDateTime } from './format_date_time';
 import { formatTime } from './format_time';
 import { formatNumber, isNumericState } from './format_number';
+import { HomeAssistantEntity } from '../types/room-card-types';
+import { FrontendLocaleData, LocalizeFunc } from 'custom-card-helpers';
 
-export const computeStateDomain = (stateObj) => stateObj.entity_id.substr(0, stateObj.entity_id.indexOf('.'));
+export const computeStateDomain = (stateObj: HomeAssistantEntity) => stateObj.entity_id.substr(0, stateObj.entity_id.indexOf('.'));
 
-export const computeStateDisplay = (localize, stateObj, locale, state) => {
+export const computeStateDisplay = (localize: LocalizeFunc, stateObj: HomeAssistantEntity, locale: FrontendLocaleData, state?: string) => {
     const compareState = state !== undefined ? state : stateObj.state;
 
     if (compareState === UNKNOWN || compareState === UNAVAILABLE) {

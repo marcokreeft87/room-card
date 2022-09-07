@@ -1,9 +1,10 @@
 // Source: https://github.com/home-assistant/frontend/blob/dev/src/common/datetime/format_date_time.ts
 
+import { FrontendLocaleData } from 'custom-card-helpers';
 import memoizeOne from 'memoize-one';
 import { useAmPm } from './use_am_pm';
 
-export const formatDateTime = (dateObj, locale) => formatDateTimeMem(locale).format(dateObj);
+export const formatDateTime = (dateObj: Date, locale: FrontendLocaleData) => formatDateTimeMem(locale).format(dateObj);
 
 const formatDateTimeMem = memoizeOne(
     (locale) =>

@@ -1,18 +1,12 @@
 {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": [
     "eslint:recommended",
-  ],
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
-  },
-  "globals": {
-    "window": true,
-    "document": true,
-    "history": true,
-    "confirm": true,
-    "console": true,
-    "customElements": true,
-    "Intl": true
-  }
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }

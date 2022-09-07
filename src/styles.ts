@@ -1,4 +1,6 @@
-export const style = (css) => css`
+import { css } from 'lit';
+
+export const style = css`
     ha-card .card-header {
         padding-bottom: 0px;
     }

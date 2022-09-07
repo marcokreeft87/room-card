@@ -1,28 +1,31 @@
-import { css, html, LitElement } from 'lit';
-import { handleClick } from 'custom-card-helpers';
+import {  CSSResult, html, LitElement, PropertyValues } from 'lit';
+import {  property, customElement } from 'lit/decorators.js';
+import { ActionConfig, handleClick, HomeAssistant, LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
 
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
 import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject } from './util';
 import { style } from './styles';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.1',
+    '%c ROOM-CARD %c 1.2.2',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
 
+@customElement('room-card')
 class RoomCard extends LitElement {
-    static get properties() {
-        return {
-            _hass: Object,
-            config: Object,
-            stateObj: Object,
-            _refCards: [],
-        };
-    }
+    @property() _hass?: HomeAssistant;
+    @property() config?: RoomCardConfig;
+    
+    private entity: RoomCardEntity;
+    private info_entities: RoomCardEntity[] = [];
+    private entities: RoomCardEntity[] = [];
+    private stateObj: HomeAssistantEntity | undefined;
+    private _refCards: LovelaceCard[] = [];
 
-    setConfig(config) {
+    setConfig(config: RoomCardConfig) {
         if (!config || (!config.entities && !config.entity && !config.info_entities)) {
             throw new Error('Please define entities.');
         }
@@ -36,23 +39,21 @@ class RoomCard extends LitElement {
             config.info_entities.forEach((entity) => checkEntity(entity));
         }
 
-        this.entityIds = getEntityIds(config);
-
-        this.config = { ...config, name: config.name === false ? ' ' : config.name };
+        this.config = { ...config, name: config.name === false ? ' ' : config.name, entityIds: getEntityIds(config) };
     }
 
-    shouldUpdate(changedProps) {
-        return hasConfigOrEntitiesChanged(this, changedProps);
+    protected shouldUpdate(changedProps: PropertyValues): boolean {
+        return hasConfigOrEntitiesChanged(this.config, changedProps);
     }
 
-    set hass(hass) {
+    set hass(hass: HomeAssistant) {
         this._hass = hass;
 
         if (hass && this.config) {
             if (this.config.entity) {
                 this.stateObj = hass.states[this.config.entity];
 
-                const conf = typeof config === 'string' ? { entity: this.config.entity } : this.config.entity;
+                const conf = typeof this.config.config === 'string' ? { entity: this.config.entity } : this.config.entity;
                 this.entity = { ...conf, stateObj: conf.entity ? hass.states[conf.entity] : this.stateObj };
             }
 
@@ -70,15 +71,17 @@ class RoomCard extends LitElement {
             this._refCards = this.config.cards?.map((config) => {
                 return this.createCardElement(config, hass);
             });
+
+            this.config.hass = hass;
         }
     }
 
-    createCardElement(cardConfig, hass) {
+    createCardElement(cardConfig: LovelaceCardConfig, hass: HomeAssistant) {
         if (cardConfig.show_states && !cardConfig.show_states.includes(hass.states[cardConfig.entity].state)) {
             return;
         }
 
-        const createError = (error, origConfig) => {
+        const createError = (error: string, origConfig: LovelaceCardConfig) : LovelaceCard => {
             return createThing('hui-error-card', {
                 type: 'error',
                 error,
@@ -86,8 +89,8 @@ class RoomCard extends LitElement {
             });
         };
 
-        const createThing = (tag, config) => {
-            const element = document.createElement(tag);
+        const createThing = (tag: string, config: LovelaceCardConfig) : LovelaceCard => {
+            const element = document.createElement(tag) as LovelaceCard;
             try {
                 element.setConfig(config);
             } catch (err) {
@@ -113,15 +116,15 @@ class RoomCard extends LitElement {
         return element;
     }
 
-    static get styles() {
-        return style(css);
+    static get styles(): CSSResult {
+        return style;
     }
 
     render() {
         if (!this._hass || !this.config) return html``;
 
         return html`
-            <ha-card elevation="2" style="${entityStyles(this.config)}">
+            <ha-card elevation="2" style="${entityStyles(this.entity)}">
                 <div class="card-header">
                     ${this.renderTitle(this.config)}
                     <div class="entities-info-row">
@@ -136,11 +139,11 @@ class RoomCard extends LitElement {
         `;
     }
 
-    renderTitle(config) {
+    renderTitle(config: RoomCardConfig) {
         return config.hide_title === true ? '' : html`<div class="title">${this.renderMainEntity()} ${config.title}</div>`;
     }
 
-    renderInfoEntity(stateObj, config) {
+    renderInfoEntity(stateObj: HomeAssistantEntity, config: RoomCardEntity) {
         if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
@@ -149,7 +152,7 @@ class RoomCard extends LitElement {
         return html`<div class="state entity ${config.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(config)}" @click="${onClick}">${this.renderValue(stateObj, config)}</div>`;
     }
 
-    renderEntity(stateObj, config) {
+    renderEntity(stateObj: HomeAssistantEntity, config: RoomCardEntity) {
         if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
@@ -173,29 +176,29 @@ class RoomCard extends LitElement {
         const onDblClick = this.dblClickHandler(this.stateObj.entity_id, this.config.double_tap_action);
         return html`<div
             class="main-state entity"
-            style="${entityStyles(this.config)}"
+            style="${entityStyles(this.entity)}"
             @click="${onClick}"
             @dblclick="${onDblClick}"
         >
             ${this.entities.length === 0 || this.config.icon
-                ? this.renderIcon(this.stateObj, this.config, "main-icon")
-                : this.renderValue(this.stateObj, this.config)}
+                ? this.renderIcon(this.stateObj, this.entity, "main-icon")
+                : this.renderValue(this.stateObj, this.entity)}
         </div>`;
     }
 
-    renderValue(stateObj, config) {
+    renderValue(stateObj: HomeAssistantEntity, config: RoomCardEntity) {
         if (config.toggle === true) {
             return html`<ha-entity-toggle .stateObj="${stateObj}" .hass="${this._hass}"></ha-entity-toggle>`;
         }
 
         if (config.show_icon === true) {
-            return this.renderIcon(stateObj, config, null);
+            return this.renderIcon(stateObj, config);
         }
 
         if (config.attribute && [LAST_CHANGED, LAST_UPDATED].includes(config.attribute)) {
             return html`<ha-relative-time
                 .hass=${this._hass}
-                .datetime=${stateObj[config.attribute?.replace('-', '_')]}
+                .datetime=${stateObj.attributes[config.attribute?.replace('-', '_')]}
                 capitalize
             ></ha-relative-time>`;
         }
@@ -215,8 +218,8 @@ class RoomCard extends LitElement {
         return entityStateDisplay(this._hass, stateObj, config);
     }
 
-    renderIcon(stateObj, config, classes) {
-        let customIcon = entityIcon(stateObj, config, this._hass);
+    renderIcon(stateObj: HomeAssistantEntity, config: RoomCardEntity, classes? : string) {
+        const customIcon = entityIcon(stateObj, config, this._hass);
 
         return html`<state-badge
             class="icon-small ${classes}"
@@ -233,17 +236,15 @@ class RoomCard extends LitElement {
         </hui-warning>`;
     }
 
-    clickHandler(entity, actionConfig) {
+    clickHandler(entity: string, actionConfig: ActionConfig) {
         return () => handleClick(this, this._hass, { entity, tap_action: actionConfig }, false, false);
     }
 
-    dblClickHandler(entity, actionConfig) {
+    dblClickHandler(entity: string, actionConfig: ActionConfig) {
         return () => handleClick(this, this._hass, { entity, double_tap_action: actionConfig }, false, true);
     }
 
-    holdHandler(entity, actionConfig) {
+    holdHandler(entity: string, actionConfig: ActionConfig) {
         return () => handleClick(this, this._hass, { entity, hold_action: actionConfig }, true, false);
     }
 }
-
-customElements.define('room-card', RoomCard);

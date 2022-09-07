@@ -1,13 +1,15 @@
 // Source: https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
 
+import { FrontendLocaleData } from 'custom-card-helpers';
+import { HomeAssistantEntity } from '../types/room-card-types';
 import { NumberFormat } from './constants';
 
-export const round = (value, precision = 2) => Math.round(value * 10 ** precision) / 10 ** precision;
+export const round = (value: number, precision = 2) => Math.round(value * 10 ** precision) / 10 ** precision;
 
-export const isNumericState = (stateObj) =>
+export const isNumericState = (stateObj: HomeAssistantEntity) =>
     !!stateObj.attributes.unit_of_measurement || !!stateObj.attributes.state_class;
 
-export const numberFormatToLocale = (localeOptions) => {
+export const numberFormatToLocale = (localeOptions: FrontendLocaleData) => {
     switch (localeOptions.number_format) {
         case NumberFormat.comma_decimal:
             return ['en-US', 'en']; // Use United States with fallback to English formatting 1,234,567.89
@@ -22,13 +24,13 @@ export const numberFormatToLocale = (localeOptions) => {
     }
 };
 
-export const formatNumber = (num, localeOptions, options) => {
+export const formatNumber = (num: number, localeOptions: FrontendLocaleData, options?: any) => {
     const locale = localeOptions ? numberFormatToLocale(localeOptions) : undefined;
 
     // Polyfill for Number.isNaN, which is more reliable than the global isNaN()
     Number.isNaN =
         Number.isNaN ||
-        function isNaN(input) {
+        function isNaN(input: unknown): boolean {
             return typeof input === 'number' && isNaN(input);
         };
 
@@ -50,22 +52,22 @@ export const formatNumber = (num, localeOptions, options) => {
     }`;
 };
 
-const getDefaultFormatOptions = (num, options) => {
+const getDefaultFormatOptions = (num: number, options: any) => {
     const defaultOptions = {
         maximumFractionDigits: 2,
         ...options,
     };
 
-    if (typeof num !== 'string') {
-        return defaultOptions;
-    }
+    // if (typeof num !== 'string') {
+    //     return defaultOptions;
+    // }
 
-    // Keep decimal trailing zeros if they are present in a string numeric value
-    if (!options || (!options.minimumFractionDigits && !options.maximumFractionDigits)) {
-        const digits = num.indexOf('.') > -1 ? num.split('.')[1].length : 0;
-        defaultOptions.minimumFractionDigits = digits;
-        defaultOptions.maximumFractionDigits = digits;
-    }
+    // // Keep decimal trailing zeros if they are present in a string numeric value
+    // if (!options || (!options.minimumFractionDigits && !options.maximumFractionDigits)) {
+    //     const digits = num.indexOf('.') > -1 ? num.split('.')[1].length : 0;
+    //     defaultOptions.minimumFractionDigits = digits;
+    //     defaultOptions.maximumFractionDigits = digits;
+    // }
 
     return defaultOptions;
 };

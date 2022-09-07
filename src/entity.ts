@@ -1,9 +1,11 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { isObject, isUnavailable } from './util';
+import { checkConditionalValue, isObject, isUnavailable } from './util';
+import { HomeAssistant } from 'custom-card-helpers';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon } from './types/room-card-types';
 
-export const checkEntity = (config) => {
+export const checkEntity = (config: RoomCardEntity) => {
     if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
         throw new Error(`Entity object requires at least one 'entity', 'attribute' or 'icon'.`);
     } else if (typeof config === 'string' && config === '') {
@@ -13,10 +15,10 @@ export const checkEntity = (config) => {
     }
 };
 
-export const computeEntity = (entityId) => entityId.substr(entityId.indexOf('.') + 1);
+export const computeEntity = (entityId: string) => entityId.substr(entityId.indexOf('.') + 1);
 
-export const entityName = (stateObj, config) => {
-    if (config.name === false) return null;
+export const entityName = (stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
+    if (config.name === undefined) return null;
     return (
         config.name ||
         (config.entity ? stateObj.attributes.friendly_name || computeEntity(stateObj.entity_id) : null) ||
@@ -24,21 +26,22 @@ export const entityName = (stateObj, config) => {
     );
 };
 
-export const entityIcon = (stateObj, config, hass) => {
+export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity, hass: HomeAssistant) => {
     if (!('icon' in config)) return stateObj.attributes.icon || null;
     if (typeof config.icon === 'string') return config.icon || null;
 
-    if(config.icon.state_on) return renderCustomStateIcon(stateObj, config);
+    if(config.icon.state_on) return renderCustomStateIcon(stateObj, config.icon as RoomCardIcon);
 
     if(config.icon.conditions) return renderConditionIcons(stateObj, config, hass);
 }
 
-export const renderConditionIcons = (stateObj, config, hass) => {
+export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: RoomCardEntity, hass: HomeAssistant) => {
     let entityValue = stateObj.state;
-    let matchedConditions = config.icon.conditions.filter(item => {
+    const iconConditions = (config.icon as RoomCardIcon).conditions as EntityCondition[];
+    const matchedConditions = iconConditions.filter(item => {
 
         if(item.entity) {
-            let entity = hass.states[item.entity];
+            const entity = hass.states[item.entity];
             entityValue = config.attribute ? entity.attributes[item.attribute] : entity.state;
         }
 
@@ -48,42 +51,25 @@ export const renderConditionIcons = (stateObj, config, hass) => {
     return matchedConditions.pop();
 }
 
-export const checkConditionalValue = (item, checkValue) => {
-    if(item.condition == 'equals' && checkValue == item.value) {
-        return true;
-    }
-    if(item.condition == 'not_equals' && checkValue != item.value) {
-        return true;
-    }
-    if(item.condition == 'above' && checkValue > item.value) {
-        return true;
-    }
-    if(item.condition == 'below' && checkValue < item.value) {
-        return true;
-    }
-}
-
-export const renderCustomStateIcon = (stateObj, config) => {
-    var domain = computeStateDomain(stateObj);
+export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomCardIcon) => {
+    const domain = computeStateDomain(stateObj);
     
     switch(domain) {
         case 'light':
         case 'switch':
         case 'binary_sensor':
-            return stateObj.state === 'on' ? config.icon.state_on : config.icon.state_off;
+            return stateObj.state === 'on' ? icon.state_on : icon.state_off;
     }
 }
 
-export const entityStateDisplay = (hass, stateObj, config) => {
+export const entityStateDisplay = (hass: HomeAssistant, stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
     if (isUnavailable(stateObj)) {
         return hass.localize(`state.default.${stateObj.state}`);
     }
 
     let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
     let unit =
-        config.unit === false
-            ? undefined
-            : config.attribute !== undefined
+        config.attribute !== undefined
             ? config.unit
             : config.unit || stateObj.attributes.unit_of_measurement;
 
@@ -121,7 +107,7 @@ export const entityStateDisplay = (hass, stateObj, config) => {
     return computeStateDisplay(hass.localize, modifiedStateObj, hass.locale);
 };
 
-export const entityStyles = (config) => 
+export const entityStyles = (config: RoomCardEntity) => 
     isObject(config?.styles)
         ? Object.keys(config.styles)
             .map((key) => `${key}: ${config.styles[key]};`)

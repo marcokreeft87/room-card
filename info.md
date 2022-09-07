@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 122  %}
+- Added `Changed source code to Typescript`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 121  %}
 - Added `Added show_state to show the state beneath the entities (not info_entities)`
 {% endif %}
