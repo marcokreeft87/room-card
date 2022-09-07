@@ -1,7 +1,7 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, isObject, isUnavailable } from './util';
+import { checkConditionalValue, getValue, isObject, isUnavailable } from './util';
 import { HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon } from './types/room-card-types';
 
@@ -67,7 +67,7 @@ export const entityStateDisplay = (hass: HomeAssistant, stateObj: HomeAssistantE
         return hass.localize(`state.default.${stateObj.state}`);
     }
 
-    let value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+    let value = getValue(stateObj, config);
     let unit =
         config.attribute !== undefined
             ? config.unit

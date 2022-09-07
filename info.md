@@ -2,8 +2,12 @@
 
 ### Features
 
-{% if version_installed.replace("v", "").replace(".","") | int < 122  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 123  %}
 - Added `Changed source code to Typescript`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 122  %}
+- Added `Added hold_action support`
 {% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 121  %}

@@ -11,6 +11,10 @@ export const hideUnavailable = (stateObj: HomeAssistantEntity, config: RoomCardE
     config.hide_unavailable &&
     (isUnavailable(stateObj) || (config.attribute && stateObj.attributes[config.attribute] === undefined));
 
+export const getValue = (stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
+    return config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+}
+
 export const hideIf = (stateObj: HomeAssistantEntity, config: RoomCardEntity, hass: HomeAssistant) => {
     if (hideUnavailable(stateObj, config)) {
         return true;

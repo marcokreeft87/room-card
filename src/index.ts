@@ -4,12 +4,12 @@ import { ActionConfig, handleClick, HomeAssistant, LovelaceCard, LovelaceCardCon
 
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
-import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject } from './util';
+import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject, getValue } from './util';
 import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.2',
+    '%c ROOM-CARD %c 1.2.3',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -156,11 +156,52 @@ class RoomCard extends LitElement {
         if (!stateObj || hideIf(stateObj, config, this._hass)) {
             return null;
         }
-
-        const entityValue = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+        
+        const entityValue = getValue(stateObj, config);
         const onClick = this.clickHandler(stateObj.entity_id, config.tap_action);
-        const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);
-        return html`<div class="entity" style="${entityStyles(config)}" @click="${onClick}" @dblclick="${onDblClick}">
+        const onDblClick = this.dblClickHandler(stateObj.entity_id, config.double_tap_action);        
+        const onHold = this.holdHandler(stateObj.entity_id, config.hold_action);
+        let held: boolean;
+        let timer: number;
+        let dblClickTimeout: number;
+
+        const start = () => {
+            held = false;
+            
+            timer = window.setTimeout(() => {
+              held = true;
+            }, 500);
+          };
+      
+        const end = (ev: MouseEvent) => {
+            // Prevent mouse event if touch event
+            ev.preventDefault();
+            if (['touchend', 'touchcancel'].includes(ev.type) && timer === undefined) {
+              return;
+            }
+            window.clearTimeout(timer);
+            timer = undefined;
+            if (held) {
+                onHold();
+            } else if (config.double_tap_action !== undefined) {
+              if ((ev.type === 'click' && (ev).detail < 2) || !dblClickTimeout) {
+                dblClickTimeout = window.setTimeout(() => {
+                  dblClickTimeout = undefined;                  
+                  onClick();
+                }, 250);
+              } else {
+                window.clearTimeout(dblClickTimeout);
+                dblClickTimeout = undefined;
+                onDblClick();
+              }
+            } else {
+                onClick();
+            }
+        };
+
+        return html`<div class="entity" style="${entityStyles(config)}"
+        @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}"
+        ">
             <span>${entityName(stateObj, config)}</span>
             <div>${this.renderIcon(stateObj, config)}</div>
             ${config.show_state ? html`<span>${entityValue}</span>` : ''}
@@ -203,7 +244,7 @@ class RoomCard extends LitElement {
             ></ha-relative-time>`;
         }
         if (config.format && TIMESTAMP_FORMATS.includes(config.format)) {
-            const value = config.attribute ? stateObj.attributes[config.attribute] : stateObj.state;
+            const value = getValue(stateObj, config);
             const timestamp = new Date(value);
             if (!(timestamp instanceof Date) || isNaN(timestamp.getTime())) {
                 return value;
