@@ -3,7 +3,7 @@ import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, getValue, isObject, isUnavailable } from './util';
 import { HomeAssistant } from 'custom-card-helpers';
-import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon } from './types/room-card-types';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig } from './types/room-card-types';
 
 export const checkEntity = (config: RoomCardEntity) => {
     if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
@@ -26,7 +26,7 @@ export const entityName = (stateObj: HomeAssistantEntity, config: RoomCardEntity
     );
 };
 
-export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity, hass: HomeAssistant) => {
+export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
     if (!('icon' in config)) return stateObj.attributes.icon || null;
     if (typeof config.icon === 'string') return config.icon || null;
 
@@ -35,7 +35,7 @@ export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
     if(config.icon.conditions) return renderConditionIcons(stateObj, config, hass);
 }
 
-export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: RoomCardEntity, hass: HomeAssistant) => {
+export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
     let entityValue = stateObj.state;
     const iconConditions = (config.icon as RoomCardIcon).conditions as EntityCondition[];
     const matchedConditions = iconConditions.filter(item => {

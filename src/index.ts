@@ -9,7 +9,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.5',
+    '%c ROOM-CARD %c 1.2.6',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -222,7 +222,7 @@ class RoomCard extends LitElement {
             @dblclick="${onDblClick}"
         >
             ${this.entities.length === 0 || this.config.icon
-                ? this.renderIcon(this.stateObj, this.entity, "main-icon")
+                ? this.renderIcon(this.stateObj, this.config, "main-icon")
                 : this.renderValue(this.stateObj, this.entity)}
         </div>`;
     }
@@ -259,7 +259,7 @@ class RoomCard extends LitElement {
         return entityStateDisplay(this._hass, stateObj, config);
     }
 
-    renderIcon(stateObj: HomeAssistantEntity, config: RoomCardEntity, classes? : string) {
+    renderIcon(stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, classes? : string) {
         const customIcon = entityIcon(stateObj, config, this._hass);
 
         return html`<state-badge

@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 126  %}
+- Added `Fixed a bug causing conditional icons not working for main entity`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 125  %}
 - Added `Changed the configuration for hide if (check out https://github.com/marcokreeft87/room-card/wiki/Configuration#hiding)`
 {% endif %}

@@ -29,6 +29,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     cards?: LovelaceCardConfig[];
     entityIds: string[];
     hass?: HomeAssistant;
+    icon?: string | RoomCardIcon;
 }
 
 export interface HomeAssistantEntity {
