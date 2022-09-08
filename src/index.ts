@@ -9,12 +9,13 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.6',
+    '%c ROOM-CARD %c 1.2.7',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
 
 @customElement('room-card')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
     @property() config?: RoomCardConfig;
@@ -202,7 +203,7 @@ class RoomCard extends LitElement {
         return html`<div class="entity" style="${entityStyles(config)}"
         @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}"
         ">
-            <span>${entityName(stateObj, config)}</span>
+            ${config.show_name === undefined || config.show_name ? html`<span>${entityName(stateObj, config)}</span>` : ''}
             <div>${this.renderIcon(stateObj, config)}</div>
             ${config.show_state ? html`<span>${entityValue}</span>` : ''}
         </div>`;

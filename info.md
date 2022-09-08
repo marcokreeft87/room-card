@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+
+{% if version_installed.replace("v", "").replace(".","") | int < 127  %}
+- Added `Added option 'show_name' to show or hide the name of the entity above the title`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 126  %}
 - Added `Fixed a bug causing conditional icons not working for main entity`
 {% endif %}
