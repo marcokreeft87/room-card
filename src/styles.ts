@@ -72,4 +72,7 @@ export const style = css`
     .title {
         min-height: 48px;
     }
+    .width-100 {
+        width: 100%
+    }
 `;

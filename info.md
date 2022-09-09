@@ -2,6 +2,11 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 130  %}
+- Added `Added multiple row support (https://github.com/marcokreeft87/room-card/wiki/Configuration#rows)`
+- Fixed `Name of entity not showing when name is not given`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 127  %}
 - Added `Added option 'show_name' to show or hide the name of the entity above the title`
 {% endif %}

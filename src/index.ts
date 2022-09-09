@@ -6,10 +6,10 @@ import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { checkEntity, entityName, entityStateDisplay, entityStyles, entityIcon } from './entity';
 import { getEntityIds, hasConfigOrEntitiesChanged, hideIf, isObject, getValue } from './util';
 import { style } from './styles';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.2.7',
+    '%c ROOM-CARD %c 1.3.0',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -23,6 +23,7 @@ class RoomCard extends LitElement {
     private entity: RoomCardEntity;
     private info_entities: RoomCardEntity[] = [];
     private entities: RoomCardEntity[] = [];
+    private rows: RoomCardRow[] = [];
     private stateObj: HomeAssistantEntity | undefined;
     private _refCards: LovelaceCard[] = [];
 
@@ -38,6 +39,9 @@ class RoomCard extends LitElement {
         }
         if (config.info_entities) {
             config.info_entities.forEach((entity) => checkEntity(entity));
+        }
+        if(config.rows) {            
+            config.rows.flatMap(row => row.entities).forEach((entity) => checkEntity(entity));
         }
 
         this.config = { ...config, name: config.name === false ? ' ' : config.name, entityIds: getEntityIds(config) };
@@ -64,11 +68,23 @@ class RoomCard extends LitElement {
                     return { ...conf, stateObj: conf.entity ? hass.states[conf.entity] : this.stateObj };
                 }) ?? [];
 
-            this.entities =
+
+            this.entities = 
                 this.config.entities?.map((config) => {
                     const conf = typeof config === 'string' ? { entity: config } : config;
                     return { ...conf, stateObj: conf.entity ? hass.states[conf.entity] : this.stateObj };
                 }) ?? [];
+
+            this.rows = 
+                this.config.rows?.map((row) => {
+                    const rowEntities = row.entities?.map((config) => {                        
+                        const conf = typeof config === 'string' ? { entity: config } : config;
+                        return { ...conf, stateObj: conf.entity ? hass.states[conf.entity] : this.stateObj };
+                    });
+
+                    return { entities: rowEntities };
+                }) ?? [];
+
             this._refCards = this.config.cards?.map((config) => {
                 return this.createCardElement(config, hass);
             });
@@ -132,12 +148,20 @@ class RoomCard extends LitElement {
                         ${this.info_entities.map((entity) => this.renderInfoEntity(entity.stateObj, entity))}
                     </div>
                 </div>
-                <div class="${this.config.column ? 'entities-column' : 'entities-row'}">
-                    ${this.entities.map((entity) => this.renderEntity(entity.stateObj, entity))}
-                </div>
+                ${this.rows !== undefined && this.rows.length > 0 ?                    
+                    this.rows.map((row) => {
+                       return this.renderEntitiesRow(row.entities, "width-100");
+                    })
+                : this.renderEntitiesRow(this.entities)}
                 ${this._refCards}
             </ha-card>
         `;
+    }
+
+    renderEntitiesRow(entities: RoomCardEntity[], classes?: string) {
+        return html`<div class="entities-row ${classes}">
+                ${entities.map((entity) => this.renderEntity(entity.stateObj, entity))}
+            </div>`;
     }
 
     renderTitle(config: RoomCardConfig) {

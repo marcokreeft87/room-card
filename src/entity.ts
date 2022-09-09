@@ -18,7 +18,6 @@ export const checkEntity = (config: RoomCardEntity) => {
 export const computeEntity = (entityId: string) => entityId.substr(entityId.indexOf('.') + 1);
 
 export const entityName = (stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
-    if (config.name === undefined) return null;
     return (
         config.name ||
         (config.entity ? stateObj.attributes.friendly_name || computeEntity(stateObj.entity_id) : null) ||
