@@ -41,9 +41,10 @@ export const hideIf = (stateObj: HomeAssistantEntity, config: RoomCardEntity, ha
 };
 
 export const getEntityIds = (config: RoomCardConfig) =>
-    [config.entity, config.entities, config.info_entities]
+    [config.entity, config.entities, config.info_entities, config.rows !== undefined ? config.rows.flatMap(row => row.entities) : []]
         .concat(config.entities?.map((entity) => (typeof entity === 'string' ? entity : entity.entity)))
         .concat(config.info_entities?.map((entity) => (typeof entity === 'string' ? entity : entity.entity)))
+        .concat(config.rows?.flatMap(row => row.entities).map((entity) => (typeof entity === 'string' ? entity : entity.entity)))
         .filter((entity) => entity);
 
 export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: PropertyValues) => {
