@@ -8,7 +8,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.3.1',
+    '%c ROOM-CARD %c 1.3.2',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );

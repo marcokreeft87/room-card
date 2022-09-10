@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 132  %}
+- Fixed `Bug when show_state is set to false and no icon is set`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 131  %}
 - Added `Cleanup and refactor for performance`
 {% endif %}

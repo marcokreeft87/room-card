@@ -186,6 +186,10 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
 }
 
 export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
+    if(entity.show_state !== undefined && entity.show_state === false) {
+        return null;
+    }
+
     if (entity.toggle === true) {
         return html`<ha-entity-toggle .stateObj="${entity.stateObj}" .hass="${hass}"></ha-entity-toggle>`;
     }
