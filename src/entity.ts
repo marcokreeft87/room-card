@@ -174,6 +174,10 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
 }
 
 export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) => {
+    if(config.show_icon !== undefined && config.show_icon === false) {
+        return null;
+    }
+
     const customIcon = entityIcon(stateObj, config, hass);
 
     return html`<state-badge
@@ -186,10 +190,6 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
 }
 
 export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
-    if(entity.show_state !== undefined && entity.show_state === false) {
-        return null;
-    }
-
     if (entity.toggle === true) {
         return html`<ha-entity-toggle .stateObj="${entity.stateObj}" .hass="${hass}"></ha-entity-toggle>`;
     }
@@ -236,7 +236,7 @@ export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig,
         @dblclick="${onDblClick}">
         ${config.entities?.length === 0 || config.icon
             ? renderIcon(entity.stateObj, config, hass, "main-icon")
-            : renderValue(entity, hass)}
+            : entity.show_state !== undefined && entity.show_state === false ? '' : renderValue(entity, hass)}
     </div>`;
 }    
 
