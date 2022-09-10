@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 134  %}
+- Fixed `Main entity no longer required`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 133  %}
 - Fixed `Fix bug show_icon is ignored`
 {% endif %}
