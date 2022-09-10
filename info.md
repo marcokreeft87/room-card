@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 133  %}
+- Fixed `Fix bug show_icon is ignored`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 132  %}
 - Fixed `Bug when show_state is set to false and no icon is set`
 {% endif %}
