@@ -1,4 +1,5 @@
 import { ActionConfig, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
+import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface RoomCardEntity {
     name?: string;
@@ -17,14 +18,18 @@ export interface RoomCardEntity {
     stateObj: HomeAssistantEntity | undefined;
     attribute?: string;
     show_state?: boolean;
-    styles?: any;
+    styles?: EntityStyles;
     icon?: string | RoomCardIcon;
+}
+
+export interface EntityStyles {
+    [key: string]: string;
 }
 
 export interface RoomCardConfig extends LovelaceCardConfig {    
     info_entities: RoomCardEntity[];
     entities: RoomCardEntity[];
-    entity: any;
+    entity: string;
     hide_title?: boolean;
     cards?: LovelaceCardConfig[];
     entityIds: string[];
@@ -37,10 +42,9 @@ export interface RoomCardRow {
     entities: RoomCardEntity[];
 }
 
-export interface HomeAssistantEntity {
+export interface HomeAssistantEntity extends HassEntity {
     entity_id: string;
-    attributes: any;
-    state: any;
+    state: string;
 }
 
 export interface RoomCardIcon {
@@ -55,7 +59,16 @@ export interface HideIfConfig {
 
 export interface EntityCondition {
     condition: string;
-    value: any;
+    value: string | number;
     attribute: string;
     entity?: string;
+    icon?: string;
+    styles?: EntityStyles;
+}
+
+export interface FormattingOptions {
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+    style?: string;
+    currency?: string;
 }

@@ -1,7 +1,7 @@
 // Source: https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
 
 import { FrontendLocaleData } from 'custom-card-helpers';
-import { HomeAssistantEntity } from '../types/room-card-types';
+import { FormattingOptions, HomeAssistantEntity } from '../types/room-card-types';
 import { NumberFormat } from './constants';
 
 export const round = (value: number, precision = 2) => Math.round(value * 10 ** precision) / 10 ** precision;
@@ -24,7 +24,7 @@ export const numberFormatToLocale = (localeOptions: FrontendLocaleData) => {
     }
 };
 
-export const formatNumber = (num: number, localeOptions: FrontendLocaleData, options?: any) => {
+export const formatNumber = (num: string | number, localeOptions: FrontendLocaleData, options?: FormattingOptions) => {
     const locale = localeOptions ? numberFormatToLocale(localeOptions) : undefined;
 
     // Polyfill for Number.isNaN, which is more reliable than the global isNaN()
@@ -52,7 +52,7 @@ export const formatNumber = (num: number, localeOptions: FrontendLocaleData, opt
     }`;
 };
 
-const getDefaultFormatOptions = (num: number, options: any) => {
+const getDefaultFormatOptions = (num: string | number, options: FormattingOptions) => {
     const defaultOptions = {
         maximumFractionDigits: 2,
         ...options,

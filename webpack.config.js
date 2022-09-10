@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const compressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -26,6 +27,9 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
+        }),
+        new compressionPlugin({
+            test: /\.js(\?.*)?$/i,
         }),
     ],
     resolve: {

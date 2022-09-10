@@ -1,26 +1,28 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, getValue, isObject, isUnavailable } from './util';
-import { HomeAssistant } from 'custom-card-helpers';
-import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig } from './types/room-card-types';
+import { checkConditionalValue, getValue, hideIf, isObject, isUnavailable } from './util';
+import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
+import { html, LitElement } from 'lit';
+import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 
-export const checkEntity = (config: RoomCardEntity) => {
-    if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
+export const checkConfig = (config: RoomCardConfig) => {
+    if (!config || (!config.entities && !config.entity && !config.info_entities && !config.rows)) {
+        throw new Error('Please define entities.');
+    } else if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
         throw new Error(`Entity object requires at least one 'entity', 'attribute' or 'icon'.`);
-    } else if (typeof config === 'string' && config === '') {
+    } else if (config.entity === '') {
         throw new Error('Entity ID string must not be blank.');
-    } else if (typeof config !== 'string' && !isObject(config)) {
-        throw new Error('Entity config must be a valid entity ID string or entity object.');
     }
 };
 
 export const computeEntity = (entityId: string) => entityId.substr(entityId.indexOf('.') + 1);
 
-export const entityName = (stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
+export const entityName = (entity: RoomCardEntity) => {
     return (
-        config.name ||
-        (config.entity ? stateObj.attributes.friendly_name || computeEntity(stateObj.entity_id) : null) ||
+        entity.name ||
+        (entity.entity ? entity.stateObj.attributes.friendly_name || computeEntity(entity.stateObj.entity_id) : null) ||
         null
     );
 };
@@ -61,54 +63,200 @@ export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomC
     }
 }
 
-export const entityStateDisplay = (hass: HomeAssistant, stateObj: HomeAssistantEntity, config: RoomCardEntity) => {
-    if (isUnavailable(stateObj)) {
-        return hass.localize(`state.default.${stateObj.state}`);
+export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) => {
+    if (isUnavailable(entity.stateObj)) {
+        return hass.localize(`state.default.${entity.stateObj.state}`);
     }
 
-    let value = getValue(stateObj, config);
-    let unit =
-        config.attribute !== undefined
-            ? config.unit
-            : config.unit || stateObj.attributes.unit_of_measurement;
+    let value = getValue(entity);
+    let unit = entity.attribute !== undefined
+            ? entity.unit
+            : entity.unit || entity.stateObj.attributes.unit_of_measurement;
 
-    if (config.format) {
+    if (entity.format) {
         if (isNaN(parseFloat(value)) || !isFinite(value)) {
             // do nothing if not a number
-        } else if (config.format === 'brightness') {
+        } else if (entity.format === 'brightness') {
             value = Math.round((value / 255) * 100);
             unit = '%';
-        } else if (config.format.startsWith('duration')) {
-            value = secondsToDuration(config.format === 'duration-m' ? value / 1000 : value);
+        } else if (entity.format.startsWith('duration')) {
+            value = secondsToDuration(entity.format === 'duration-m' ? value / 1000 : value);
             unit = undefined;
-        } else if (config.format.startsWith('precision')) {
-            const precision = parseInt(config.format.slice(-1), 10);
+        } else if (entity.format.startsWith('precision')) {
+            const precision = parseInt(entity.format.slice(-1), 10);
             value = formatNumber(parseFloat(value), hass.locale, {
                 minimumFractionDigits: precision,
                 maximumFractionDigits: precision,
             });
-        } else if (config.format === 'kilo') {
+        } else if (entity.format === 'kilo') {
             value = formatNumber(value / 1000, hass.locale, { maximumFractionDigits: 2 });
-        } else if (config.format === 'invert') {
+        } else if (entity.format === 'invert') {
             value = formatNumber(value - value * 2, hass.locale);
-        } else if (config.format === 'position') {
+        } else if (entity.format === 'position') {
             value = formatNumber(100 - value, hass.locale);
         }
         return `${value}${unit ? ` ${unit}` : ''}`;
     }
 
-    if (config.attribute) {
+    if (entity.attribute) {
         return `${isNaN(value) ? value : formatNumber(value, hass.locale)}${unit ? ` ${unit}` : ''}`;
     }
 
-    const modifiedStateObj = { ...stateObj, attributes: { ...stateObj.attributes, unit_of_measurement: unit } };
+    const modifiedStateObj = { ...entity.stateObj, attributes: { ...entity.stateObj.attributes, unit_of_measurement: unit } };
 
     return computeStateDisplay(hass.localize, modifiedStateObj, hass.locale);
 };
 
-export const entityStyles = (config: RoomCardEntity) => 
-    isObject(config?.styles)
-        ? Object.keys(config.styles)
-            .map((key) => `${key}: ${config.styles[key]};`)
+export const entityStyles = (styles: EntityStyles) => 
+    isObject(styles)
+        ? Object.keys(styles)
+            .map((key) => `${key}: ${styles[key]};`)
             .join('') 
         : '';
+
+export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) => {
+    return html`<div class="entities-row ${classes}">
+            ${entities.map((entity) => renderEntity(entity, hass, element))}
+        </div>`;
+}
+
+export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
+    if (entity === undefined || entity.stateObj == undefined || hideIf(entity, hass)) {
+        return null;
+    }
+    
+    const entityValue = getValue(entity);
+    const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
+    const onDblClick = dblClickHandler(entity.stateObj.entity_id, entity.double_tap_action, hass, element);        
+    const onHold = holdHandler(entity.stateObj.entity_id, entity.hold_action, hass, element);
+    let held: boolean;
+    let timer: number;
+    let dblClickTimeout: number;
+
+    const start = () => {
+        held = false;
+        
+        timer = window.setTimeout(() => { held = true; }, 500);
+    };
+  
+    const end = (ev: MouseEvent) => {
+        // Prevent mouse event if touch event
+        ev.preventDefault();
+        if (['touchend', 'touchcancel'].includes(ev.type) && timer === undefined) {
+          return;
+        }
+        window.clearTimeout(timer);
+        timer = undefined;
+        if (held) {
+            onHold();
+        } else if (entity.double_tap_action !== undefined) {
+          if ((ev.type === 'click' && (ev).detail < 2) || !dblClickTimeout) {
+            dblClickTimeout = window.setTimeout(() => {
+              dblClickTimeout = undefined;                  
+              onClick();
+            }, 250);
+          } else {
+            window.clearTimeout(dblClickTimeout);
+            dblClickTimeout = undefined;
+            onDblClick();
+          }
+        } else {
+            onClick();
+        }
+    };
+
+    return html`<div class="entity" style="${entityStyles(entity.styles)}"
+            @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}">
+            ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity)}</span>` : ''}
+            <div>${renderIcon(entity.stateObj, entity, hass)}</div>
+            ${entity.show_state ? html`<span>${entityValue}</span>` : ''}
+        </div>`;
+}
+
+export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) => {
+    const customIcon = entityIcon(stateObj, config, hass);
+
+    return html`<state-badge
+        class="icon-small ${classes}"
+        .stateObj="${stateObj}"
+        .overrideIcon="${isObject(customIcon) ? (customIcon as EntityCondition).icon : customIcon as string}"
+        .stateColor="${config.state_color}"
+        style="${entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null)}"
+    ></state-badge>`;
+}
+
+export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
+    if (entity.toggle === true) {
+        return html`<ha-entity-toggle .stateObj="${entity.stateObj}" .hass="${hass}"></ha-entity-toggle>`;
+    }
+
+    if (entity.show_icon === true) {
+        return renderIcon(entity.stateObj, entity, hass);
+    }
+
+    if (entity.attribute && [LAST_CHANGED, LAST_UPDATED].includes(entity.attribute)) {
+        return html`<ha-relative-time
+            .hass=${hass}
+            .datetime=${entity.stateObj.attributes[entity.attribute?.replace('-', '_')]}
+            capitalize
+        ></ha-relative-time>`;
+    }
+    if (entity.format && TIMESTAMP_FORMATS.includes(entity.format)) {
+        const value = getValue(entity);
+        const timestamp = new Date(value);
+        if (!(timestamp instanceof Date) || isNaN(timestamp.getTime())) {
+            return value;
+        }
+        return html`<hui-timestamp-display
+            .hass=${hass}
+            .ts=${timestamp}
+            .format=${entity.format}
+            capitalize
+        ></hui-timestamp-display>`;
+    }
+    
+    return entityStateDisplay(hass, entity);
+}
+
+export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) => {
+    if (!entity) {
+        return null;
+    }
+
+    const onClick = clickHandler(entity.stateObj.entity_id, config.tap_action, hass, element);
+    const onDblClick = dblClickHandler(entity.stateObj.entity_id, config.double_tap_action, hass, element);
+    return html`<div
+        class="main-state entity"
+        style="${entityStyles(entity.styles)}"
+        @click="${onClick}"
+        @dblclick="${onDblClick}">
+        ${config.entities?.length === 0 || config.icon
+            ? renderIcon(entity.stateObj, config, hass, "main-icon")
+            : renderValue(entity, hass)}
+    </div>`;
+}    
+
+export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) => {
+    return config.hide_title === true ? '' : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
+}
+
+export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
+    if (entity === undefined || !entity.stateObj || hideIf(entity, hass)) {
+        return null;
+    }
+
+    const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
+    return html`<div class="state entity ${entity.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(entity.styles)}" @click="${onClick}">${renderValue(entity, hass)}</div>`;
+}
+
+export const clickHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
+    return () => handleClick(element, hass, { entity, tap_action: actionConfig }, false, false);
+}
+
+export const dblClickHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
+    return () => handleClick(element, hass, { entity, double_tap_action: actionConfig }, false, true);
+}
+
+export const holdHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
+    return () => handleClick(element, hass, { entity, hold_action: actionConfig }, true, false);
+}

@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 131  %}
+- Added `Cleanup and refactor for performance`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 130  %}
 - Added `Added multiple row support (https://github.com/marcokreeft87/room-card/wiki/Configuration#rows)`
 - Fixed `Name of entity not showing when name is not given`
