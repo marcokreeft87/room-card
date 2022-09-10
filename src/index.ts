@@ -8,7 +8,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.3.3',
+    '%c ROOM-CARD %c 1.3.4',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -69,7 +69,7 @@ class RoomCard extends LitElement {
         if (!this._hass || !this.config) return html``;
 
         return html`
-            <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
+            <ha-card elevation="2" style="${entityStyles(this.entity?.styles)}">
                 <div class="card-header">
                     ${renderTitle(this.entity, this.config, this._hass, this)}
                     <div class="entities-info-row">
