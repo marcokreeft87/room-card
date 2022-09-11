@@ -20,6 +20,8 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
+      - run: npm install
+      
       - name: Run Tests
         run: npm run workflow
         
