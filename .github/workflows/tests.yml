@@ -19,7 +19,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
-      - run: npm install
+      #- run: npm install
+      - run: yarn install
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
         env:
