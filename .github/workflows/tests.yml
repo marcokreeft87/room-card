@@ -22,7 +22,7 @@ jobs:
       - run: npm install
       #- run: yarn install
       - name: Run Tests
-        run: npm jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json
+        run: npm run workflow
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
         env:
