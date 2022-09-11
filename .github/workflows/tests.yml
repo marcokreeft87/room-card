@@ -15,17 +15,17 @@ on:
 jobs:
   hacs:
     runs-on: "ubuntu-latest"
-    name: HACS
+    name: Test and validate
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
-      
+      - run: npm install
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "npm run test"
+          test-command: "npm run workflow"
 
       - name: HACS validation
         uses: hacs/action@main

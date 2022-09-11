@@ -43,6 +43,7 @@
     "dev": "webpack -c webpack.config.js",
     "build": "yarn lint && webpack -c webpack.config.js",
     "test" : "jest",
-    "coverage" : "jest --coverage"
+    "coverage" : "jest --coverage",
+    "workflow": "jest --coverage --json --outputFile=jest.results.json"
   }
 }
