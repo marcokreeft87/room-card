@@ -15,7 +15,7 @@ export interface RoomCardEntity {
     unit?: string;
     hide_unavailable?: boolean;
     hide_if?: string | HideIfConfig;
-    stateObj: HomeAssistantEntity | undefined;
+    stateObj: HomeAssistantEntity;
     attribute?: string;
     show_state?: boolean;
     styles?: EntityStyles;

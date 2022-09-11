@@ -3,13 +3,12 @@ import { PropertyValues } from 'lit';
 import { UNAVAILABLE_STATES } from './lib/constants';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig } from './types/room-card-types';
 
-export const isObject = (obj: unknown) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
+export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
-export const isUnavailable = (stateObj: HomeAssistantEntity) => !stateObj || UNAVAILABLE_STATES.includes(stateObj.state);
+export const isUnavailable = (stateObj: HomeAssistantEntity) : boolean => !stateObj || UNAVAILABLE_STATES.includes(stateObj.state);
 
-export const hideUnavailable = (entity: RoomCardEntity) =>
-    entity.hide_unavailable &&
-    (isUnavailable(entity.stateObj) || (entity.attribute && entity.stateObj.attributes[entity.attribute] === undefined));
+export const hideUnavailable = (entity: RoomCardEntity) : boolean =>
+    entity.hide_unavailable && isUnavailable(entity.stateObj);
 
 export const getValue = (entity: RoomCardEntity) => {
     return entity.attribute ? entity.stateObj.attributes[entity.attribute] : entity.stateObj.state;
