@@ -5,7 +5,7 @@
 [![GH-code-size](https://img.shields.io/github/languages/code-size/marcokreeft87/room-card.svg?color=red&style=flat-square)](https://github.com/marcokreeft87/room-card)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=flat-square)](https://github.com/hacs/integration)
 
-Show multiple entity states, attributes and icons in a single card in Home Assistant's Lovelace UI
+Show multiple entity states, attributes and icons in a single card in Home Assistant's UI
 
 Move the documentation to the [wiki](https://github.com/marcokreeft87/room-card/wiki)
 
