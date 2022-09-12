@@ -1,0 +1,26 @@
+import { LovelaceCardConfig } from 'custom-card-helpers';
+import { createMock } from 'ts-auto-mock';
+import { createCardElement } from '../../src/util';
+import { StubHassEntity, StubHomeAssistant, StubRoomCardEntity } from '../testdata';
+
+describe('Testing util file function createCardElement', () => {
+    test('Passing LovelaceCardConfig with show_states and hass should return undefined', () => {
+        const cardConfig = createMock<LovelaceCardConfig>();
+        cardConfig.show_states = 'on';
+        cardConfig.entity = 'sensor.test_entity';
+
+        StubHassEntity.entity_id = 'sensor.test_entity';
+        StubHassEntity.state = 'off';
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity
+        };
+
+        expect(createCardElement(cardConfig, StubHomeAssistant)).toBe(undefined);
+    }),
+    test('Passing LovelaceCardConfig with show_states and hass should return null', () => {
+        const cardConfig = createMock<LovelaceCardConfig>();
+        cardConfig.type = "entities"
+        expect(createCardElement(cardConfig, StubHomeAssistant)).toBe(undefined);
+    })
+})
+

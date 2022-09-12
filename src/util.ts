@@ -31,6 +31,10 @@ export const hideIf = (entity: RoomCardEntity, hass: HomeAssistant) => {
                 const stateEntity = hass.states[item.entity];
                 entityValue = item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state;
             }
+
+            if(item.attribute && !item.entity) {                
+                entityValue = item.attribute ? entity.stateObj.attributes[item.attribute] : entity.stateObj.state;
+            }
     
             return checkConditionalValue(item, entityValue);
         });
@@ -97,7 +101,7 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
             element.setConfig(config);
         } catch (err) {
             console.error(tag, err);
-            return createError(err.message, config);
+           // return createError(err.message, config);
         }
         return element;
     };

@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "custom-card-helpers": "^1.8.0",
+    "jest-environment-jsdom": "^29.0.3",
     "jest-ts-auto-mock": "^2.1.0",
     "lit": "^2.0.2",
     "memoize-one": "^6.0.0",

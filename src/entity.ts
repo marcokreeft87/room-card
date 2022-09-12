@@ -39,7 +39,11 @@ export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: Room
 
         if(item.entity) {
             const entity = hass.states[item.entity];
-            entityValue = config.attribute ? entity.attributes[item.attribute] : entity.state;
+            entityValue = item.attribute ? entity.attributes[item.attribute] : entity.state;
+        }        
+
+        if(item.attribute && !item.entity) {                
+            entityValue = item.attribute ? stateObj.attributes[item.attribute] : stateObj.state;
         }
 
         return checkConditionalValue(item, entityValue);
