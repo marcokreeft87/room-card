@@ -20,7 +20,7 @@ describe('Testing util file function createCardElement', () => {
     test('Passing LovelaceCardConfig with show_states and hass should return null', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = "entities"
-        expect(createCardElement(cardConfig, StubHomeAssistant)).toBe(undefined);
+        expect(createCardElement(cardConfig, StubHomeAssistant)).toBe('<hui-entities-card style="box-shadow: none; border-radius: 0;" />');
     })
 })
 

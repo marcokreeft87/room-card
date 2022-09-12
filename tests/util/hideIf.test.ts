@@ -1,3 +1,5 @@
+import { createMock } from 'ts-auto-mock';
+import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE } from '../../src/lib/constants';
 import { HideIfConfig } from '../../src/types/room-card-types';
 import { hideIf } from '../../src/util';
@@ -58,6 +60,35 @@ describe('Testing util file function hideIf', () => {
                 condition: 'equals',
                 value: 'hide',
                 entity: 'sensor.test_entity'
+            }]
+        } as HideIfConfig;
+        expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
+    }),
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
+        StubRoomCardEntity.hide_unavailable = false;
+        StubRoomCardEntity.entity = 'sensor.test_entity'
+
+        StubHassEntity.entity_id = 'sensor.test_entity';
+        StubHassEntity.state = 'hide';
+
+        const otherEntity = createMock<HassEntity>();        
+        otherEntity.entity_id = 'sensor.test_entity2';
+        otherEntity.state = 'hide';
+        otherEntity.attributes = {
+            'show_state' : 'hide'
+        }
+
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity,
+            'sensor.test_entity2': otherEntity,
+        };
+
+        StubRoomCardEntity.hide_if = {
+            conditions: [{
+                condition: 'equals',
+                value: 'hide',
+                entity: 'sensor.test_entity2',
+                attribute: 'show_state'
             }]
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
