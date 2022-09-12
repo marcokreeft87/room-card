@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 135  %}
+- Fixed `Bug not using the correct attribute when using conditions`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 134  %}
 - Fixed `Main entity no longer required`
 {% endif %}
