@@ -27,7 +27,7 @@ export const hideIf = (entity: RoomCardEntity, hass: HomeAssistant) => {
         let entityValue = entity.stateObj.state;
         const matchedConditions = (entity.hide_if as HideIfConfig).conditions?.filter(item => {
     
-            if(item.entity) {
+            if(item.entity) {                
                 const stateEntity = hass.states[item.entity];
                 entityValue = item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state;
             }
@@ -35,7 +35,7 @@ export const hideIf = (entity: RoomCardEntity, hass: HomeAssistant) => {
             return checkConditionalValue(item, entityValue);
         });
         
-        return matchedConditions.length > 0;
+        return matchedConditions?.length > 0;        
     }
 };
 
@@ -58,7 +58,7 @@ export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: P
     return false;
 };
 
-export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {
+export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {    
     if(item.condition == 'equals' && checkValue == item.value) {
         return true;
     }
