@@ -4,17 +4,17 @@ import { hideIf } from '../../src/util';
 import { StubHassEntity, StubHomeAssistant, StubRoomCardEntity } from '../testdata';
 
 describe('Testing util file function hideIf', () => {
-    test('hideIf: Passing RoomCardEntity with state unavailable and HomeAssistant should return true', () => {
+    test('Passing RoomCardEntity with state unavailable and HomeAssistant should return true', () => {
         StubRoomCardEntity.hide_unavailable = true;
         StubRoomCardEntity.stateObj.state = UNAVAILABLE;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if undefined and HomeAssistant should return false', () => {
+    test('Passing RoomCardEntity with hide_if undefined and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.hide_if = undefined;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(false);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if and HomeAssistant should return true', () => {
+    test('Passing RoomCardEntity with hide_if and HomeAssistant should return true', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.stateObj.state = 'hide';
         StubRoomCardEntity.stateObj.attributes['hide_attribute'] = 'hide';
@@ -28,7 +28,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if and HomeAssistant should return false', () => {
+    test('Passing RoomCardEntity with hide_if and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.stateObj.state = 'hide';
         StubRoomCardEntity.stateObj.attributes['hide_attribute'] = 'hide';
@@ -42,7 +42,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(false);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.entity = 'sensor.test_entity'
 
@@ -62,7 +62,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if entity and HomeAssistant should return false', () => {
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.entity = 'sensor.test_entity'
 
@@ -82,7 +82,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(false);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if entity attribute and HomeAssistant should return true', () => {
+    test('Passing RoomCardEntity with hide_if entity attribute and HomeAssistant should return true', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.entity = 'sensor.test_entity'
 
@@ -106,7 +106,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if entity attribute and HomeAssistant should return false', () => {
+    test('Passing RoomCardEntity with hide_if entity attribute and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.entity = 'sensor.test_entity'
 
@@ -130,7 +130,7 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(false);
     }),
-    test('hideIf: Passing RoomCardEntity with hide_if no conditions and HomeAssistant should return false', () => {
+    test('Passing RoomCardEntity with hide_if no conditions and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.stateObj.state = 'hide';
         StubRoomCardEntity.stateObj.attributes['hide_attribute'] = 'hide';
@@ -141,4 +141,3 @@ describe('Testing util file function hideIf', () => {
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(false);
     })
 })
-

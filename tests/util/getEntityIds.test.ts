@@ -3,7 +3,7 @@ import { getEntityIds } from '../../src/util';
 import { StubHomeAssistantEntity } from '../testdata';
 
 describe('Testing util file function getEntityIds', () => {
-    test('getEntityIds: Passing only entity should return entityId', () => {
+    test('Passing only entity should return entityId', () => {
         const config: RoomCardConfig = {
             info_entities: [],
             entities: [],
@@ -13,7 +13,7 @@ describe('Testing util file function getEntityIds', () => {
         } 
         expect(getEntityIds(config)).toMatchObject(['sensor.entity']);
     }),
-    test('getEntityIds: Passing nothing should return entityId', () => {
+    test('Passing nothing should return entityId', () => {
         const config: RoomCardConfig = {
             info_entities: [],
             entities: [],
@@ -23,7 +23,7 @@ describe('Testing util file function getEntityIds', () => {
         } 
         expect(getEntityIds(config)).toMatchObject([]);
     }),
-    test('getEntityIds: Passing entity and entities should return entityId and entities', () => {
+    test('Passing entity and entities should return entityId and entities', () => {
         const config: RoomCardConfig = {
             info_entities: [],
             entities: [{
@@ -41,7 +41,7 @@ describe('Testing util file function getEntityIds', () => {
             'sensor.entity', 'sensor.entity2', 'sensor.entity3'
         ]);
     }),
-    test('getEntityIds: Passing entity and entities + info_entities + rows undefined should return entityId', () => {
+    test('Passing entity and entities + info_entities + rows undefined should return entityId', () => {
         const config: RoomCardConfig = {
             info_entities: undefined,
             entities: undefined,
@@ -52,7 +52,7 @@ describe('Testing util file function getEntityIds', () => {
         } 
         expect(getEntityIds(config)).toMatchObject(['sensor.entity']);
     }),
-    test('getEntityIds: Passing entity + entities + info_entities + rows undefined should return entityId', () => {
+    test('Passing entity + entities + info_entities + rows undefined should return entityId', () => {
         const config: RoomCardConfig = {
             info_entities: undefined,
             entities: undefined,
@@ -63,7 +63,7 @@ describe('Testing util file function getEntityIds', () => {
         } 
         expect(getEntityIds(config)).toMatchObject([]);
     }),
-    test('getEntityIds: Passing entity, entities and info_entities should return entityId, entities and info_entities', () => {
+    test('Passing entity, entities and info_entities should return entityId, entities and info_entities', () => {
         const config: RoomCardConfig = {
             info_entities: [{
                 entity: 'sensor.entity4',
@@ -87,7 +87,7 @@ describe('Testing util file function getEntityIds', () => {
             'sensor.entity', 'sensor.entity2', 'sensor.entity3', 'sensor.entity4', 'sensor.entity5'
         ]);
     }),
-    test('getEntityIds: Passing rows should return row entites', () => {
+    test('Passing rows should return row entites', () => {
         const config: RoomCardConfig = {
             info_entities: undefined,
             entities: undefined,
