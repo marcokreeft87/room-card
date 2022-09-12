@@ -75,7 +75,7 @@ export const checkConditionalValue = (item: EntityCondition, checkValue: unknown
 
 export const mapStateObject = (entity: RoomCardEntity, hass: HomeAssistant) : RoomCardEntity => {        
     const conf = typeof entity === 'string' ? { entity: entity } : entity;
-    return { ...conf, stateObj: conf.entity ? hass.states[conf.entity] : entity.stateObj };
+    return { ...entity, stateObj: conf.entity ? hass.states[conf.entity] : entity.stateObj };
 }
 
 export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssistant) => {
