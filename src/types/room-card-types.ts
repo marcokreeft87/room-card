@@ -27,9 +27,9 @@ export interface EntityStyles {
 }
 
 export interface RoomCardConfig extends LovelaceCardConfig {    
-    info_entities: RoomCardEntity[];
-    entities: RoomCardEntity[];
-    entity: string;
+    info_entities?: RoomCardEntity[];
+    entities?: RoomCardEntity[];
+    entity?: string;
     hide_title?: boolean;
     cards?: LovelaceCardConfig[];
     entityIds: string[];

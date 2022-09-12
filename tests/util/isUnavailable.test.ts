@@ -15,9 +15,4 @@ describe('Testing util file function isObject', () => {
         StubHomeAssistantEntity.state = 'on';
         expect(isUnavailable(StubHomeAssistantEntity)).toBe(false);
     })
-})
-
-
-
-
-    
+})  
