@@ -62,6 +62,76 @@ describe('Testing util file function hideIf', () => {
         } as HideIfConfig;
         expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
     }),
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
+        StubRoomCardEntity.hide_unavailable = false;
+        StubRoomCardEntity.entity = 'sensor.test_entity'
+
+        StubHassEntity.entity_id = 'sensor.test_entity';
+        StubHassEntity.state = '1';
+
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity
+        };
+
+        StubRoomCardEntity.hide_if = {
+            conditions: [{
+                condition: 'above',
+                value: '0',
+                entity: 'sensor.test_entity'
+            },
+            {
+                condition: 'below',
+                value: '0',
+                entity: 'sensor.test_entity'
+            }]
+        } as HideIfConfig;
+        expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
+    }),
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
+        StubRoomCardEntity.hide_unavailable = false;
+        StubRoomCardEntity.entity = 'sensor.test_entity'
+
+        StubHassEntity.entity_id = 'sensor.test_entity';
+        StubHassEntity.state = '1';
+
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity
+        };
+
+        StubRoomCardEntity.hide_if = {
+            conditions: [{
+                condition: 'above',
+                value: '1',
+                entity: 'sensor.test_entity'
+            },
+            {
+                condition: 'below',
+                value: '2',
+                entity: 'sensor.test_entity'
+            }]
+        } as HideIfConfig;
+        expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
+    }),
+    test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return true', () => {
+        StubRoomCardEntity.hide_unavailable = false;
+        StubRoomCardEntity.entity = 'sensor.test_entity'
+
+        StubHassEntity.entity_id = 'sensor.test_entity';
+        StubHassEntity.state = 'hide';
+
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity
+        };
+
+        StubRoomCardEntity.hide_if = {
+            conditions: [{
+                condition: 'not_equals',
+                value: 'show',
+                entity: 'sensor.test_entity'
+            }]
+        } as HideIfConfig;
+        expect(hideIf(StubRoomCardEntity, StubHomeAssistant)).toBe(true);
+    }),
     test('Passing RoomCardEntity with hide_if entity and HomeAssistant should return false', () => {
         StubRoomCardEntity.hide_unavailable = false;
         StubRoomCardEntity.entity = 'sensor.test_entity'
