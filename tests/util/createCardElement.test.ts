@@ -21,37 +21,36 @@ describe('Testing util file function createCardElement', () => {
 
         expect(createCardElement(cardConfig, StubHomeAssistant)).toBe(undefined);
     })
-    test('Passing LovelaceCardConfig with show_states and hass should return null', () => {
+    test('Passing LovelaceCardConfig with show_states and hass should return entities card', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'entities';
 
-        const returnElement = document.createElement('hui-entities-card') as LovelaceCard;
-        returnElement.setConfig = () => {};
-        spy.mockReturnValue(returnElement);
+        let htmlElement = document.createElement('hui-entities-card') as LovelaceCard;
+        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
+        spy.mockReturnValue(htmlElement);
 
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
         expect(result?.outerHTML).toBe('<hui-entities-card style="box-shadow: none; border-radius: 0;"></hui-entities-card>');
     }),
-    test('Passing LovelaceCardConfig with show_states and hass should return null', () => {
+    test('Passing LovelaceCardConfig with show_states and hass should return divider card', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'divider';
 
-        const returnElement = document.createElement('hui-divider-row') as LovelaceCard;
-        returnElement.setConfig = () => {};
-        spy.mockReturnValue(returnElement);
+        let htmlElement = document.createElement('hui-divider-row') as LovelaceCard;
+        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
         expect(result?.outerHTML).toBe('<hui-divider-row style="box-shadow: none; border-radius: 0;"></hui-divider-row>');
     }),
-    test('Passing LovelaceCardConfig with show_states and hass should return null', () => {
+    test('Passing LovelaceCardConfig with show_states and hass should return room-card card', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'custom:room-card';
 
-        // const returnElement = document.createElement('room-card') as LovelaceCard;
-        // returnElement.setConfig = () => {};
-        // spy.mockReturnValue(returnElement);
+        let htmlElement = document.createElement('room-card') as LovelaceCard;
+        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
+        spy.mockReturnValue(htmlElement);
 
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
