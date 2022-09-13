@@ -20,6 +20,15 @@ describe('Testing util file function mapStateObject', () => {
         };
 
         expect(mapStateObject(StubRoomCardEntity, StubHomeAssistant)).toHaveProperty("stateObj", StubHassEntity);
+    }),
+    test('Passing RoomCardEntity should return entity with stateObj', () => {
+        StubHassEntity.entity_id = 'sensor.test_entity';
+
+        StubHomeAssistant.states = { 
+            'sensor.test_entity': StubHassEntity
+        };
+
+        expect(mapStateObject('sensor.test_entity', StubHomeAssistant)).toHaveProperty("stateObj", StubHassEntity);
     })
 })
 

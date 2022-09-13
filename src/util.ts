@@ -77,9 +77,9 @@ export const checkConditionalValue = (item: EntityCondition, checkValue: unknown
     }
 }
 
-export const mapStateObject = (entity: RoomCardEntity, hass: HomeAssistant) : RoomCardEntity => {        
+export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssistant) : RoomCardEntity => {        
     const conf = typeof entity === 'string' ? { entity: entity } : entity;
-    return { ...entity, stateObj: conf.entity ? hass.states[conf.entity] : entity.stateObj };
+    return { ...conf, stateObj: hass.states[conf.entity] };
 }
 
 export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssistant) => {
@@ -97,12 +97,11 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
 
     const createThing = (tag: string, config: LovelaceCardConfig) : LovelaceCard => {
         const element = document.createElement(tag) as LovelaceCard;
-        console.log(element);
         try {
             element.setConfig(config);
         } catch (err) {
             console.error(tag, err);
-            //return createError(err.message, config);
+            return createError(err.message, config);
         }
         return element;
     };
