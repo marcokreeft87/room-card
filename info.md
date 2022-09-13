@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 137  %}
+- Fixed `Bug icon state_on and state_off not working for input_boolean and switch`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 135  %}
 - Fixed `Bug not using the correct attribute when using conditions`
 {% endif %}

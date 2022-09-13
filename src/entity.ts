@@ -59,6 +59,7 @@ export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomC
         case 'light':
         case 'switch':
         case 'binary_sensor':
+        case 'input_boolean':
             return stateObj.state === 'on' ? icon.state_on : icon.state_off;
     }
 }
