@@ -97,11 +97,12 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
 
     const createThing = (tag: string, config: LovelaceCardConfig) : LovelaceCard => {
         const element = document.createElement(tag) as LovelaceCard;
+        console.log(element);
         try {
             element.setConfig(config);
         } catch (err) {
             console.error(tag, err);
-           // return createError(err.message, config);
+            //return createError(err.message, config);
         }
         return element;
     };
