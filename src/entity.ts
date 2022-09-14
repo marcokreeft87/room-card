@@ -8,7 +8,7 @@ import { html, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 
 export const checkConfig = (config: RoomCardConfig) => {
-    if (!config || (!config.entities && !config.entity && !config.info_entities && !config.rows)) {
+    if (!config.entities && !config.entity && !config.info_entities && !config.rows) {
         throw new Error('Please define entities.');
     }
 };
