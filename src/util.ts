@@ -33,7 +33,7 @@ export const hideIf = (entity: RoomCardEntity, hass: HomeAssistant) => {
             }
 
             if(item.attribute && !item.entity) {                
-                entityValue = item.attribute ? entity.stateObj.attributes[item.attribute] : entity.stateObj.state;
+                entityValue = entity.stateObj.attributes[item.attribute];
             }
     
             return checkConditionalValue(item, entityValue);

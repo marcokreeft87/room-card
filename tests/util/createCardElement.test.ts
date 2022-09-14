@@ -27,8 +27,8 @@ describe('Testing util file function createCardElement', () => {
 
         let htmlElement = document.createElement('hui-entities-card') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
-        spy.mockReturnValue(htmlElement);
 
+        spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
         expect(result?.outerHTML).toBe('<hui-entities-card style="box-shadow: none; border-radius: 0;"></hui-entities-card>');
@@ -40,6 +40,7 @@ describe('Testing util file function createCardElement', () => {
         let htmlElement = document.createElement('hui-divider-row') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
+        spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
         expect(result?.outerHTML).toBe('<hui-divider-row style="box-shadow: none; border-radius: 0;"></hui-divider-row>');
@@ -50,11 +51,27 @@ describe('Testing util file function createCardElement', () => {
 
         let htmlElement = document.createElement('room-card') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
-        spy.mockReturnValue(htmlElement);
 
+        spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
         expect(result?.outerHTML).toBe('<room-card style="box-shadow: none; border-radius: 0;"></room-card>');
+    }),
+    test('Passing LovelaceCardConfig with show_states and hass should return error', () => {
+        const cardConfig = createMock<LovelaceCardConfig>();
+        cardConfig.type = 'entities';
+
+        let htmlElement = document.createElement('room-card') as LovelaceCard;
+        htmlElement.setConfig = () => { throw new Error(); };
+
+        let errorElement = document.createElement('hui-error-card') as LovelaceCard;
+        errorElement.setConfig = () => { };
+
+        spy.mockReturnValueOnce(htmlElement);
+        spy.mockReturnValueOnce(errorElement);
+        const result = createCardElement(cardConfig, StubHomeAssistant);
+
+        expect(result?.outerHTML).toBe('<hui-error-card style="box-shadow: none; border-radius: 0;"></hui-error-card>');
     })
 })
 
