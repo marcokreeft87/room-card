@@ -7,7 +7,7 @@ describe('Testing util file function checkConfig', () => {
             entityIds: [],
             type: ''
         }
-        expect(checkConfig(config)).toThrowError('Please define entities.');
+        expect(() => checkConfig(config)).toThrowError('Please define entities.');
     })
 })
 

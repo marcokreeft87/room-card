@@ -7,6 +7,8 @@ describe('Testing util file function createCardElement', () => {
     let spy: jest.SpyInstance<HTMLElement, [tagName: string, options?: ElementCreationOptions | undefined]>;
     beforeEach(() => {
         spy = jest.spyOn(document, 'createElement');
+        jest.spyOn(console, 'log').mockImplementation(jest.fn());
+        jest.spyOn(console, 'debug').mockImplementation(jest.fn());
     });
     test('Passing LovelaceCardConfig with show_states and hass should return undefined', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
