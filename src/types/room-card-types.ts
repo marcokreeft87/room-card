@@ -36,6 +36,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     hass?: HomeAssistant;
     icon?: string | RoomCardIcon;
     rows?: RoomCardRow[];
+    show_icon?: boolean;
 }
 
 export interface RoomCardRow {
@@ -60,7 +61,7 @@ export interface HideIfConfig {
 export interface EntityCondition {
     condition: string;
     value: string | number;
-    attribute: string;
+    attribute?: string;
     entity?: string;
     icon?: string;
     styles?: EntityStyles;

@@ -24,8 +24,12 @@ export const entityName = (entity: RoomCardEntity) => {
 };
 
 export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
+    if('icon' in config && (config.show_icon === undefined || config.show_icon === false)) {
+        throw new Error('Icon defined but show_icon is set to false or not defined. Please set show_icon to true');
+    }
+
     if (!('icon' in config)) return stateObj.attributes.icon || null;
-    if (typeof config.icon === 'string') return config.icon || null;
+    if (typeof config.icon === 'string') return config.icon;
 
     if(config.icon.state_on) return renderCustomStateIcon(stateObj, config.icon as RoomCardIcon);
 
