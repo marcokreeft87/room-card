@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 137  %}
+- Fixed `Bug attribute last-changed and last-updated showing 'never'`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 137  %}
 - Fixed `Bug icon state_on and state_off not working for input_boolean and switch`
