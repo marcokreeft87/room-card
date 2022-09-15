@@ -1,7 +1,7 @@
 {% if installed %}
 
 ### Features
-{% if version_installed.replace("v", "").replace(".","") | int < 137  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 138  %}
 - Fixed `Bug attribute last-changed and last-updated showing 'never'`
 {% endif %}
 
