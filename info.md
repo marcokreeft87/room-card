@@ -2,6 +2,26 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 137  %}
+- Fixed `Bug icon state_on and state_off not working for input_boolean and switch`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 135  %}
+- Fixed `Bug not using the correct attribute when using conditions`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 134  %}
+- Fixed `Main entity no longer required`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 133  %}
+- Fixed `Fix bug show_icon is ignored`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 132  %}
+- Fixed `Bug when show_state is set to false and no icon is set`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 131  %}
 - Added `Cleanup and refactor for performance`
 {% endif %}

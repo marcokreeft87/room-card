@@ -10,10 +10,6 @@ import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 export const checkConfig = (config: RoomCardConfig) => {
     if (!config || (!config.entities && !config.entity && !config.info_entities && !config.rows)) {
         throw new Error('Please define entities.');
-    } else if (isObject(config) && !(config.entity || config.attribute || config.icon)) {
-        throw new Error(`Entity object requires at least one 'entity', 'attribute' or 'icon'.`);
-    } else if (config.entity === '') {
-        throw new Error('Entity ID string must not be blank.');
     }
 };
 
@@ -43,7 +39,11 @@ export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: Room
 
         if(item.entity) {
             const entity = hass.states[item.entity];
-            entityValue = config.attribute ? entity.attributes[item.attribute] : entity.state;
+            entityValue = item.attribute ? entity.attributes[item.attribute] : entity.state;
+        }       
+
+        if(item.attribute && !item.entity) {                
+            entityValue = item.attribute ? stateObj.attributes[item.attribute] : stateObj.state;
         }
 
         return checkConditionalValue(item, entityValue);
@@ -59,6 +59,7 @@ export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomC
         case 'light':
         case 'switch':
         case 'binary_sensor':
+        case 'input_boolean':
             return stateObj.state === 'on' ? icon.state_on : icon.state_off;
     }
 }
@@ -174,6 +175,10 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
 }
 
 export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) => {
+    if(config.show_icon !== undefined && config.show_icon === false) {
+        return null;
+    }
+
     const customIcon = entityIcon(stateObj, config, hass);
 
     return html`<state-badge
@@ -232,7 +237,7 @@ export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig,
         @dblclick="${onDblClick}">
         ${config.entities?.length === 0 || config.icon
             ? renderIcon(entity.stateObj, config, hass, "main-icon")
-            : renderValue(entity, hass)}
+            : entity.show_state !== undefined && entity.show_state === false ? '' : renderValue(entity, hass)}
     </div>`;
 }    
 
