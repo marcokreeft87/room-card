@@ -9,6 +9,7 @@ describe('Testing util file function createCardElement', () => {
         spy = jest.spyOn(document, 'createElement');
         jest.spyOn(console, 'log').mockImplementation(jest.fn());
         jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+        jest.spyOn(console, 'error').mockImplementation(jest.fn());
     });
     test('Passing LovelaceCardConfig with show_states and hass should return undefined', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
@@ -27,7 +28,7 @@ describe('Testing util file function createCardElement', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'entities';
 
-        let htmlElement = document.createElement('hui-entities-card') as LovelaceCard;
+        const htmlElement = document.createElement('hui-entities-card') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
@@ -39,7 +40,7 @@ describe('Testing util file function createCardElement', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'divider';
 
-        let htmlElement = document.createElement('hui-divider-row') as LovelaceCard;
+        const htmlElement = document.createElement('hui-divider-row') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
@@ -51,7 +52,7 @@ describe('Testing util file function createCardElement', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'custom:room-card';
 
-        let htmlElement = document.createElement('room-card') as LovelaceCard;
+        const htmlElement = document.createElement('room-card') as LovelaceCard;
         htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
@@ -63,11 +64,11 @@ describe('Testing util file function createCardElement', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'entities';
 
-        let htmlElement = document.createElement('room-card') as LovelaceCard;
+        const htmlElement = document.createElement('room-card') as LovelaceCard;
         htmlElement.setConfig = () => { throw new Error(); };
 
-        let errorElement = document.createElement('hui-error-card') as LovelaceCard;
-        errorElement.setConfig = () => { };
+        const errorElement = document.createElement('hui-error-card') as LovelaceCard;
+        errorElement.setConfig = () => jest.fn();
 
         spy.mockReturnValueOnce(htmlElement);
         spy.mockReturnValueOnce(errorElement);
