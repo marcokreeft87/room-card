@@ -206,7 +206,7 @@ export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
     if (entity.attribute && [LAST_CHANGED, LAST_UPDATED].includes(entity.attribute)) {
         return html`<ha-relative-time
             .hass=${hass}
-            .datetime=${entity.stateObj.attributes[entity.attribute?.replace('-', '_')]}
+            .datetime=${(entity.attribute === LAST_CHANGED ? entity.stateObj.last_changed : entity.stateObj.last_updated)}
             capitalize
         ></ha-relative-time>`;
     }
