@@ -9,7 +9,7 @@ beforeEach(() => {
     jest.spyOn(console, 'debug').mockImplementation(jest.fn());
     jest.spyOn(console, 'error').mockImplementation(jest.fn());
 });
-describe('Testing util file function computeEntity', () => {
+describe('Testing util file function entityStateDisplay', () => {
     const stateObj = createMock<HomeAssistantEntity>();
     const hass = createMock<HomeAssistant>();
     hass.localize = jest.fn();
