@@ -4,7 +4,7 @@ import { computeStateDisplay, computeStateDomain } from './lib/compute_state_dis
 import { checkConditionalValue, getValue, hideIf, isObject, isUnavailable } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
-import { html, LitElement } from 'lit';
+import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 
 export const checkConfig = (config: RoomCardConfig) => {
@@ -119,13 +119,11 @@ export const entityStyles = (styles: EntityStyles) =>
             .join('') 
         : '';
 
-export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) => {
-    return html`<div class="entities-row ${classes}">
-            ${entities.map((entity) => renderEntity(entity, hass, element))}
-        </div>`;
+export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {
+    return html`<div class="entities-row${classes !== undefined ? ` ${classes}` : '' }">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 
-export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
+export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {    
     if (entity === undefined || entity.stateObj == undefined || hideIf(entity, hass)) {
         return null;
     }

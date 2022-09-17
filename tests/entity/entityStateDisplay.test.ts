@@ -40,8 +40,7 @@ describe('Testing util file function entityStateDisplay', () => {
     unit | attribute | attribute_value | expected
     ${'€'}  ${'money'}  ${'25'}  ${'25 €'}
     ${'€'}  ${'string_attribute'}  ${'test'}  ${'test €'}
-    ${undefined}  ${'string_attribute'}  ${'test'}  ${'test'}
-    
+    ${undefined}  ${'string_attribute'}  ${'test'}  ${'test'}    
     `('Passing hass and state on entity with unit should return stateObj.state', ({unit, attribute, attribute_value, expected}) => {  
         
         stateObj.state = 'on';
