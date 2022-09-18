@@ -85,13 +85,3 @@ describe('Testing util file function entityStateDisplay', () => {
         expect(entityStateDisplay(hass, entity)).toBe(expected);
     })
 })
-
-/*
-${'duration'}  ${'33%'}
-${'duration-m'}  ${'33%'}
-${'precision'}  ${'33%'}
-${'kilo'}  ${'33%'}
-${'invert'}  ${'33%'}
-${'position'}  ${'33%'}
-*/
-

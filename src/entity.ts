@@ -123,8 +123,8 @@ export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistan
     return html`<div class="entities-row${classes !== undefined ? ` ${classes}` : '' }">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 
-export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {    
-    if (entity === undefined || entity.stateObj == undefined || hideIf(entity, hass)) {
+export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
+    if (entity.stateObj == undefined || hideIf(entity, hass)) {
         return null;
     }
     
