@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { ActionConfig, HomeAssistant } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { LitElement } from 'lit';
