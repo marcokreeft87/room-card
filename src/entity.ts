@@ -176,7 +176,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
         </div>`;
 }
 
-export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) => {
+export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) : HTMLTemplateResult => {
     if(config.show_icon !== undefined && config.show_icon === false) {
         return null;
     }
