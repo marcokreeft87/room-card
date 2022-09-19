@@ -14,8 +14,7 @@ console.info(
 );
 
 @customElement('room-card')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RoomCard extends LitElement {
+export default class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
     @property() config?: RoomCardConfig;
     
@@ -84,11 +83,5 @@ class RoomCard extends LitElement {
                 ${this._refCards}
             </ha-card>
         `;
-    }
-
-    renderWarning() {
-        return html`<hui-warning>
-            ${this._hass.localize('ui.panel.lovelace.warning.entity_not_found', 'entity', this.config.entity)}
-        </hui-warning>`;
     }
 }

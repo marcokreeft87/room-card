@@ -4,7 +4,7 @@ import { entityName } from '../../src/entity';
 import { RoomCardEntity } from '../../src/types/room-card-types';
 import { StubHassEntity } from '../testdata';
 
-describe('Testing util file function computeEntity', () => {
+describe('Testing entity file function computeEntity', () => {
     test('Passing RoomCardEntity with name should return entity name', () => {     
         const entity : RoomCardEntity = {
             name: 'Test entity',

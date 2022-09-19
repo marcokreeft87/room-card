@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { ActionConfig, HomeAssistant } from 'custom-card-helpers';
+import { HomeAssistant } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { LitElement } from 'lit';
 import { renderInfoEntity } from '../../src/entity';
@@ -7,7 +6,7 @@ import { HomeAssistantEntity, RoomCardEntity } from '../../src/types/room-card-t
 import { getRenderString } from '../utils';
 import { UNAVAILABLE } from '../../src/lib/constants';
 
-describe('Testing util file function renderInfoEntity', () => {
+describe('Testing entity file function renderInfoEntity', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     const element: LitElement = createMock<LitElement>();
@@ -75,7 +74,7 @@ describe('Testing util file function renderInfoEntity', () => {
 
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        
+
         expect(htmlResult).toMatch('<div class="state entity icon-entity" style="" @click=""><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div>');
     })
 })

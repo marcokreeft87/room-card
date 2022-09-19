@@ -2,7 +2,7 @@ import { checkConfig } from '../../src/entity';
 import { RoomCardConfig } from '../../src/types/room-card-types';
 import { StubHassEntity } from '../testdata';
 
-describe('Testing util file function checkConfig', () => {
+describe('Testing entity file function checkConfig', () => {
     test('Passing empty RoomCardConfig should throw error', () => {   
         const config: RoomCardConfig = {
             entityIds: [],

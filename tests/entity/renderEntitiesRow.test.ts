@@ -5,7 +5,7 @@ import { renderEntitiesRow } from '../../src/entity';
 import { HomeAssistantEntity, RoomCardEntity } from '../../src/types/room-card-types';
 import { getRenderString } from '../utils';
 
-describe('Testing util file function renderEntitiesRow', () => {
+describe('Testing entity file function renderEntitiesRow', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     test('Passing empty entities should return entities-row withouth children', () => {   

@@ -5,7 +5,7 @@ import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from "../../src/t
 import { renderIcon } from "../../src/entity";
 import { getRenderString } from "../utils";
 
-describe('Testing util file function renderIcon', () => {
+describe('Testing entity file function renderIcon', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     

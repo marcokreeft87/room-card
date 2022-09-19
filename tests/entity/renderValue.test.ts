@@ -5,7 +5,7 @@ import { LAST_CHANGED, LAST_UPDATED } from '../../src/lib/constants';
 import { HomeAssistantEntity, RoomCardEntity } from '../../src/types/room-card-types';
 import { getRenderString } from '../utils';
 
-describe('Testing util file function renderValue', () => {
+describe('Testing entity file function renderValue', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     hass.localize = jest.fn();

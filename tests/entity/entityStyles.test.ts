@@ -1,7 +1,7 @@
 import { entityStyles } from '../../src/entity';
 import { EntityStyles } from '../../src/types/room-card-types';
 
-describe('Testing util file function computeEntity', () => {
+describe('Testing entity file function computeEntity', () => {
     test('Passing entity_id should return entity name', () => {  
         const styles: EntityStyles = {
             color: 'red',

@@ -5,7 +5,7 @@ import { renderMainEntity } from "../../src/entity";
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from "../../src/types/room-card-types";
 import { getRenderString } from "../utils";
 
-describe('Testing util file function renderMainEntity', () => {
+describe('Testing entity file function renderMainEntity', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     const element: LitElement = createMock<LitElement>();

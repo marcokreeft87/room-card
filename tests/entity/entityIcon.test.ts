@@ -4,7 +4,7 @@ import { HassEntity } from 'home-assistant-js-websocket';
 import { entityIcon } from '../../src/entity';
 import { HomeAssistantEntity, RoomCardConfig } from '../../src/types/room-card-types';
 
-describe('Testing util file function entityIcon', () => {
+describe('Testing entity file function entityIcon', () => {
     const hass = createMock<HomeAssistant>();
     const stateObjIconNull = createMock<HomeAssistantEntity>();
     const stateObj = createMock<HomeAssistantEntity>();
