@@ -247,7 +247,7 @@ export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass
     return config.hide_title === true ? null : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
 }
 
-export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
+export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
     if (entity === undefined || !entity.stateObj || hideIf(entity, hass)) {
         return null;
     }

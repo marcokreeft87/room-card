@@ -230,5 +230,19 @@ describe('Testing util file function renderEntity', () => {
 
         const result = renderEntity(entity, hass, element);
         expect(result).toBeNull();
+    }),
+    test('Passing entity without stateObj and icon should return expected html', () => {   
+        
+        stateObj.state = 'on';
+        const entity: RoomCardEntity = createMock<RoomCardEntity>({
+            stateObj: stateObj,
+            show_icon: true,
+            icon: 'mdi:desk'
+        });
+
+        const result = renderEntity(entity, hass, element);
+        const htmlResult = getRenderString(result);
+        
+        expect(htmlResult).toMatch('<div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span></span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div> </div>');
     })
 })
