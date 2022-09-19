@@ -5,7 +5,7 @@ import { renderMainEntity } from "../../src/entity";
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from "../../src/types/room-card-types";
 import { getRenderString } from "../utils";
 
-describe('Testing util file function renderValue', () => {
+describe('Testing util file function renderMainEntity', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     const element: LitElement = createMock<LitElement>();
@@ -54,8 +54,6 @@ describe('Testing util file function renderValue', () => {
         const result = renderMainEntity(entity, config, hass, element);
         const htmlResult = getRenderString(result);
 
-        console.log(htmlResult);
-
         expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement with icon expected html with icon', () => {      
@@ -76,6 +74,25 @@ describe('Testing util file function renderValue', () => {
         const htmlResult = getRenderString(result);
 
         expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge> </div>');
+    }),
+    test('Passing RoomCardEntity with icon, RoomcardConfig, HomeAssistant and LitElement with icon expected html with icon', () => {      
+        
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            show_icon: true,
+            icon: 'mdi:table'
+        };
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: ''
+        };
+
+        const result = renderMainEntity(entity, config, hass, element);
+        const htmlResult = getRenderString(result);
+
+        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement with empty entities', () => {      
         

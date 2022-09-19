@@ -243,8 +243,8 @@ export const renderMainEntity = (entity: RoomCardEntity | undefined, config: Roo
     </div>`;
 }    
 
-export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) => {
-    return config.hide_title === true ? '' : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
+export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+    return config.hide_title === true ? null : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
 }
 
 export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
