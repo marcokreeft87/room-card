@@ -7,6 +7,6 @@
 
 Show multiple entity states, attributes and icons in a single card in Home Assistant's Lovelace UI
 
-Move the documentation to the [wiki](https://github.com/marcokreeft87/room-card/wiki)
+Moved the documentation to the [wiki](https://github.com/marcokreeft87/room-card/wiki)
 
 ![room-card](https://raw.githubusercontent.com/marcokreeft87/room-card/master/example.png)
