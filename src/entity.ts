@@ -225,8 +225,8 @@ export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
     return entityStateDisplay(hass, entity);
 }
 
-export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
-    if (!entity) {
+export const renderMainEntity = (entity: RoomCardEntity | undefined, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+    if (entity === undefined) {
         return null;
     }
 
