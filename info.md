@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 139  %}
+- Added `Card is tested with jest before making releases`
+- Added `Error shown when icon given but show_icon is set to false or not present`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 138  %}
 - Fixed `Bug attribute last-changed and last-updated showing 'never'`
 {% endif %}

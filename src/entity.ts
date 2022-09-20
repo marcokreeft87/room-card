@@ -6,7 +6,6 @@ import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
-import { createImportSpecifier } from 'typescript';
 
 export const checkConfig = (config: RoomCardConfig) => {
     if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {
@@ -26,7 +25,7 @@ export const entityName = (entity: RoomCardEntity) => {
 
 export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
     if('icon' in config && (config.show_icon === undefined || config.show_icon === false)) {
-        throw new Error('Icon defined but show_icon is set to false or not defined. Please set show_icon to true');
+        throw new Error(`Entity: ${config.entity} => Icon defined but show_icon is set to false or not defined. Please set show_icon to true`);
     }
 
     if (!('icon' in config)) return stateObj.attributes.icon || null;

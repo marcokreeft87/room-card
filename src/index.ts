@@ -8,7 +8,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.3.8',
+    '%c ROOM-CARD %c 1.3.9',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -67,21 +67,25 @@ export default class RoomCard extends LitElement {
     render() : TemplateResult<1> {
         if (!this._hass || !this.config) return html``;
 
-        return html`
-            <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
-                <div class="card-header">
-                    ${renderTitle(this.entity, this.config, this._hass, this)}
-                    <div class="entities-info-row">
-                        ${this.info_entities.map((entity) => renderInfoEntity(entity, this._hass, this))}
+        try {
+            return html`
+                <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
+                    <div class="card-header">
+                        ${renderTitle(this.entity, this.config, this._hass, this)}
+                        <div class="entities-info-row">
+                            ${this.info_entities.map((entity) => renderInfoEntity(entity, this._hass, this))}
+                        </div>
                     </div>
-                </div>
-                ${this.rows !== undefined && this.rows.length > 0 ?                    
-                    this.rows.map((row) => {
-                       return renderEntitiesRow(row.entities, this._hass, this, "width-100");
-                    })
-                : renderEntitiesRow(this.entities, this._hass, this)}
-                ${this._refCards}
-            </ha-card>
-        `;
+                    ${this.rows !== undefined && this.rows.length > 0 ?                    
+                        this.rows.map((row) => {
+                        return renderEntitiesRow(row.entities, this._hass, this, "width-100");
+                        })
+                    : renderEntitiesRow(this.entities, this._hass, this)}
+                    ${this._refCards}
+                </ha-card>
+            `;
+        } catch (error) {
+            return html`<hui-warning>${error}</hui-warning>`;
+        }
     }
 }
