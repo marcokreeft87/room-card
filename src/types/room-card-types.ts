@@ -14,8 +14,8 @@ export interface RoomCardEntity {
     format?: string;
     unit?: string;
     hide_unavailable?: boolean;
-    hide_if?: string | HideIfConfig;
-    stateObj: HomeAssistantEntity | undefined;
+    hide_if?: HideIfConfig;
+    stateObj: HomeAssistantEntity;
     attribute?: string;
     show_state?: boolean;
     styles?: EntityStyles;
@@ -27,19 +27,23 @@ export interface EntityStyles {
 }
 
 export interface RoomCardConfig extends LovelaceCardConfig {    
-    info_entities: RoomCardEntity[];
-    entities: RoomCardEntity[];
-    entity: string;
+    info_entities?: RoomCardEntity[];
+    entities?: RoomCardEntity[];
+    entity?: string;
     hide_title?: boolean;
     cards?: LovelaceCardConfig[];
     entityIds: string[];
     hass?: HomeAssistant;
     icon?: string | RoomCardIcon;
     rows?: RoomCardRow[];
+    show_icon?: boolean;
+    title?: string;
+    name?: string;
+    styles?: EntityStyles;
 }
 
 export interface RoomCardRow {
-    entities: RoomCardEntity[];
+    entities?: RoomCardEntity[];
 }
 
 export interface HomeAssistantEntity extends HassEntity {
@@ -60,7 +64,7 @@ export interface HideIfConfig {
 export interface EntityCondition {
     condition: string;
     value: string | number;
-    attribute: string;
+    attribute?: string;
     entity?: string;
     icon?: string;
     styles?: EntityStyles;

@@ -8,6 +8,12 @@
       "sourceMap": true,
       "moduleResolution": "Node",
       "target": "es6",
+      "plugins": [
+        { "transform": "ts-auto-mock/transformer", "cacheBetweenTests": false }
+      ],
+      "paths": {
+        "jest-ts-auto-mock": ["../../index"]
+      }
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]

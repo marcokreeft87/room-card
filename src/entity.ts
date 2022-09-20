@@ -4,11 +4,12 @@ import { computeStateDisplay, computeStateDomain } from './lib/compute_state_dis
 import { checkConditionalValue, getValue, hideIf, isObject, isUnavailable } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
-import { html, LitElement } from 'lit';
+import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
+import { createImportSpecifier } from 'typescript';
 
 export const checkConfig = (config: RoomCardConfig) => {
-    if (!config || (!config.entities && !config.entity && !config.info_entities && !config.rows)) {
+    if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {
         throw new Error('Please define entities.');
     }
 };
@@ -24,8 +25,12 @@ export const entityName = (entity: RoomCardEntity) => {
 };
 
 export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
+    if('icon' in config && (config.show_icon === undefined || config.show_icon === false)) {
+        throw new Error('Icon defined but show_icon is set to false or not defined. Please set show_icon to true');
+    }
+
     if (!('icon' in config)) return stateObj.attributes.icon || null;
-    if (typeof config.icon === 'string') return config.icon || null;
+    if (typeof config.icon === 'string') return config.icon;
 
     if(config.icon.state_on) return renderCustomStateIcon(stateObj, config.icon as RoomCardIcon);
 
@@ -40,10 +45,10 @@ export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: Room
         if(item.entity) {
             const entity = hass.states[item.entity];
             entityValue = item.attribute ? entity.attributes[item.attribute] : entity.state;
-        }       
+        }        
 
         if(item.attribute && !item.entity) {                
-            entityValue = item.attribute ? stateObj.attributes[item.attribute] : stateObj.state;
+            entityValue = stateObj.attributes[item.attribute];
         }
 
         return checkConditionalValue(item, entityValue);
@@ -115,14 +120,16 @@ export const entityStyles = (styles: EntityStyles) =>
             .join('') 
         : '';
 
-export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) => {
-    return html`<div class="entities-row ${classes}">
-            ${entities.map((entity) => renderEntity(entity, hass, element))}
-        </div>`;
+export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
+    if(entities === undefined) {
+        return null;
+    }
+
+    return html`<div class="entities-row${classes !== undefined ? ` ${classes}` : '' }">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 
-export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
-    if (entity === undefined || entity.stateObj == undefined || hideIf(entity, hass)) {
+export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
+    if (entity.stateObj == undefined || hideIf(entity, hass)) {
         return null;
     }
     
@@ -174,7 +181,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
         </div>`;
 }
 
-export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) => {
+export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) : HTMLTemplateResult => {
     if(config.show_icon !== undefined && config.show_icon === false) {
         return null;
     }
@@ -223,8 +230,8 @@ export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
     return entityStateDisplay(hass, entity);
 }
 
-export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) => {
-    if (!entity) {
+export const renderMainEntity = (entity: RoomCardEntity | undefined, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+    if (entity === undefined) {
         return null;
     }
 
@@ -241,11 +248,11 @@ export const renderMainEntity = (entity: RoomCardEntity, config: RoomCardConfig,
     </div>`;
 }    
 
-export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) => {
-    return config.hide_title === true ? '' : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
+export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+    return config.hide_title === true ? null : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
 }
 
-export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) => {
+export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
     if (entity === undefined || !entity.stateObj || hideIf(entity, hass)) {
         return null;
     }

@@ -14,8 +14,7 @@ console.info(
 );
 
 @customElement('room-card')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RoomCard extends LitElement {
+export default class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
     @property() config?: RoomCardConfig;
     
@@ -30,7 +29,7 @@ class RoomCard extends LitElement {
 
         checkConfig(config);        
 
-        this.config = { ...config, name: config.name === false ? ' ' : config.name, entityIds: getEntityIds(config) };
+        this.config = { ...config, entityIds: getEntityIds(config) };
     }
 
     protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -47,8 +46,8 @@ class RoomCard extends LitElement {
             }
 
             this.info_entities = this.config.info_entities?.map(entity => mapStateObject(entity, hass)) ?? [];
-            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass)) ?? [];
 
+            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass)) ?? [];
             this.rows = 
                 this.config.rows?.map((row) => {
                     const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass));
@@ -69,7 +68,7 @@ class RoomCard extends LitElement {
         if (!this._hass || !this.config) return html``;
 
         return html`
-            <ha-card elevation="2" style="${entityStyles(this.entity?.styles)}">
+            <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
                 <div class="card-header">
                     ${renderTitle(this.entity, this.config, this._hass, this)}
                     <div class="entities-info-row">
@@ -84,11 +83,5 @@ class RoomCard extends LitElement {
                 ${this._refCards}
             </ha-card>
         `;
-    }
-
-    renderWarning() {
-        return html`<hui-warning>
-            ${this._hass.localize('ui.panel.lovelace.warning.entity_not_found', 'entity', this.config.entity)}
-        </hui-warning>`;
     }
 }
