@@ -47,7 +47,7 @@ export const getEntityIds = (config: RoomCardConfig) : string[] =>
     [config.entity]
         .concat(config.entities?.map((entity) => entity.entity))
         .concat(config.info_entities?.map((entity) => entity.entity))
-        .concat(config.rows?.flatMap(row => row.entities).map((entity) => entity.entity))
+        .concat(config.rows?.flatMap(row => row.entities).map((entity) => entity?.entity))
         .filter((entity) => entity);
 
 export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: PropertyValues) => {
@@ -82,7 +82,7 @@ export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssist
     return { ...conf, stateObj: hass.states[conf.entity] };
 }
 
-export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssistant) => {
+export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssistant) => {    
     if (cardConfig.show_states && !cardConfig.show_states.includes(hass.states[cardConfig.entity].state)) {
         return;
     }

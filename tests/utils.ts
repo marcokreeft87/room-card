@@ -1,9 +1,35 @@
+import { HomeAssistant } from "custom-card-helpers";
 import { HTMLTemplateResult } from "lit";
+import { createMock } from "ts-auto-mock";
+import { HassEntity, HassEntityAttributeBase } from 'home-assistant-js-websocket';
+import { HomeAssistantEntity, RoomCardEntity } from "../src/types/room-card-types";
+
+export const createEntity = (entity_id: string, hass: HomeAssistant, state: string, attributes: HassEntityAttributeBase = {}) : RoomCardEntity => {
+    const stateObj = createMock<HomeAssistantEntity>();    
+    stateObj.entity_id = entity_id;
+    stateObj.attributes = attributes;
+    stateObj.state = state;
+
+    const hassEntity = createMock<HassEntity>();
+    hassEntity.entity_id = entity_id;
+    hassEntity.state = state;
+
+    hass.states[stateObj.entity_id] = hassEntity;
+
+    return {
+        entity: entity_id,
+        stateObj: stateObj
+    };
+}
 
 export const getRenderString = (data: HTMLTemplateResult) : string => {
-    const {strings, values} = data;
-
+    
     let returnHtml = '';
+    if(!data) {
+        return returnHtml;
+    }
+
+    const {strings, values} = data;
 
     if(strings === undefined) {
         return returnHtml;

@@ -17,7 +17,7 @@ describe('Testing util file function hasConfigOrEntitiesChanged', () => {
 
         expect(hasConfigOrEntitiesChanged(config, props)).toBe(true);
     }),
-    test('Passing PropertyValues emtpy and no oldHass should return true', () => {
+    test('Passing PropertyValues empty and no oldHass should return true', () => {
         const props : PropertyValues = new Map();
 
         expect(hasConfigOrEntitiesChanged(config, props)).toBe(false);

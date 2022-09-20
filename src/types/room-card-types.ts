@@ -37,10 +37,13 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     icon?: string | RoomCardIcon;
     rows?: RoomCardRow[];
     show_icon?: boolean;
+    title?: string;
+    name?: string;
+    styles?: EntityStyles;
 }
 
 export interface RoomCardRow {
-    entities: RoomCardEntity[];
+    entities?: RoomCardEntity[];
 }
 
 export interface HomeAssistantEntity extends HassEntity {

@@ -6,6 +6,7 @@ import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
+import { createImportSpecifier } from 'typescript';
 
 export const checkConfig = (config: RoomCardConfig) => {
     if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {
@@ -119,7 +120,11 @@ export const entityStyles = (styles: EntityStyles) =>
             .join('') 
         : '';
 
-export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {
+export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
+    if(entities === undefined) {
+        return null;
+    }
+
     return html`<div class="entities-row${classes !== undefined ? ` ${classes}` : '' }">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 

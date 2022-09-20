@@ -29,7 +29,7 @@ export default class RoomCard extends LitElement {
 
         checkConfig(config);        
 
-        this.config = { ...config, name: config.name === false ? ' ' : config.name, entityIds: getEntityIds(config) };
+        this.config = { ...config, entityIds: getEntityIds(config) };
     }
 
     protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -46,8 +46,8 @@ export default class RoomCard extends LitElement {
             }
 
             this.info_entities = this.config.info_entities?.map(entity => mapStateObject(entity, hass)) ?? [];
-            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass)) ?? [];
 
+            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass)) ?? [];
             this.rows = 
                 this.config.rows?.map((row) => {
                     const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass));
@@ -68,7 +68,7 @@ export default class RoomCard extends LitElement {
         if (!this._hass || !this.config) return html``;
 
         return html`
-            <ha-card elevation="2" style="${entityStyles(this.entity?.styles)}">
+            <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
                 <div class="card-header">
                     ${renderTitle(this.entity, this.config, this._hass, this)}
                     <div class="entities-info-row">
