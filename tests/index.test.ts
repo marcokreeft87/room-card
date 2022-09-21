@@ -41,7 +41,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling setconfig should set config', () => {   
 
@@ -135,7 +135,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"></div> </ha-card>');
     }),
     test('Calling render without entities, info_entities and rows but with styles should return expected html', () => {   
         
@@ -154,7 +154,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style="color: red;"> <div class="card-header"> <div class="title"><div class="main-state entity" style="color: red;" @click="" @dblclick=""> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style="color: red;"> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style="color: red;"> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"></div> </ha-card>');
     }),
     test('Calling render without only entities should return expected html', () => {   
 
@@ -172,7 +172,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling render with only entities and title should return expected html', () => {   
 
@@ -191,7 +191,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling render with only info_entities and title should return expected html', () => {   
 
@@ -210,7 +210,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row"></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row"></div> </ha-card>');
     }),
     test('Calling render with only rows and title should return expected html', () => {   
 
@@ -234,7 +234,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling render with only rows without entities and title should return expected html', () => {   
 
@@ -254,7 +254,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> </ha-card>');
     }),
     test('Calling render with only refcards and title should return expected html', () => {   
         
@@ -304,7 +304,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div><div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div><div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling render with entities, info_entities and rows title, rows should override and should return expected html', () => {   
 
@@ -332,7 +332,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div><div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div><div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row width-100"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     })
 })
 

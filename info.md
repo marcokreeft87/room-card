@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 141  %}
+- Added `Main entity actions now apply to both title and icon`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 140  %}
 - Fixed `Main entity is no longer required`
 {% endif %}

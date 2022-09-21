@@ -229,18 +229,13 @@ export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
     return entityStateDisplay(hass, entity);
 }
 
-export const renderMainEntity = (entity: RoomCardEntity | undefined, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+export const renderMainEntity = (entity: RoomCardEntity | undefined, config: RoomCardConfig, hass: HomeAssistant) : HTMLTemplateResult => {
     if (entity === undefined) {
         return null;
     }
-
-    const onClick = clickHandler(entity.stateObj.entity_id, config.tap_action, hass, element);
-    const onDblClick = dblClickHandler(entity.stateObj.entity_id, config.double_tap_action, hass, element);
     return html`<div
         class="main-state entity"
-        style="${entityStyles(entity.styles)}"
-        @click="${onClick}"
-        @dblclick="${onDblClick}">
+        style="${entityStyles(entity.styles)}">
         ${config.entities?.length === 0 || config.icon
             ? renderIcon(entity.stateObj, config, hass, "main-icon")
             : entity.show_state !== undefined && entity.show_state === false ? '' : renderValue(entity, hass)}
@@ -248,7 +243,14 @@ export const renderMainEntity = (entity: RoomCardEntity | undefined, config: Roo
 }    
 
 export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
-    return config.hide_title === true ? null : html`<div class="title">${renderMainEntity(entity, config, hass, element)} ${config.title}</div>`;
+    if(config.hide_title === true || entity === undefined)
+        return null;
+
+    const onClick = clickHandler(entity.stateObj.entity_id, config.tap_action, hass, element);
+    const onDblClick = dblClickHandler(entity.stateObj.entity_id, config.double_tap_action, hass, element);
+    const hasAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
+
+    return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${config.title}</div>`;
 }
 
 export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
