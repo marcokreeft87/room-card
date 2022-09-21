@@ -6,9 +6,10 @@ import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderT
 import { getEntityIds, hasConfigOrEntitiesChanged, mapStateObject, createCardElement } from './util';
 import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
+import * as packageJson from '../package.json';
 
 console.info(
-    '%c ROOM-CARD %c 1.4.1',
+    `%c ROOM-CARD %c ${packageJson.version}`,
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
