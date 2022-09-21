@@ -13,6 +13,16 @@ console.info(
     'color: darkblue; background: white; font-weight: bold;'
 );
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'room-card',
+  name: 'Room card',
+  preview: false,
+  description: 'Show multiple entity states, attributes and icons in a single card in Home Assistant\'s Lovelace UI',
+});
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
 @customElement('room-card')
 export default class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
