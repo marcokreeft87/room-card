@@ -8,7 +8,7 @@ import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
 
 console.info(
-    '%c ROOM-CARD %c 1.3.9',
+    '%c ROOM-CARD %c 1.4.0',
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
@@ -18,7 +18,7 @@ export default class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
     @property() config?: RoomCardConfig;
     
-    private entity: RoomCardEntity;
+    private entity: RoomCardEntity | undefined;
     private info_entities: RoomCardEntity[] = [];
     private entities: RoomCardEntity[] = [];
     private rows: RoomCardRow[] = [];
@@ -27,7 +27,7 @@ export default class RoomCard extends LitElement {
 
     setConfig(config: RoomCardConfig) {        
 
-        checkConfig(config);        
+        checkConfig(config);     
 
         this.config = { ...config, entityIds: getEntityIds(config) };
     }
@@ -40,7 +40,8 @@ export default class RoomCard extends LitElement {
         this._hass = hass;
 
         if (hass && this.config) {
-            if (this.config.entity) {
+            console.log('entity', this.config.entity);
+            if (this.config.entity != undefined) {
                 this.stateObj = hass.states[this.config.entity];
                 this.entity = { ...this.config, stateObj: this.stateObj };
             }
@@ -68,8 +69,10 @@ export default class RoomCard extends LitElement {
         if (!this._hass || !this.config) return html``;
 
         try {
+            console.log(this.entity);
+
             return html`
-                <ha-card elevation="2" style="${entityStyles(this.entity.styles)}">
+                <ha-card elevation="2" style="${entityStyles(this.entity?.styles)}">
                     <div class="card-header">
                         ${renderTitle(this.entity, this.config, this._hass, this)}
                         <div class="entities-info-row">

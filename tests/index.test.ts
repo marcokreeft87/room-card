@@ -24,6 +24,25 @@ describe('Testing index file class RoomCard', () => {
 
         expect(htmlResult).toMatch('');
     }),
+    test('Calling render without entity and only entities should return expected html', () => {   
+
+        const config: RoomCardConfig = {
+            entityIds: [],
+            type: "custom:room-card",
+            show_icon: true,
+            entities: [createEntity('light.test_entity2', hass, 'on', { icon: 'mdi:table' })],
+            entity: undefined,
+            styles: undefined
+        }
+
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
+
+        const result = roomcard.render();
+        const htmlResult = getRenderString(result);
+
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title"> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+    }),
     test('Calling setconfig should set config', () => {   
 
         const config: RoomCardConfig = {
