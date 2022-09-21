@@ -124,7 +124,7 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const evalTemplate = (hass: HomeAssistant, state: HassEntity, func: string): Function => {
+export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity, func: string): Function => {
     /* eslint no-new-func: 0 */
     try {
         return new Function('states', 'entity', 'user', 'hass', 'html', `'use strict'; ${func}`).call(
