@@ -95,7 +95,7 @@ export default class RoomCard extends LitElement {
                 </ha-card>
             `;
         } catch (error) {
-            return html`<hui-warning>${error}</hui-warning>`;
+            return html`<hui-warning>${error.toString()}</hui-warning>`;
         }
     }
 }
