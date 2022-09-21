@@ -119,7 +119,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<hui-warning></hui-warning>');
+        expect(htmlResult).toMatch('<hui-warning>Error: Entity: light.test_entity => Icon defined but show_icon is set to false or not defined. Please set show_icon to true</hui-warning>');
     }),
     test('Calling render without entities, info_entities and rows should return expected html', () => {   
         

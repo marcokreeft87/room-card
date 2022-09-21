@@ -6,12 +6,23 @@ import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderT
 import { getEntityIds, hasConfigOrEntitiesChanged, mapStateObject, createCardElement } from './util';
 import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
+import * as packageJson from '../package.json';
 
 console.info(
-    '%c ROOM-CARD %c 1.4.1',
+    `%c ROOM-CARD %c ${packageJson.version}`,
     'color: cyan; background: black; font-weight: bold;',
     'color: darkblue; background: white; font-weight: bold;'
 );
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'room-card',
+  name: 'Room card',
+  preview: false,
+  description: 'Show multiple entity states, attributes and icons in a single card in Home Assistant\'s Lovelace UI',
+});
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 @customElement('room-card')
 export default class RoomCard extends LitElement {
@@ -85,7 +96,7 @@ export default class RoomCard extends LitElement {
                 </ha-card>
             `;
         } catch (error) {
-            return html`<hui-warning>${error}</hui-warning>`;
+            return html`<hui-warning>${error.toString()}</hui-warning>`;
         }
     }
 }

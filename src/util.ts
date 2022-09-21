@@ -1,5 +1,6 @@
 import { HomeAssistant, LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
-import { PropertyValues } from 'lit';
+import { html, PropertyValues } from 'lit';
+import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig } from './types/room-card-types';
 
@@ -121,3 +122,23 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
     element.style.borderRadius = '0';
     return element;
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity, func: string): Function => {
+    /* eslint no-new-func: 0 */
+    try {
+        return new Function('states', 'entity', 'user', 'hass', 'html', `'use strict'; ${func}`).call(
+            this,
+            hass?.states,
+            state,
+            hass?.user,
+            hass,
+            html,
+        );
+    } catch (e) {
+      const funcTrimmed = func.length <= 100 ? func.trim() : `${func.trim().substring(0, 98)}...`;
+      e.message = `${e.name}: ${e.message} in '${funcTrimmed}'`;
+      e.name = 'RoomCardJSTemplateError';
+      throw e;
+    }
+  }

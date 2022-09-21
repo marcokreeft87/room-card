@@ -1,7 +1,7 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, getValue, hideIf, isObject, isUnavailable } from './util';
+import { checkConditionalValue, evalTemplate, getValue, hideIf, isObject, isUnavailable } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
@@ -32,8 +32,8 @@ export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
     if (typeof config.icon === 'string') return config.icon;
 
     if(config.icon.state_on) return renderCustomStateIcon(stateObj, config.icon as RoomCardIcon);
-
     if(config.icon.conditions) return renderConditionIcons(stateObj, config, hass);
+    if(config.icon.template?.icon) return evalTemplate(hass, stateObj, config.icon.template.icon);
 }
 
 export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
@@ -186,14 +186,22 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
     }
 
     const customIcon = entityIcon(stateObj, config, hass);
+    const customStyling = templateStyling(stateObj, config, hass);
 
     return html`<state-badge
         class="icon-small ${classes}"
         .stateObj="${stateObj}"
         .overrideIcon="${isObject(customIcon) ? (customIcon as EntityCondition).icon : customIcon as string}"
         .stateColor="${config.state_color}"
-        style="${entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null)}"
+        style="${customStyling ?? entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null)}"
     ></state-badge>`;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const templateStyling = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) : Function => {
+    const icon = (config.icon as RoomCardIcon);
+
+    return icon?.template?.styles !== undefined ? evalTemplate(hass, stateObj, icon.template.styles) : null;
 }
 
 export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {
