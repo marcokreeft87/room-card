@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+
+{% if version_installed.replace("v", "").replace(".","") | int < 151  %}
+- Fixed `Main entity is no longer required`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 150  %}
 - Added `Icon templating (https://github.com/marcokreeft87/room-card/wiki/Configuration#icon-templating)`
 {% endif %}

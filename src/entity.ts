@@ -251,11 +251,11 @@ export const renderMainEntity = (entity: RoomCardEntity | undefined, config: Roo
 }    
 
 export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
-    if(config.hide_title === true || entity === undefined)
+    if(config.hide_title === true)
         return null;
 
-    const onClick = clickHandler(entity.stateObj.entity_id, config.tap_action, hass, element);
-    const onDblClick = dblClickHandler(entity.stateObj.entity_id, config.double_tap_action, hass, element);
+    const onClick = clickHandler(entity?.stateObj?.entity_id, config.tap_action, hass, element);
+    const onDblClick = dblClickHandler(entity?.stateObj?.entity_id, config.double_tap_action, hass, element);
     const hasAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
 
     return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${config.title}</div>`;
