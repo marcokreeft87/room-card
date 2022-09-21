@@ -26,7 +26,7 @@ describe('Testing entity file function renderValue', () => {
 
         expect(renderTitle(entity, config, hass, element)).toBeNull();
     }),
-    test('Passing  no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return null', () => {      
+    test('Passing no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return expected html', () => {      
         const entity: RoomCardEntity = {
             stateObj: stateObj,
             show_icon: true,
@@ -36,12 +36,32 @@ describe('Testing entity file function renderValue', () => {
         const config: RoomCardConfig = {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
-            type: ''
+            type: '',
+            tap_action: 'more-info'
         };
 
         const result = renderTitle(entity, config, hass, element);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+        expect(htmlResult).toMatch('<div class="title clickable" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+    }),
+    test('Passing  no RoomCardEntity, RoomcardConfig with action, HomeAssistant and LitElement should return expected html', () => {      
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            show_icon: true,
+            icon: 'mdi:table'
+        };
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: '',
+            tap_action: 'more-info'
+        };
+
+        const result = renderTitle(entity, config, hass, element);
+        const htmlResult = getRenderString(result);
+        
+        expect(htmlResult).toMatch('<div class="title clickable" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
     })
 });
