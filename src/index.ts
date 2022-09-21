@@ -40,7 +40,6 @@ export default class RoomCard extends LitElement {
         this._hass = hass;
 
         if (hass && this.config) {
-            console.log('entity', this.config.entity);
             if (this.config.entity != undefined) {
                 this.stateObj = hass.states[this.config.entity];
                 this.entity = { ...this.config, stateObj: this.stateObj };
@@ -69,8 +68,6 @@ export default class RoomCard extends LitElement {
         if (!this._hass || !this.config) return html``;
 
         try {
-            console.log(this.entity);
-
             return html`
                 <ha-card elevation="2" style="${entityStyles(this.entity?.styles)}">
                     <div class="card-header">
