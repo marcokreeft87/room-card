@@ -262,5 +262,27 @@ describe('Testing entity file function renderIcon', () => {
         const htmlResult = getRenderString(result);
 
         expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="color: red;" ></state-badge>');
+    }),
+    test('Passing config with icon template icon should return expected html', () => {    
+
+        stateObj.state = '18';
+        const entity: RoomCardEntity = {
+            entity: 'light.test_entity',
+            stateObj: stateObj,
+            show_icon: true,
+            icon: {
+                template: {
+                    icon: "if (entity.state >= 70) return 'mdi:test';  else if (entity.state >= 20) return 'mdi:test2';  else return 'mdi:test3';",
+                    styles: "if (entity.state >= 70) return 'color:green';  else if (entity.state >= 20) return 'color:orange';  else return 'color:red';"
+                }
+            }
+        }
+
+        const result = renderIcon(stateObj, entity, hass);
+        const htmlResult = getRenderString(result);
+
+        console.log(htmlResult);
+
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:test3" .stateColor="" style="color:red" ></state-badge>');
     })
 });

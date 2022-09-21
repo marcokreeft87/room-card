@@ -281,6 +281,55 @@ describe('Testing entity file function entityIcon', () => {
         };
         
         expect(entityIcon(stateObj, config, hass)).toMatchObject({'condition': 'above', 'icon': 'mdi:10-icon', 'value': 10});
+    }),
+    test.each`
+    state | expected
+    ${'18'}  ${'mdi:test3'}   
+    ${'80'}  ${'mdi:test'}
+    ${'60'}  ${'mdi:test2'}
+    `('Passing config with icon template icon should return expected string', ({ state, expected }) => {    
+        const hassEntity = createMock<HassEntity>();
+        hassEntity.state = '10';
+        hassEntity.attributes['check'] = 15;
+        hass.states = {
+            'sensor.check_entity': hassEntity
+        }
+
+        stateObj.entity_id = 'input_boolean.test_entity';
+        stateObj.state = state;
+        const config: RoomCardConfig = {
+            entityIds: [],
+            type: '',
+            show_icon: true,
+            icon: {
+                template: {
+                    icon: "if (entity.state >= 70) return 'mdi:test';  else if (entity.state >= 20) return 'mdi:test2';  else return 'mdi:test3';"
+                }
+            }
+        };
+
+        expect(entityIcon(stateObj, config, hass)).toBe(expected);
+    }),
+    test('Passing config with icon template icon undefined should return expected string', () => {    
+        const hassEntity = createMock<HassEntity>();
+        hassEntity.state = '10';
+        hassEntity.attributes['check'] = 15;
+        hass.states = {
+            'sensor.check_entity': hassEntity
+        }
+
+        stateObj.entity_id = 'input_boolean.test_entity';
+        stateObj.state = '10';
+        const config: RoomCardConfig = {
+            entityIds: [],
+            type: '',
+            show_icon: true,
+            icon: {
+                template: undefined
+            }
+        };
+
+        expect(entityIcon(stateObj, config, hass)).toBeUndefined();
     })
 })
 
