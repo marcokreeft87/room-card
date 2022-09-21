@@ -9,9 +9,6 @@ module.exports = {
         filename: 'room-card.js',
         path: path.resolve(__dirname),
     },
-    optimization: {
-        minimize: false,
-    },
     module: {
         rules: [
             {
