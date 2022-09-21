@@ -24,6 +24,7 @@ export interface RoomCardEntity {
 
 export interface EntityStyles {
     [key: string]: string;
+    template?: string;
 }
 
 export interface RoomCardConfig extends LovelaceCardConfig {    
@@ -55,6 +56,12 @@ export interface RoomCardIcon {
     conditions?: EntityCondition[];
     state_on?: string;
     state_off?: string;
+    template?: RoomCardIconTemplate;
+}
+
+export interface RoomCardIconTemplate {
+    icon?: string;
+    styles?: string;
 }
 
 export interface HideIfConfig {    
@@ -62,8 +69,8 @@ export interface HideIfConfig {
 }
 
 export interface EntityCondition {
-    condition: string;
-    value: string | number;
+    condition?: string;
+    value?: string | number;
     attribute?: string;
     entity?: string;
     icon?: string;
