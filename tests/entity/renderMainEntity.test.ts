@@ -8,7 +8,6 @@ import { getRenderString } from "../utils";
 describe('Testing entity file function renderMainEntity', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
-    const element: LitElement = createMock<LitElement>();
     stateObj.entity_id = 'light.test_entity';
     stateObj.state = 'on';
     
@@ -19,7 +18,7 @@ describe('Testing entity file function renderMainEntity', () => {
             type: ''
         };
 
-        expect(renderMainEntity(undefined, config, hass, element)).toBeNull();
+        expect(renderMainEntity(undefined, config, hass)).toBeNull();
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement expected html with state', () => {      
         
@@ -33,10 +32,10 @@ describe('Testing entity file function renderMainEntity', () => {
             type: ''
         };
 
-        const result = renderMainEntity(entity, config, hass, element);
+        const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> on </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> on </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement expected html without state', () => {      
         
@@ -51,10 +50,10 @@ describe('Testing entity file function renderMainEntity', () => {
             type: ''
         };
 
-        const result = renderMainEntity(entity, config, hass, element);
+        const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement with icon expected html with icon', () => {      
         
@@ -70,10 +69,10 @@ describe('Testing entity file function renderMainEntity', () => {
             icon: 'mdi:desk'
         };
 
-        const result = renderMainEntity(entity, config, hass, element);
+        const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge> </div>');
     }),
     test('Passing RoomCardEntity with icon, RoomcardConfig, HomeAssistant and LitElement with icon expected html with icon', () => {      
         
@@ -89,10 +88,10 @@ describe('Testing entity file function renderMainEntity', () => {
             type: ''
         };
 
-        const result = renderMainEntity(entity, config, hass, element);
+        const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement with empty entities', () => {      
         
@@ -108,9 +107,9 @@ describe('Testing entity file function renderMainEntity', () => {
             entities: []
         };
 
-        const result = renderMainEntity(entity, config, hass, element);
+        const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div>');
     })
 });

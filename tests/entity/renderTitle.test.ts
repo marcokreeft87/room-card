@@ -42,6 +42,6 @@ describe('Testing entity file function renderValue', () => {
         const result = renderTitle(entity, config, hass, element);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<div class="title"><div class="main-state entity" style="" @click="" @dblclick=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+        expect(htmlResult).toMatch('<div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
     })
 });

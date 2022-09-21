@@ -75,4 +75,7 @@ export const style = css`
     .width-100 {
         width: 100%
     }
+    .clickable {
+        cursor: pointer;
+    }
 `;
