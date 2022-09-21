@@ -41,8 +41,6 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        console.log(htmlResult);
-
         expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="entities-info-row"> </div> </div> <div class="entities-row"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling setconfig should set config', () => {   
