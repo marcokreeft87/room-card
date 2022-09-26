@@ -46,7 +46,7 @@ jobs:
       - run: npm install
       
       - name: Run Tests
-        run: npm run workflow
+        run: npm run test -- entity/renderEntity.test.ts
         
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
