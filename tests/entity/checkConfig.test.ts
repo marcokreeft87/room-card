@@ -1,6 +1,7 @@
 import { checkConfig } from '../../src/entity';
 import { RoomCardConfig } from '../../src/types/room-card-types';
 import { StubHassEntity } from '../testdata';
+import { executeErrorFunction } from '../utils';
 
 describe('Testing entity file function checkConfig', () => {
     test('Passing empty RoomCardConfig should throw error', () => {   
@@ -8,6 +9,8 @@ describe('Testing entity file function checkConfig', () => {
             entityIds: [],
             type: ''
         }
+
+        executeErrorFunction(checkConfig(config), true, 'Please define entities.');
         expect(() => { checkConfig(config); }).toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with entities should not throw error', () => {   
@@ -28,7 +31,7 @@ describe('Testing entity file function checkConfig', () => {
                 stateObj: StubHassEntity
               }]
         }
-        expect(() => checkConfig(config)).not.toThrowError('Please define entities.');
+        expect(() => { checkConfig(config); }).not.toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with rows should not throw error', () => {   
         const config: RoomCardConfig = {
