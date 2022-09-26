@@ -40,7 +40,7 @@ describe('Testing entity file function checkConfig', () => {
                   }]
               }]
         }
-        expect(() => checkConfig(config)).not.toThrowError('Please define entities.');
+        expect(() => { checkConfig(config); }).not.toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with entities should not throw error', () => {   
         const config: RoomCardConfig = {
@@ -58,7 +58,7 @@ describe('Testing entity file function checkConfig', () => {
                   }]
               }]
         }
-        expect(() => checkConfig(config)).not.toThrowError('Please define entities.');
+        expect(() => { checkConfig(config); }).not.toThrowError('Please define entities.');
     })
 })
 

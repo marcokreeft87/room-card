@@ -35,7 +35,7 @@ describe('Testing entity file function entityIcon', () => {
             icon: 'mdi:chair'
         };
         
-        expect(() => entityIcon(stateObj, config, hass)).toThrowError('Icon defined but show_icon is set to false or not defined. Please set show_icon to true');
+        expect(() => { entityIcon(stateObj, config, hass); }).toThrowError('Icon defined but show_icon is set to false or not defined. Please set show_icon to true');
     }),
     test('Passing config with icon state_on/state_off and stateObj not support domain should return undefined', () => {    
         

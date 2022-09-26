@@ -31,14 +31,14 @@ describe('Testing util file function evalTemplate', () => {
         stateObj.state = '18';
         const funcString = "throw new Error();";
 
-        expect(() => evalTemplate(undefined, stateObj, funcString)).toThrowError("Error:  in 'throw new Error();'");
+        expect(() => { evalTemplate(undefined, stateObj, funcString); }).toThrowError("Error:  in 'throw new Error();'");
     }),
     test('Passing HomeAssistant, HassEntity and long Func should throw error', () => {
 
         stateObj.state = '18';
         const funcString = "const t = 'Sww7Ih6qNw9OY0boSmFYvoKEXoTXu3iN66Dn0z5vjkJ0rk0jYctLzBN3hmz44pB65raNquYGdZyhLSglctob7WWxNr0kpzEILaRD'; throw new Error();";
 
-        expect(() => evalTemplate(undefined, stateObj, funcString)).toThrowError("Error:  in 'const t = 'Sww7Ih6qNw9OY0boSmFYvoKEXoTXu3iN66Dn0z5vjkJ0rk0jYctLzBN3hmz44pB65raNquYGdZyhLSglctob7WW...'");
+        expect(() => { evalTemplate(undefined, stateObj, funcString); }).toThrowError("Error:  in 'const t = 'Sww7Ih6qNw9OY0boSmFYvoKEXoTXu3iN66Dn0z5vjkJ0rk0jYctLzBN3hmz44pB65raNquYGdZyhLSglctob7WW...'");
     })
 })
 
