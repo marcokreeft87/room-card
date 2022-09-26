@@ -20,6 +20,29 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
+      # - run: npm install
+      
+      # - name: Run Tests
+      #   run: npm run workflow
+        
+      # - name: Run Jest
+      #   uses: willcaul/jest-github-action@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     test-command: "npm run workflow"
+
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: "plugin"
+          ignore: brands
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - run: npm install
       
       - name: Run Tests
@@ -30,10 +53,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "npm run workflow"
+          test-command: "npm run test -- entity/renderIcon.test.ts"
 
-      - name: HACS validation
-        uses: hacs/action@main
-        with:
-          category: "plugin"
-          ignore: brands
+  #       - uses: actions/checkout@v3
+  #       - uses: ArtiomTr/jest-coverage-report-action@v2
+  #         id: coverage
+  #         with:
+  #             output: report-markdown
+  #       - uses: marocchino/sticky-pull-request-comment@v2
+  #         with:
+  #             message: ${{ steps.coverage.outputs.report }}
+  #             test-script: npm test

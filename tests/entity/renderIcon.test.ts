@@ -281,8 +281,6 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        console.log(htmlResult);
-
         expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:test3" .stateColor="" style="color:red" ></state-badge>');
     })
 });
