@@ -53,7 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "npm run test -- entity/renderEntity.test.ts"
+          test-command: "npm run test -- entity/renderIcon.test.ts"
 
   #       - uses: actions/checkout@v3
   #       - uses: ArtiomTr/jest-coverage-report-action@v2
