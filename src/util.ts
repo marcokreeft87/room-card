@@ -1,4 +1,4 @@
-import { HomeAssistant, LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
+import { HomeAssistant, LovelaceCardConfig, createThing } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
@@ -88,25 +88,6 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
         return;
     }
 
-    const createError = (error: string, origConfig: LovelaceCardConfig) : LovelaceCard => {
-        return createThing('hui-error-card', {
-            type: 'error',
-            error,
-            origConfig,
-        });
-    };
-
-    const createThing = (tag: string, config: LovelaceCardConfig) : LovelaceCard => {
-        const element = document.createElement(tag) as LovelaceCard;
-        try {
-            element.setConfig(config);
-        } catch (err) {
-            console.error(tag, err);
-            return createError(err.message, config);
-        }
-        return element;
-    };
-
     let tag = cardConfig.type;
     if (tag.startsWith('divider')) {
         tag = `hui-divider-row`;
@@ -116,7 +97,7 @@ export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssi
         tag = `hui-${tag}-card`;
     }
 
-    const element = createThing(tag, cardConfig);
+    const element = createThing(cardConfig);
     element.hass = hass;
     element.style.boxShadow = 'none';
     element.style.borderRadius = '0';

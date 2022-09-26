@@ -2,6 +2,11 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 10502  %}
+- Fixed `Some custom cards (like gauge and thermostat) gave the error 'n.setConfig is not a function'`
+- Added `New version numbering method (1.05.02 in stead of 1.5.2) to make smaller updates possible`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 151  %}
 - Fixed `Main entity is no longer required`
 {% endif %}
