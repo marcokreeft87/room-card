@@ -8,7 +8,7 @@ describe('Testing entity file function checkConfig', () => {
             entityIds: [],
             type: ''
         }
-        expect(() => checkConfig(config)).toThrowError('Please define entities.');
+        expect(() => { checkConfig(config); }).toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with entities should not throw error', () => {   
         const config: RoomCardConfig = {
@@ -18,7 +18,7 @@ describe('Testing entity file function checkConfig', () => {
                 stateObj: StubHassEntity
               }]
         }
-        expect(() => checkConfig(config)).not.toThrowError('Please define entities.');
+        expect(() => { checkConfig(config); }).not.toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with info_entities should not throw error', () => {   
         const config: RoomCardConfig = {
