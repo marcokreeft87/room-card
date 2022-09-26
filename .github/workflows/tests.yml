@@ -37,7 +37,7 @@ jobs:
         with:
           category: "plugin"
           ignore: brands
-          
+
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
@@ -50,3 +50,4 @@ jobs:
         - uses: marocchino/sticky-pull-request-comment@v2
           with:
               message: ${{ steps.coverage.outputs.report }}
+              test-script: npm test
