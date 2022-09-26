@@ -46,13 +46,13 @@ jobs:
       - run: npm install
       
       - name: Run Tests
-        run: npm run workflow
+        run: npm run test -- entity/renderIcon.test.ts
         
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
+        with: 
           test-command: "npm run test -- entity/renderIcon.test.ts"
 
   #       - uses: actions/checkout@v3
