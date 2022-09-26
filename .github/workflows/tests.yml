@@ -46,7 +46,7 @@ jobs:
       - run: npm install
       
       - name: Run Tests
-        run: npm run test -- entity/renderEntity.test.ts
+        run: npm run test -- entity/checkConfig.test.ts
         
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
