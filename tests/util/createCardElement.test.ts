@@ -1,12 +1,13 @@
 import { LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
+import * as customHelpers from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { createCardElement } from '../../src/util';
 import { StubHassEntity, StubHomeAssistant } from '../testdata';
 
 describe('Testing util file function createCardElement', () => {
-    let spy: jest.SpyInstance<HTMLElement, [tagName: string, options?: ElementCreationOptions | undefined]>;
+    let spy: jest.SpyInstance<HTMLElement, [cardConfig: any, isRow?: boolean]>;
     beforeEach(() => {
-        spy = jest.spyOn(document, 'createElement');
+        spy = jest.spyOn(customHelpers, 'createThing');
         jest.spyOn(console, 'log').mockImplementation(jest.fn());
         jest.spyOn(console, 'debug').mockImplementation(jest.fn());
         jest.spyOn(console, 'error').mockImplementation(jest.fn());
@@ -29,52 +30,33 @@ describe('Testing util file function createCardElement', () => {
         cardConfig.type = 'entities';
 
         const htmlElement = document.createElement('hui-entities-card') as LovelaceCard;
-        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
-        expect(result?.outerHTML).toBe('<hui-entities-card style="display: None; box-shadow: none; border-radius: 0;"></hui-entities-card>');
+        expect(result?.outerHTML).toBe('<hui-entities-card style="box-shadow: none; border-radius: 0;"></hui-entities-card>');
     }),
     test('Passing LovelaceCardConfig with show_states and hass should return divider card', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'divider';
 
         const htmlElement = document.createElement('hui-divider-row') as LovelaceCard;
-        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
-        expect(result?.outerHTML).toBe('<hui-divider-row style="display: None; box-shadow: none; border-radius: 0;"></hui-divider-row>');
+        expect(result?.outerHTML).toBe('<hui-divider-row style="box-shadow: none; border-radius: 0;"></hui-divider-row>');
     }),
     test('Passing LovelaceCardConfig with show_states and hass should return room-card card', () => {
         const cardConfig = createMock<LovelaceCardConfig>();
         cardConfig.type = 'custom:room-card';
 
         const htmlElement = document.createElement('room-card') as LovelaceCard;
-        htmlElement.setConfig = () => { htmlElement.hass = StubHomeAssistant };
 
         spy.mockReturnValueOnce(htmlElement);
         const result = createCardElement(cardConfig, StubHomeAssistant);
 
-        expect(result?.outerHTML).toBe('<room-card style="display: None; box-shadow: none; border-radius: 0;"></room-card>');
-    }),
-    test('Passing LovelaceCardConfig with show_states and hass should return error', () => {
-        const cardConfig = createMock<LovelaceCardConfig>();
-        cardConfig.type = 'entities';
-
-        const htmlElement = document.createElement('room-card') as LovelaceCard;
-        htmlElement.setConfig = () => { throw new Error(); };
-
-        const errorElement = document.createElement('hui-error-card') as LovelaceCard;
-        errorElement.setConfig = () => jest.fn();
-
-        spy.mockReturnValueOnce(htmlElement);
-        spy.mockReturnValueOnce(errorElement);
-        const result = createCardElement(cardConfig, StubHomeAssistant);
-
-        expect(result?.outerHTML).toBe('<hui-error-card style="display: None; box-shadow: none; border-radius: 0;"></hui-error-card>');
+        expect(result?.outerHTML).toBe('<room-card style="box-shadow: none; border-radius: 0;"></room-card>');
     })
 })
 

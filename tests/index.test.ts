@@ -1,5 +1,6 @@
 import { HomeAssistant, LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
-import { html, PropertyValues } from 'lit';
+import * as customHelpers from 'custom-card-helpers';
+import { PropertyValues } from 'lit';
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
 import RoomCard from '../src/index';
@@ -12,9 +13,10 @@ describe('Testing index file class RoomCard', () => {
     // Create Main Entity
     createEntity('light.test_entity', hass, 'on', { icon: 'mdi:table' });
 
-    let spy: jest.SpyInstance<HTMLElement, [tagName: string, options?: ElementCreationOptions | undefined]>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let spy: jest.SpyInstance<HTMLElement, [cardConfig: any, isRow?: boolean]>;
     beforeEach(() => {
-        spy = jest.spyOn(document, 'createElement');
+        spy = jest.spyOn(customHelpers, 'createThing');
         jest.spyOn(console, 'error').mockImplementation(jest.fn());
     });
     test('Calling render without hass and config should return empty html', () => {   
@@ -269,10 +271,8 @@ describe('Testing index file class RoomCard', () => {
         }
 
         const entitiesElement = document.createElement('entities') as LovelaceCard;
-        entitiesElement.setConfig = () => jest.fn();
 
         const graphElement = document.createElement('mini-graph') as LovelaceCard;
-        graphElement.setConfig = () => jest.fn();
 
         spy.mockReturnValueOnce(entitiesElement);
         spy.mockReturnValueOnce(graphElement);
