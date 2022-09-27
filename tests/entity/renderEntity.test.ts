@@ -96,53 +96,53 @@ describe('Testing entity file function renderEntity', () => {
         expect(clearTimeoutFn).toHaveBeenCalledTimes(4);
         expect(clickHandler).toHaveBeenCalled();
     }),
-    test('End with double click function too slow should fire clickhandler', async () => {   
+    // test('End with double click function too slow should fire clickhandler', async () => {   
         
-        const clickHandler = jest.spyOn(entityModule, 'clickHandler');
+    //     const clickHandler = jest.spyOn(entityModule, 'clickHandler');
 
-        const entity: RoomCardEntity = createMock<RoomCardEntity>({
-            stateObj: stateObj,
-            double_tap_action: createMock<ActionConfig>()
-        });
+    //     const entity: RoomCardEntity = createMock<RoomCardEntity>({
+    //         stateObj: stateObj,
+    //         double_tap_action: createMock<ActionConfig>()
+    //     });
         
-        const result = renderEntity(entity, hass, element);
-        const endFn = result.values[2] as Function;
+    //     const result = renderEntity(entity, hass, element);
+    //     const endFn = result.values[2] as Function;
 
-        const mouseEvent = createMock<MouseEvent>({
-            preventDefault: jest.fn(),
-            detail: 1,
-            type: 'click'
-        });
+    //     const mouseEvent = createMock<MouseEvent>({
+    //         preventDefault: jest.fn(),
+    //         detail: 1,
+    //         type: 'click'
+    //     });
          
-        endFn(mouseEvent);
-        expect(setTimeoutFn).toHaveBeenCalled();
+    //     endFn(mouseEvent);
+    //     expect(setTimeoutFn).toHaveBeenCalled();
         
-        await new Promise((r) => setTimeout(r, 550));
+    //     await new Promise((r) => setTimeout(r, 550));
 
-        expect(clickHandler).toHaveBeenCalled();
-    }),
-    test('Hold should fire holdhandler', async () => {   
+    //     expect(clickHandler).toHaveBeenCalled();
+    // }),
+    // test('Hold should fire holdhandler', async () => {   
 
-        const holdHandler = jest.spyOn(entityModule, 'holdHandler');
-        const entity: RoomCardEntity = createMock<RoomCardEntity>({
-            stateObj: stateObj
-        });
+    //     const holdHandler = jest.spyOn(entityModule, 'holdHandler');
+    //     const entity: RoomCardEntity = createMock<RoomCardEntity>({
+    //         stateObj: stateObj
+    //     });
         
-        const result = renderEntity(entity, hass, element);
-        const startFn = result.values[1] as Function;
-        const endFn = result.values[2] as Function;
+    //     const result = renderEntity(entity, hass, element);
+    //     const startFn = result.values[1] as Function;
+    //     const endFn = result.values[2] as Function;
 
-        const mouseEvent = createMock<MouseEvent>({
-            preventDefault: jest.fn()
-        });
+    //     const mouseEvent = createMock<MouseEvent>({
+    //         preventDefault: jest.fn()
+    //     });
 
-        startFn();
-        await new Promise((r) => setTimeout(r, 550));
-        endFn(mouseEvent);
+    //     startFn();
+    //     await new Promise((r) => setTimeout(r, 550));
+    //     endFn(mouseEvent);
 
-        expect(setTimeoutFn).toHaveBeenCalled();
-        expect(holdHandler).toHaveBeenCalled();
-    }),
+    //     expect(setTimeoutFn).toHaveBeenCalled();
+    //     expect(holdHandler).toHaveBeenCalled();
+    // }),
     test('Passing entity with styles should return expected html', () => {   
 
         const entity: RoomCardEntity = createMock<RoomCardEntity>({
