@@ -46,17 +46,17 @@ jobs:
 
       - run: npm install
 
-      - name: jest test with Coverage
+      - name: Jest test with Coverage
         continue-on-error: true
         working-directory: 'tests' 
-        run: npm run test --json --outputFile=jest-results.json
+        run: npm run test --json --outputFile=/home/runner/work/room-card/room-card/jest-results.json
 
       - name: Process jest results with default
         if: always()
         uses: im-open/process-jest-test-results@v2.0.6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-file: 'jest-results.json'
+          results-file: '/home/runner/work/room-card/room-card/jest-results.json'
 
   # coverage:
   #   name: Coverage
