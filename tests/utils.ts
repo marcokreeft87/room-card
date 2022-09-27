@@ -4,19 +4,6 @@ import { createMock } from "ts-auto-mock";
 import { HassEntity, HassEntityAttributeBase } from 'home-assistant-js-websocket';
 import { HomeAssistantEntity, RoomCardEntity } from "../src/types/room-card-types";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const executeErrorFunction = (fx: void, shouldThrow: boolean, message?: string) : boolean =>  {
-    try {
-       // fx();
-        return !shouldThrow;
-    } catch (error) {
-        if(shouldThrow && message) {
-            return error.message === message;
-        }
-        return shouldThrow;
-    }
-}
-
 export const createEntity = (entity_id: string, hass: HomeAssistant, state: string, attributes: HassEntityAttributeBase = {}) : RoomCardEntity => {
     const stateObj = createMock<HomeAssistantEntity>();    
     stateObj.entity_id = entity_id;
