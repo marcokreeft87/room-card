@@ -49,7 +49,7 @@ jobs:
       - name: jest test with results file
         continue-on-error: true
         working-directory: 'tests' 
-        run: npm run workflow
+        run:  npm run test -- index.test.ts
       
       - name: Process jest results
         id: process-jest
