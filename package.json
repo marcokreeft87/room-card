@@ -49,6 +49,6 @@
     "build": "yarn lint && webpack -c webpack.config.js",
     "test": "jest",
     "coverage": "jest --coverage",
-    "workflow": "jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json",
+    "workflow": "jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json"
   }
 }
