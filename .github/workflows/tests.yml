@@ -12,99 +12,27 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  hacs:
-    runs-on: "ubuntu-latest"
-    name: Test and validate
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
+hacs:
+  runs-on: "ubuntu-latest"
+  name: Test and validate
+  steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
 
-      # - run: npm install
+    - run: npm install
+    
+    - name: Run Tests
+      run: npm run workflow
       
-      # - name: Run Tests
-      #   run: npm run workflow
-        
-      # - name: Run Jest
-      #   uses: willcaul/jest-github-action@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     test-command: "npm run workflow"
+    - name: Run Jest
+      uses: willcaul/jest-github-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        test-command: "npm run workflow"
 
-      - name: HACS validation
-        uses: hacs/action@main
-        with:
-          category: "plugin"
-          ignore: brands
-
-  # ci:
-  #   runs-on: "ubuntu-latest"
-  #   steps:
-  #     - name: Check out the repository
-  #       uses: actions/checkout@v3
-
-  #     - run: npm install
-
-  #     - name: jest test with results file
-  #       continue-on-error: true
-  #       working-directory: 'tests' 
-  #       run:  npm run test -- entity/entityName.test.ts --json --outputFile=/home/runner/work/room-card/room-card/jest-results.json
-      
-  #     - name: Process jest results
-  #       id: process-jest
-  #       uses: im-open/process-jest-test-results@v2.0.6
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         results-file: '/home/runner/work/room-card/room-card/jest-results.json'
-  #         report-name: 'Jest Results'
-  #         create-status-check: true
-  #         create-pr-comment: false
-  #         update-comment-if-one-exists: false
-  #         ignore-test-failures: true
-  #         timezone: 'europe/amsterdam'
-
-  #     - name: Fail if there were errors in the jest tests
-  #       if: steps.process-jest.outputs.test-outcome == 'Failed'
-  #       run: |
-  #         echo "There were test failures."
-  #         exit 1
-
-  #     # - name: Jest test with Coverage
-  #     #   continue-on-error: true
-  #     #   working-directory: 'tests' 
-  #     #   run: npm run test --json --outputFile=/home/runner/work/room-card/room-card/jest-results.json
-
-  #     # - name: Process jest results with default
-  #     #   if: always()
-  #     #   uses: im-open/process-jest-test-results@v2.0.6
-  #     #   with:
-  #     #     github-token: ${{ secrets.GITHUB_TOKEN }}
-  #     #     results-file: '/home/runner/work/room-card/room-card/jest-results.json'
-
-  coverage:
-    name: Test & Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm install
-      
-      - name: Run Tests
-        run: npm run workflow
-        
-      - name: Run Jest
-        uses: willcaul/jest-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with: 
-          test-command: "npm run workflow"
-
-        - uses: actions/checkout@v3
-        - uses: ArtiomTr/jest-coverage-report-action@v2
-          id: coverage
-          with:
-              output: report-markdown
-        - uses: marocchino/sticky-pull-request-comment@v2
-          with:
-              message: ${{ steps.coverage.outputs.report }}
-              test-script: npm test
+    - name: HACS validation
+      uses: hacs/action@main
+      with:
+        category: "plugin"
+        ignore: brands
