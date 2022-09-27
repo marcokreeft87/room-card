@@ -7,7 +7,7 @@ import { HomeAssistantEntity, RoomCardEntity } from "../src/types/room-card-type
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const executeErrorFunction = (fx: void, shouldThrow: boolean, message?: string) : boolean =>  {
     try {
-        fx();
+       // fx();
         return !shouldThrow;
     } catch (error) {
         if(shouldThrow && message) {

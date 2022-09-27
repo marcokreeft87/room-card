@@ -10,7 +10,7 @@ describe('Testing entity file function checkConfig', () => {
             type: ''
         }
 
-        executeErrorFunction(checkConfig(config), true, 'Please define entities.');
+        //executeErrorFunction(checkConfig(config), true, 'Please define entities.');
         expect(() => { checkConfig(config); }).toThrowError('Please define entities.');
     }),
     test('Passing RoomCardConfig with entities should not throw error', () => {   
