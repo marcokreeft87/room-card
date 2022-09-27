@@ -11,7 +11,7 @@ describe('Testing entity file function renderValue', () => {
     hass.localize = jest.fn();
     hass.locale = {
         language: 'NL', 
-        number_format: NumberFormat.comma_decimal,
+        number_format: NumberFormat.decimal_comma,
         time_format: TimeFormat.language
     }
 
@@ -86,9 +86,9 @@ describe('Testing entity file function renderValue', () => {
     ${'brightness'}  ${'77'}  ${'30 %'}
     ${'duration'}  ${'1000'}  ${'16:40'}
     ${'duration-m'}  ${'1000'}  ${'1'}
-    ${'precision2'}  ${'2.2324'}  ${'2.23'}
+    ${'precision2'}  ${'2,2324'}  ${'2,23'}
     ${'kilo'}  ${'1000'}  ${'1'}
-    ${'invert'}  ${'1000'}  ${'-1,000'}
+    ${'invert'}  ${'1000'}  ${'-1.000'}
     ${'position'}  ${'10'}  ${'90'}
     ${'position'}  ${'notanumber'}  ${'notanumber'}
     
@@ -101,6 +101,35 @@ describe('Testing entity file function renderValue', () => {
         };
         
         expect(renderValue(entity, hass)).toBe(expected);
+    }),
+    test.each`
+    format | state | expected
+    ${'brightness'}  ${'77'}  ${'30 %'}
+    ${'duration'}  ${'1000'}  ${'16:40'}
+    ${'duration-m'}  ${'1000'}  ${'1'}
+    ${'precision2'}  ${'2.2324'}  ${'2.23'}
+    ${'kilo'}  ${'1000'}  ${'1'}
+    ${'invert'}  ${'1000'}  ${'-1,000'}
+    ${'position'}  ${'10'}  ${'90'}
+    ${'position'}  ${'notanumber'}  ${'notanumber'}
+    
+    `('Passing RoomCardEntity and HomeAssistant with English locale should return formatted value', ({format, state, expected}) => {    
+        
+        const hassEnglish = createMock<HomeAssistant>();
+        hassEnglish.localize = jest.fn();
+        hassEnglish.locale = {
+            language: 'en', 
+            number_format: NumberFormat.comma_decimal,
+            time_format: TimeFormat.language
+        }
+
+        stateObj.state = state;
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            format: format
+        };
+        
+        expect(renderValue(entity, hassEnglish)).toBe(expected);
     }),
     test.each`
     unit | attribute | attribute_value | expected
