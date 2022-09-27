@@ -38,22 +38,39 @@ jobs:
           category: "plugin"
           ignore: brands
 
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
+  ci:
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
-      - run: npm install
+
+      - name: jest test with Coverage
+        continue-on-error: true
+        working-directory: 'tests' 
+        run: jest --json --outputFile=jest-results.json
+
+      - name: Process jest results with default
+        if: always()
+        uses: im-open/process-jest-test-results@v2.0.6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          results-file: 'tests/jest-results.json'
+
+  # coverage:
+  #   name: Coverage
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - run: npm install
       
-      - name: Run Tests
-        run: npm run workflow
+  #     - name: Run Tests
+  #       run: npm run workflow
         
-      - name: Run Jest
-        uses: willcaul/jest-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with: 
-          test-command: "npm run workflow"
+  #     - name: Run Jest
+  #       uses: willcaul/jest-github-action@v2
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with: 
+  #         test-command: "npm run workflow"
 
   #       - uses: actions/checkout@v3
   #       - uses: ArtiomTr/jest-coverage-report-action@v2
