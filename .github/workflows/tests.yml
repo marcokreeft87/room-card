@@ -46,7 +46,7 @@ jobs:
       - name: jest test with Coverage
         continue-on-error: true
         working-directory: 'tests' 
-        run: jest --json --outputFile=jest-results.json
+        run: npm run test --json --outputFile=jest-results.json
 
       - name: Process jest results with default
         if: always()
