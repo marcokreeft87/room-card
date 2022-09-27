@@ -49,7 +49,7 @@ jobs:
       - name: jest test with results file
         continue-on-error: true
         working-directory: 'tests' 
-        run: jest --json --outputFile=/home/runner/work/room-card/room-card/jest-results.json
+        run: npm run jest --json --outputFile=/home/runner/work/room-card/room-card/jest-results.json
       
       - name: Process jest results
         id: process-jest
