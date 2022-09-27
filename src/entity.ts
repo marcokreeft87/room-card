@@ -2,7 +2,7 @@ import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, hideIf, isObject, isUnavailable } from './util';
-import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
+import { ActionConfig, handleClick, HomeAssistant, NumberFormat } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
@@ -79,7 +79,16 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
             : entity.unit || entity.stateObj.attributes.unit_of_measurement;
 
     if (entity.format) {
-        if (isNaN(parseFloat(value)) || !isFinite(value)) {
+        if (entity.format.startsWith('precision')) {
+            
+            const precision = parseInt(entity.format.slice(-1), 10);
+            const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.replaceAll(",",".")
+            value = formatNumber(localizedValue, hass.locale, {
+                minimumFractionDigits: precision,
+                maximumFractionDigits: precision,
+            });
+        } 
+        else if (isNaN(parseFloat(value)) || !isFinite(value)) {
             // do nothing if not a number
         } else if (entity.format === 'brightness') {
             value = Math.round((value / 255) * 100);
@@ -87,12 +96,6 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
         } else if (entity.format.startsWith('duration')) {
             value = secondsToDuration(entity.format === 'duration-m' ? value / 1000 : value);
             unit = undefined;
-        } else if (entity.format.startsWith('precision')) {
-            const precision = parseInt(entity.format.slice(-1), 10);
-            value = formatNumber(parseFloat(value), hass.locale, {
-                minimumFractionDigits: precision,
-                maximumFractionDigits: precision,
-            });
         } else if (entity.format === 'kilo') {
             value = formatNumber(value / 1000, hass.locale, { maximumFractionDigits: 2 });
         } else if (entity.format === 'invert') {
