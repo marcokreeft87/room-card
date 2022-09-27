@@ -56,7 +56,7 @@ jobs:
         uses: im-open/process-jest-test-results@v2.0.6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-file: 'jest.json'
+          results-file: '/home/runner/work/room-card/room-card/jest-results.json'
           report-name: 'Jest Results'
           create-status-check: true
           create-pr-comment: false
