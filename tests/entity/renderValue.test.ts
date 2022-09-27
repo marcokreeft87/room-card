@@ -147,6 +147,19 @@ describe('Testing entity file function renderValue', () => {
         };
         
         expect(renderValue(entity, hass)).toBe(expected);
+    }),
+    test('Passing hass and state on entity with unit and format should return expected', () => {  
+        
+        stateObj.state = 'on';
+        stateObj.attributes['money'] = 25.2323;
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            attribute: 'money',
+            unit: 'L',
+            format: 'precision2'
+        };
+        
+        expect(renderValue(entity, hass)).toBe('25,23 L');
     })
 })
 

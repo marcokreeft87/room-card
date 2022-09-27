@@ -82,7 +82,7 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
         if (entity.format.startsWith('precision')) {
             
             const precision = parseInt(entity.format.slice(-1), 10);
-            const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.replaceAll(",",".")
+            const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.toString().replaceAll(",",".")
             value = formatNumber(localizedValue, hass.locale, {
                 minimumFractionDigits: precision,
                 maximumFractionDigits: precision,

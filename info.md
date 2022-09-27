@@ -2,6 +2,14 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 10504  %}
+- Fixed `When giving precision and unit error was thrown`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10503  %}
+- Fixed `Precision format not working correct when using decimal point locale`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10502  %}
 - Fixed `Some custom cards (like gauge and thermostat) gave the error 'n.setConfig is not a function'`
 - Added `New version numbering method (1.05.02 in stead of 1.5.2) to make smaller updates possible`
