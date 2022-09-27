@@ -103,24 +103,24 @@ describe('Testing index file class RoomCard', () => {
 
         expect(result).toBeTruthy();
     }),
-    // test('Calling render should throw error', () => {   
+    test('Calling render should throw error', () => {   
 
-    //     const config: RoomCardConfig = {
-    //         entity: 'light.test_entity',
-    //         entityIds: ['light.test_entity'],
-    //         type: "custom:room-card",
-    //         title: 'Test title',
-    //         icon: 'mdi:test-icon'
-    //     }
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: "custom:room-card",
+            title: 'Test title',
+            icon: 'mdi:test-icon'
+        }
 
-    //     roomcard.setConfig(config);
-    //     roomcard.hass = hass;
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
 
-    //     const result = roomcard.render();
-    //     const htmlResult = getRenderString(result);
+        const result = roomcard.render();
+        const htmlResult = getRenderString(result);
 
-    //     expect(htmlResult).toMatch('<hui-warning>Error: Entity: light.test_entity => Icon defined but show_icon is set to false or not defined. Please set show_icon to true</hui-warning>');
-    // }),
+        expect(htmlResult).toMatch('<hui-warning>Error: Entity: light.test_entity => Icon defined but show_icon is set to false or not defined. Please set show_icon to true</hui-warning>');
+    }),
     test('Calling render without entities, info_entities and rows should return expected html', () => {   
         
         const config: RoomCardConfig = {
