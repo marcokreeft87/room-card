@@ -12,27 +12,28 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-hacs:
-  runs-on: "ubuntu-latest"
-  name: Test and validate
-  steps:
-    - name: Check out the repository
-      uses: actions/checkout@v3
+jobs:
+  hacs:
+    runs-on: "ubuntu-latest"
+    name: Test and validate
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
 
-    - run: npm install
-    
-    - name: Run Tests
-      run: npm run workflow
+      - run: npm install
       
-    - name: Run Jest
-      uses: willcaul/jest-github-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        test-command: "npm run workflow"
+      - name: Run Tests
+        run: npm run workflow
+        
+      - name: Run Jest
+        uses: willcaul/jest-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          test-command: "npm run workflow"
 
-    - name: HACS validation
-      uses: hacs/action@main
-      with:
-        category: "plugin"
-        ignore: brands
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: "plugin"
+          ignore: brands
