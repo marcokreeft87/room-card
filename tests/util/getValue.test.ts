@@ -16,7 +16,7 @@ describe('Testing util file function getValue', () => {
         StubRoomCardEntity.stateObj.state = 'on';
         StubRoomCardEntity.attribute = 'nonexisting';
         StubRoomCardEntity.stateObj.attributes['testattribute'] = 'test'
-        expect(getValue(StubRoomCardEntity)).toBe(undefined);
+        expect(() => getValue(StubRoomCardEntity)).toThrowError(`Entity: '${StubRoomCardEntity.entity}' has no attribute named '${StubRoomCardEntity.attribute}'`);
     })
 })
 

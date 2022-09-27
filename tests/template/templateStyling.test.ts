@@ -1,10 +1,10 @@
 import { HomeAssistant } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { templateStyling } from '../../src/entity';
+import { templateStyling } from '../../src/template';
 import { HomeAssistantEntity, RoomCardConfig } from '../../src/types/room-card-types';
 
-describe('Testing entity file function templateStyling', () => {
+describe('Testing template file function templateStyling', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
 

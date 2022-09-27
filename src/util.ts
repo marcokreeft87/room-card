@@ -3,6 +3,7 @@ import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig } from './types/room-card-types';
+import { mapTemplate } from './template';
 
 export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
@@ -12,6 +13,10 @@ export const hideUnavailable = (entity: RoomCardEntity) : boolean =>
     entity.hide_unavailable && isUnavailable(entity.stateObj);
 
 export const getValue = (entity: RoomCardEntity) => {
+    if(entity.attribute && entity.stateObj.attributes[entity.attribute] === undefined) {
+        throw new Error(`Entity: '${entity.entity}' has no attribute named '${entity.attribute}'`);
+    }
+
     return entity.attribute ? entity.stateObj.attributes[entity.attribute] : entity.stateObj.state;
 }
 
@@ -78,8 +83,11 @@ export const checkConditionalValue = (item: EntityCondition, checkValue: unknown
     }
 }
 
-export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssistant) : RoomCardEntity => {        
-    const conf = typeof entity === 'string' ? { entity: entity } : entity;
+export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssistant, config: RoomCardConfig) : RoomCardEntity => {        
+    let conf = typeof entity === 'string' ? { entity: entity } : entity;
+
+    conf = mapTemplate(conf as RoomCardEntity, config);
+
     return { ...conf, stateObj: hass.states[conf.entity] };
 }
 

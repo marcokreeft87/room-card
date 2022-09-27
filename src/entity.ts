@@ -6,6 +6,7 @@ import { ActionConfig, handleClick, HomeAssistant, NumberFormat } from 'custom-c
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
+import { templateStyling } from './template';
 
 export const checkConfig = (config: RoomCardConfig) => {
     if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {
@@ -198,13 +199,6 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
         .stateColor="${config.state_color}"
         style="${customStyling ?? entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null)}"
     ></state-badge>`;
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const templateStyling = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) : Function => {
-    const icon = (config.icon as RoomCardIcon);
-
-    return icon?.template?.styles !== undefined ? evalTemplate(hass, stateObj, icon.template.styles) : null;
 }
 
 export const renderValue = (entity: RoomCardEntity, hass: HomeAssistant) => {

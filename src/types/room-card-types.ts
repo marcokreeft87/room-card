@@ -20,6 +20,7 @@ export interface RoomCardEntity {
     show_state?: boolean;
     styles?: EntityStyles;
     icon?: string | RoomCardIcon;
+    template?: string;
 }
 
 export interface EntityStyles {
@@ -41,6 +42,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     title?: string;
     name?: string;
     styles?: EntityStyles;
+    templates?: RoomCardTemplateContainer[]
 }
 
 export interface RoomCardRow {
@@ -82,4 +84,14 @@ export interface FormattingOptions {
     maximumFractionDigits?: number;
     style?: string;
     currency?: string;
+}
+
+export interface RoomCardTemplateContainer {    
+    name: string;
+    template: RoomCardTemplateDefinition;
+}
+
+export interface RoomCardTemplateDefinition {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
 }

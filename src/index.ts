@@ -56,12 +56,12 @@ export default class RoomCard extends LitElement {
                 this.entity = { ...this.config, stateObj: this.stateObj };
             }
 
-            this.info_entities = this.config.info_entities?.map(entity => mapStateObject(entity, hass)) ?? [];
+            this.info_entities = this.config.info_entities?.map(entity => mapStateObject(entity, hass, this.config)) ?? [];
 
-            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass)) ?? [];
+            this.entities = this.config.entities?.map(entity => mapStateObject(entity, hass, this.config)) ?? [];
             this.rows = 
                 this.config.rows?.map((row) => {
-                    const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass));
+                    const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass, this.config));
                     return { entities: rowEntities };
                 }) ?? [];
 
