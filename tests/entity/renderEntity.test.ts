@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { ActionConfig, HomeAssistant } from 'custom-card-helpers';
+import { ActionConfig, HomeAssistant, NumberFormat, TimeFormat } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { LitElement } from 'lit';
 import { renderEntity } from '../../src/entity';
@@ -244,5 +244,38 @@ describe('Testing entity file function renderEntity', () => {
         const htmlResult = getRenderString(result);
         
         expect(htmlResult).toMatch('<div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span></span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div> </div>');
+    }),
+    test.each`
+    format | state | expected
+    ${'brightness'}  ${'77'}  ${'30 %'}
+    ${'duration'}  ${'1000'}  ${'16:40'}
+    ${'duration-m'}  ${'1000'}  ${'1'}
+    ${'precision2'}  ${'2,2324'}  ${'2,23'}
+    ${'kilo'}  ${'1000'}  ${'1'}
+    ${'invert'}  ${'1000'}  ${'-1.000'}
+    ${'position'}  ${'10'}  ${'90'}
+    ${'position'}  ${'notanumber'}  ${'notanumber'}
+    
+    `('Passing RoomCardEntity and HomeAssistant with locale should return formatted value', ({format, state, expected}) => {    
+        
+        const hassEnglish = createMock<HomeAssistant>();
+        hassEnglish.localize = jest.fn();
+        hassEnglish.locale = {
+            language: 'NL', 
+            number_format: NumberFormat.decimal_comma,
+            time_format: TimeFormat.language
+        }
+
+        stateObj.state = state;
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            format: format,
+            show_state: true
+        };
+        
+        const result = renderEntity(entity, hass, element);
+        const htmlResult = getRenderString(result);
+        
+        expect(htmlResult).toMatch(`<div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span></span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>${expected}</span> </div>`);
     })
 })
