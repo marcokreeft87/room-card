@@ -136,7 +136,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
         return null;
     }
     
-    const entityValue = getValue(entity);
+    //const entityValue = getValue(entity);
     const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
     const onDblClick = dblClickHandler(entity.stateObj.entity_id, entity.double_tap_action, hass, element);        
     const onHold = holdHandler(entity.stateObj.entity_id, entity.hold_action, hass, element);
@@ -180,7 +180,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
             @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}">
             ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity)}</span>` : ''}
             <div>${renderIcon(entity.stateObj, entity, hass)}</div>
-            ${entity.show_state ? html`<span>${entityValue}</span>` : ''}
+            ${entity.show_state ? html`<span>${entityStateDisplay(hass, entity)}</span>` : ''}
         </div>`;
 }
 

@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 10601  %}
+- Fixed `Formatting not working for entities and row entities`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10600  %}
 - Added `Notification when entity doest not have attribute given`
 - Added `Entity templates to make yaml configs smaller and reduce duplications (https://github.com/marcokreeft87/room-card/wiki/Configuration#templates)`
