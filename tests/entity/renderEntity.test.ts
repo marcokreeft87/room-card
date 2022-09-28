@@ -258,9 +258,8 @@ describe('Testing entity file function renderEntity', () => {
     
     `('Passing RoomCardEntity and HomeAssistant with locale should return formatted value', ({format, state, expected}) => {    
         
-        const hassEnglish = createMock<HomeAssistant>();
-        hassEnglish.localize = jest.fn();
-        hassEnglish.locale = {
+        hass.localize = jest.fn();
+        hass.locale = {
             language: 'NL', 
             number_format: NumberFormat.decimal_comma,
             time_format: TimeFormat.language
