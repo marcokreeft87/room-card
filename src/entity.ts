@@ -1,9 +1,9 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, evalTemplate, getValue, hideIf, isObject, isUnavailable } from './util';
+import { checkConditionalValue, evalTemplate, getValue, hideIfEntity, hideIfRow, isObject, isUnavailable } from './util';
 import { ActionConfig, handleClick, HomeAssistant, NumberFormat } from 'custom-card-helpers';
-import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles } from './types/room-card-types';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { templateStyling } from './template';
@@ -83,8 +83,9 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
         if (entity.format.startsWith('precision')) {
             
             const precision = parseInt(entity.format.slice(-1), 10);
-            const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.toString().replaceAll(",",".")
-            value = formatNumber(localizedValue, hass.locale, {
+            //console.log(typeof value, value);
+            //const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.replaceAll(",",".")
+            value = formatNumber(value, hass.locale, {
                 minimumFractionDigits: precision,
                 maximumFractionDigits: precision,
             });
@@ -123,6 +124,14 @@ export const entityStyles = (styles: EntityStyles) =>
             .join('') 
         : '';
 
+export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
+    const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
+
+    return html`${filteredRows.map((row) => {
+        return renderEntitiesRow(row.entities, hass, element, "width-100");
+    })}`;
+}
+
 export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
     if(entities === undefined) {
         return null;
@@ -132,7 +141,7 @@ export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistan
 }
 
 export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
-    if (entity.stateObj == undefined || hideIf(entity, hass)) {
+    if (entity.stateObj == undefined || hideIfEntity(entity, hass)) {
         return null;
     }
     
@@ -258,7 +267,7 @@ export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass
 }
 
 export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
-    if (entity === undefined || !entity.stateObj || hideIf(entity, hass)) {
+    if (entity === undefined || !entity.stateObj || hideIfEntity(entity, hass)) {
         return null;
     }
 

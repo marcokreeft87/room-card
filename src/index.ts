@@ -2,7 +2,7 @@ import { CSSResult, html, LitElement, PropertyValues, TemplateResult } from 'lit
 import { property, customElement } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCard } from 'custom-card-helpers';
 
-import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderTitle } from './entity';
+import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderRows, renderTitle } from './entity';
 import { getEntityIds, hasConfigOrEntitiesChanged, mapStateObject, createCardElement } from './util';
 import { style } from './styles';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
@@ -62,7 +62,7 @@ export default class RoomCard extends LitElement {
             this.rows = 
                 this.config.rows?.map((row) => {
                     const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass, this.config));
-                    return { entities: rowEntities };
+                    return { entities: rowEntities, hide_if: row.hide_if };
                 }) ?? [];
 
             this._refCards = this.config.cards?.map(card => createCardElement(card, hass));
@@ -87,11 +87,9 @@ export default class RoomCard extends LitElement {
                             ${this.info_entities.map((entity) => renderInfoEntity(entity, this._hass, this))}
                         </div>
                     </div>
-                    ${this.rows !== undefined && this.rows.length > 0 ?                    
-                        this.rows.map((row) => {
-                        return renderEntitiesRow(row.entities, this._hass, this, "width-100");
-                        })
-                    : renderEntitiesRow(this.entities, this._hass, this)}
+                    ${this.rows !== undefined && this.rows.length > 0 ? 
+                        renderRows(this.rows, this._hass, this) : 
+                        renderEntitiesRow(this.entities, this._hass, this)}
                     ${this._refCards}
                 </ha-card>
             `;

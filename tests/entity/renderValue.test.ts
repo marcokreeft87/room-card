@@ -83,13 +83,13 @@ describe('Testing entity file function renderValue', () => {
     }),
     test.each`
     format | state | expected
-    ${'brightness'}  ${'77'}  ${'30 %'}
-    ${'duration'}  ${'1000'}  ${'16:40'}
-    ${'duration-m'}  ${'1000'}  ${'1'}
-    ${'precision2'}  ${'2,2324'}  ${'2,23'}
-    ${'kilo'}  ${'1000'}  ${'1'}
-    ${'invert'}  ${'1000'}  ${'-1.000'}
-    ${'position'}  ${'10'}  ${'90'}
+    ${'brightness'}  ${77}  ${'30 %'}
+    ${'duration'}  ${1000}  ${'16:40'}
+    ${'duration-m'}  ${1000}  ${'1'}
+    ${'precision2'}  ${2.2324}  ${'2,23'}
+    ${'kilo'}  ${1000}  ${'1'}
+    ${'invert'}  ${1000}  ${'-1.000'}
+    ${'position'}  ${10}  ${'90'}
     ${'position'}  ${'notanumber'}  ${'notanumber'}
     
     `('Passing RoomCardEntity and HomeAssistant should return formatted value', ({format, state, expected}) => {    
