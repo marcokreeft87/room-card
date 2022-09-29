@@ -2,7 +2,7 @@ import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, hideIfEntity, hideIfRow, isObject, isUnavailable } from './util';
-import { ActionConfig, handleClick, HomeAssistant, NumberFormat } from 'custom-card-helpers';
+import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
@@ -38,25 +38,25 @@ export const entityIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
 }
 
 export const renderConditionIcons = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) => {
-    let entityValue = stateObj.state;
+    const entityValue = stateObj.state;
     const iconConditions = (config.icon as RoomCardIcon).conditions as EntityCondition[];
     const matchedConditions = iconConditions.filter(item => {
 
+        let checkEntityValue = entityValue;
         if(item.entity) {
             const entity = hass.states[item.entity];
-            entityValue = item.attribute ? entity.attributes[item.attribute] : entity.state;
+            checkEntityValue = item.attribute ? entity.attributes[item.attribute] : entity.state;
         }        
 
         if(item.attribute && !item.entity) {                
-            entityValue = stateObj.attributes[item.attribute];
+            checkEntityValue = stateObj.attributes[item.attribute];
         }
 
-        return checkConditionalValue(item, entityValue);
+        return checkConditionalValue(item, checkEntityValue);
     });
     
     return matchedConditions.pop();
 }
-
 export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomCardIcon) => {
     const domain = computeStateDomain(stateObj);
     
@@ -83,8 +83,6 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
         if (entity.format.startsWith('precision')) {
             
             const precision = parseInt(entity.format.slice(-1), 10);
-            //console.log(typeof value, value);
-            //const localizedValue = hass.locale.number_format === NumberFormat.comma_decimal ? value : value.replaceAll(",",".")
             value = formatNumber(value, hass.locale, {
                 minimumFractionDigits: precision,
                 maximumFractionDigits: precision,

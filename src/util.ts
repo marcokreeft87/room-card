@@ -50,19 +50,20 @@ export const hideIfEntity = (entity: RoomCardEntity, hass: HomeAssistant) => {
 
     if (<HideIfConfig>entity.hide_if)
     {
-        let entityValue = entity.stateObj.state;
+        const entityValue = entity.stateObj.state;
         const matchedConditions = (entity.hide_if as HideIfConfig).conditions?.filter(item => {
     
+            let checkEntityValue = entityValue;
             if(item.entity) {                
                 const stateEntity = hass.states[item.entity];
-                entityValue = item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state;
+                checkEntityValue = item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state;
             }
 
             if(item.attribute && !item.entity) {                
-                entityValue = entity.stateObj.attributes[item.attribute];
+                checkEntityValue = entity.stateObj.attributes[item.attribute];
             }
     
-            return checkConditionalValue(item, entityValue);
+            return checkConditionalValue(item, checkEntityValue);
         });
         
         return matchedConditions?.length > 0;        

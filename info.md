@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10611  %}
+- Fixed `When using conditions with attribute it was being cached and use for the next condition`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 10610  %}
 - Added `Hiding feature for entity rows`

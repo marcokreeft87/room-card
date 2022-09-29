@@ -184,6 +184,31 @@ describe('Testing entity file function entityIcon', () => {
         
         expect(entityIcon(stateObj, config, hass)).toMatchObject({'condition': 'above', 'icon': 'mdi:10-icon', 'value': 10});
     }),
+    test('Passing config with multiple icon iconditions one with attribute should return condition', () => {    
+        
+        stateObj.entity_id = 'input_boolean.test_entity';
+        stateObj.state = '20';
+        stateObj.attributes['money'] = 'broke';
+        const config: RoomCardConfig = {
+            entityIds: [],
+            type: '',
+            show_icon: true,
+            icon: {
+                conditions: [{
+                    condition: 'above',
+                    value: 10,
+                    icon: 'mdi:10-icon'
+                },{
+                    condition: 'equals',
+                    attribute: 'money',
+                    value: 'broke',
+                    icon: 'mdi:20-icon'
+                }]
+            }
+        };
+        
+        expect(entityIcon(stateObj, config, hass)).toMatchObject({'condition': 'equals', 'icon': 'mdi:20-icon', 'value': 'broke'});
+    }),
     test('Passing config with icon iconditions with entity should return condition', () => {    
         const hassEntity = createMock<HassEntity>();
         hassEntity.state = '15';
