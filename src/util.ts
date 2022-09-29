@@ -2,7 +2,7 @@ import { HomeAssistant, LovelaceCardConfig, createThing } from 'custom-card-help
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig, RoomCardRow } from './types/room-card-types';
 import { mapTemplate } from './template';
 
 export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
@@ -20,7 +20,27 @@ export const getValue = (entity: RoomCardEntity) => {
     return entity.attribute ? entity.stateObj.attributes[entity.attribute] : entity.stateObj.state;
 }
 
-export const hideIf = (entity: RoomCardEntity, hass: HomeAssistant) => {
+export const hideIfRow = (row: RoomCardRow, hass: HomeAssistant) => {
+    if (row.hide_if === undefined) {
+        return false;
+    }
+
+    if (<HideIfConfig>row.hide_if)
+    {
+        const matchedConditions = (row.hide_if as HideIfConfig).conditions?.filter(item => {
+    
+            if(item.entity) {                
+                const stateEntity = hass.states[item.entity];
+
+                return checkConditionalValue(item, item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state);
+            }
+        });
+        
+        return matchedConditions?.length > 0;        
+    }
+};
+
+export const hideIfEntity = (entity: RoomCardEntity, hass: HomeAssistant) => {
     if (hideUnavailable(entity)) {
         return true;
     }
@@ -69,16 +89,17 @@ export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: P
 };
 
 export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {    
-    if(item.condition == 'equals' && checkValue == item.value) {
+    const itemValue = typeof item.value === 'boolean' ? String(item.value) : item.value;
+    if(item.condition == 'equals' && checkValue == itemValue) {
         return true;
     }
-    if(item.condition == 'not_equals' && checkValue != item.value) {
+    if(item.condition == 'not_equals' && checkValue != itemValue) {
         return true;
     }
-    if(item.condition == 'above' && checkValue > item.value) {
+    if(item.condition == 'above' && checkValue > itemValue) {
         return true;
     }
-    if(item.condition == 'below' && checkValue < item.value) {
+    if(item.condition == 'below' && checkValue < itemValue) {
         return true;
     }
 }

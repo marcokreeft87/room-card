@@ -250,7 +250,7 @@ describe('Testing entity file function renderEntity', () => {
     ${'brightness'}  ${'77'}  ${'30 %'}
     ${'duration'}  ${'1000'}  ${'16:40'}
     ${'duration-m'}  ${'1000'}  ${'1'}
-    ${'precision2'}  ${'2,2324'}  ${'2,23'}
+    ${'precision2'}  ${2.2324}  ${'2,23'}
     ${'kilo'}  ${'1000'}  ${'1'}
     ${'invert'}  ${'1000'}  ${'-1.000'}
     ${'position'}  ${'10'}  ${'90'}

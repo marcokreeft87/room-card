@@ -2,6 +2,10 @@
 
 ### Features
 
+{% if version_installed.replace("v", "").replace(".","") | int < 10610  %}
+- Added `Hiding feature for entity rows`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10601  %}
 - Fixed `Formatting not working for entities and row entities`
 {% endif %}
