@@ -126,7 +126,7 @@ export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: Li
     const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
 
     return html`${filteredRows.map((row) => {
-        return renderEntitiesRow(row.entities, hass, element, "width-100");
+        return renderEntitiesRow(row.entities, hass, element);
     })}`;
 }
 

@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const style = css`
+    ha-card {
+        display: flex;
+        flex-direction: column;
+    }
     ha-card .card-header {
         padding-bottom: 0px;
     }
@@ -71,9 +75,6 @@ export const style = css`
     }
     .title {
         min-height: 48px;
-    }
-    .width-100 {
-        width: 100%
     }
     .clickable {
         cursor: pointer;

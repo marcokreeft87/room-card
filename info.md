@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10612  %}
+- Fixed `No more horizontal scrolling when using rows`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10611  %}
 - Fixed `When using conditions with attribute it was being cached and use for the next condition`
 {% endif %}
