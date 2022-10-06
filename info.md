@@ -2,7 +2,11 @@
 
 ### Features
 
-{% if version_installed.replace("v", "").replace(".","") | int < 10612  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 10614  %}
+- Fixed `Entity not updating when passed as string and not object`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10613  %}
 - Fixed `Refreshing was not happening in editor and some entities`
 {% endif %}
 
