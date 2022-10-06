@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10612  %}
+- Fixed `Refreshing was not happening in editor and some entities`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10611  %}
 - Fixed `When using conditions with attribute it was being cached and use for the next condition`
 {% endif %}

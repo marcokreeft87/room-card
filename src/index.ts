@@ -51,10 +51,8 @@ export default class RoomCard extends LitElement {
         this._hass = hass;
 
         if (hass && this.config) {
-            if (this.config.entity != undefined) {
-                this.stateObj = hass.states[this.config.entity];
-                this.entity = { ...this.config, stateObj: this.stateObj };
-            }
+            this.stateObj = this.config.entity !== undefined ? hass.states[this.config.entity] : undefined;
+            this.entity = this.config.entity !== undefined ? { ...this.config, stateObj: this.stateObj } : undefined;
 
             this.info_entities = this.config.info_entities?.map(entity => mapStateObject(entity, hass, this.config)) ?? [];
 
