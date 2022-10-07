@@ -57,7 +57,7 @@ describe('Testing compute_state_display file', () => {
     ${'25'}  ${''}   ${''}    ${'25'}    ${'input_number.money'}  ${undefined}
     ${'2022-01-01 10:00'}  ${''}   ${''}    ${'1 januari 2022 10:00'}    ${'button.money'}  ${undefined}
     ${'2022-01-01 10:00'}  ${''}   ${'timestamp'}    ${'1 januari 2022 10:00'}    ${'sensor.money'}  ${undefined}
-    ${'testvalue'}  ${''}   ${'switch'}    ${'1 januari 2022 10:00'}    ${'sensor.money'}  ${'testvalue'}
+    ${'testvalue'}  ${''}   ${'switch'}    ${'testvalue'}    ${'sensor.money'}  ${'testvalue'}
     `('Passing LocalizeFunc, HomeAssistantEntity, FrontendLocaleData with numeric stateObj should call localize function', 
     ({ objstate, unit_of_measurement, device_class, expected, entity_id, state}) => {        
 
