@@ -24,7 +24,7 @@ export const numberFormatToLocale = (localeOptions: FrontendLocaleData) => {
     }
 };
 
-export const formatNumber = (num: string | number, localeOptions: FrontendLocaleData, options?: FormattingOptions) => {
+export const formatNumber = (num: string | number, localeOptions?: FrontendLocaleData, options?: FormattingOptions) => {
     const locale = localeOptions ? numberFormatToLocale(localeOptions) : undefined;
 
     // Polyfill for Number.isNaN, which is more reliable than the global isNaN()
@@ -48,7 +48,7 @@ export const formatNumber = (num: string | number, localeOptions: FrontendLocale
         return num;
     }
     return `${round(num, options?.maximumFractionDigits).toString()}${
-        options?.style === 'currency' ? ` ${options.currency}` : ''
+        options.style === 'currency' ? ` ${options.currency}` : ''
     }`;
 };
 
