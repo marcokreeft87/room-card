@@ -1,16 +1,14 @@
-import { HomeAssistant, LovelaceCardConfig, createThing } from 'custom-card-helpers';
+import { HomeAssistant, createThing } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, HideIfConfig, RoomCardRow } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig } from './types/room-card-types';
 import { mapTemplate } from './template';
+import { hideIfCard } from './hide';
 
 export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
 export const isUnavailable = (stateObj: HomeAssistantEntity) : boolean => !stateObj || UNAVAILABLE_STATES.includes(stateObj.state);
-
-export const hideUnavailable = (entity: RoomCardEntity) : boolean =>
-    entity.hide_unavailable && isUnavailable(entity.stateObj);
 
 export const getValue = (entity: RoomCardEntity) => {
     if(entity.attribute && entity.stateObj.attributes[entity.attribute] === undefined) {
@@ -19,56 +17,6 @@ export const getValue = (entity: RoomCardEntity) => {
 
     return entity.attribute ? entity.stateObj.attributes[entity.attribute] : entity.stateObj.state;
 }
-
-export const hideIfRow = (row: RoomCardRow, hass: HomeAssistant) => {
-    if (row.hide_if === undefined) {
-        return false;
-    }
-
-    if (<HideIfConfig>row.hide_if)
-    {
-        const matchedConditions = (row.hide_if as HideIfConfig).conditions?.filter(item => {
-    
-            if(item.entity) {                
-                const stateEntity = hass.states[item.entity];
-
-                return checkConditionalValue(item, item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state);
-            }
-        });
-        
-        return matchedConditions?.length > 0;        
-    }
-};
-
-export const hideIfEntity = (entity: RoomCardEntity, hass: HomeAssistant) => {
-    if (hideUnavailable(entity)) {
-        return true;
-    }
-    if (entity.hide_if === undefined) {
-        return false;
-    }
-
-    if (<HideIfConfig>entity.hide_if)
-    {
-        const entityValue = entity.stateObj.state;
-        const matchedConditions = (entity.hide_if as HideIfConfig).conditions?.filter(item => {
-    
-            let checkEntityValue = entityValue;
-            if(item.entity) {                
-                const stateEntity = hass.states[item.entity];
-                checkEntityValue = item.attribute ? stateEntity.attributes[item.attribute] : stateEntity.state;
-            }
-
-            if(item.attribute && !item.entity) {                
-                checkEntityValue = entity.stateObj.attributes[item.attribute];
-            }
-    
-            return checkConditionalValue(item, checkEntityValue);
-        });
-        
-        return matchedConditions?.length > 0;        
-    }
-};
 
 export const getEntityIds = (config: RoomCardConfig) : string[] => 
     [config.entity]
@@ -117,8 +65,8 @@ export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssist
     return { ...conf, stateObj: hass.states[conf.entity] };
 }
 
-export const createCardElement = (cardConfig: LovelaceCardConfig, hass: HomeAssistant) => {    
-    if (cardConfig.show_states && !cardConfig.show_states.includes(hass.states[cardConfig.entity].state)) {
+export const createCardElement = (cardConfig: RoomCardLovelaceCardConfig, hass: HomeAssistant) => {    
+    if (hideIfCard(cardConfig, hass) || cardConfig.show_states && !cardConfig.show_states.includes(hass.states[cardConfig.entity].state)) {
         return;
     }
 

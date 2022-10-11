@@ -1,12 +1,13 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, evalTemplate, getValue, hideIfEntity, hideIfRow, isObject, isUnavailable } from './util';
+import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { templateStyling } from './template';
+import { hideIfEntity, hideIfRow } from './hide';
 
 export const checkConfig = (config: RoomCardConfig) => {
     if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {

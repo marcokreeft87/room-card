@@ -2,7 +2,7 @@ import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE } from '../../src/lib/constants';
 import { HideIfConfig } from '../../src/types/room-card-types';
-import { hideIfEntity } from '../../src/util';
+import { hideIfEntity } from '../../src/hide';
 import { StubHassEntity, StubHomeAssistant, StubRoomCardEntity } from '../testdata';
 
 describe('Testing util file function hideIfEntity', () => {

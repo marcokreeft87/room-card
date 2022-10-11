@@ -1,6 +1,6 @@
 {
   "name": "room-card",
-  "version": "1.06.14",
+  "version": "1.06.20",
   "description": "Show entities in Home Assistant's Lovelace UI",
   "keywords": [
     "home-assistant",

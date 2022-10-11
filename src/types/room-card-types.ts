@@ -33,7 +33,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     entities?: RoomCardEntity[];
     entity?: string;
     hide_title?: boolean;
-    cards?: LovelaceCardConfig[];
+    cards?: RoomCardLovelaceCardConfig[];
     entityIds: string[];
     hass?: HomeAssistant;
     icon?: string | RoomCardIcon;
@@ -95,4 +95,8 @@ export interface RoomCardTemplateContainer {
 export interface RoomCardTemplateDefinition {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
+}
+
+export interface RoomCardLovelaceCardConfig extends LovelaceCardConfig {
+    hide_if?: HideIfConfig;
 }
