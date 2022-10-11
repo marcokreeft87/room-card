@@ -1,11 +1,11 @@
 import { CSSResult, html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
-import { HomeAssistant, LovelaceCard } from 'custom-card-helpers';
+import { HomeAssistant } from 'custom-card-helpers';
 
 import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderRows, renderTitle } from './entity';
 import { getEntityIds, hasConfigOrEntitiesChanged, mapStateObject, createCardElement } from './util';
 import { style } from './styles';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardRow } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardLovelaceCardConfig, RoomCardRow } from './types/room-card-types';
 import * as packageJson from '../package.json';
 
 console.info(
@@ -34,7 +34,7 @@ export default class RoomCard extends LitElement {
     private entities: RoomCardEntity[] = [];
     private rows: RoomCardRow[] = [];
     private stateObj: HomeAssistantEntity | undefined;
-    private _refCards: LovelaceCard[] = [];
+    private _refCards: RoomCardLovelaceCardConfig[] = [];
 
     setConfig(config: RoomCardConfig) {        
 

@@ -1,4 +1,4 @@
-import { hideUnavailable } from '../../src/util';
+import { hideUnavailable } from '../../src/hide';
 import { UNAVAILABLE_STATES } from '../../src/lib/constants';
 import { StubRoomCardEntity } from '../testdata';
 

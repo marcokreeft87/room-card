@@ -1,9 +1,8 @@
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { UNAVAILABLE } from '../../src/lib/constants';
-import { HideIfConfig, RoomCardRow } from '../../src/types/room-card-types';
-import { hideIfRow } from '../../src/util';
-import { StubHassEntity, StubHomeAssistant, StubRoomCardEntity } from '../testdata';
+import { RoomCardRow } from '../../src/types/room-card-types';
+import { hideIfRow } from '../../src/hide';
+import { StubHomeAssistant } from '../testdata';
 
 describe('Testing util file function hideIfRow', () => {
     const row: RoomCardRow = createMock<RoomCardRow>();
