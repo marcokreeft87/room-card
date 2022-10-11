@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  LANG: "nl_NL.UTF-8"
+  #LANG: "nl_NL.UTF-8"
   #LANGUAGE: "nl_NL:nl"
   #LC_ALL: "nl_NL.UTF-8"
 
