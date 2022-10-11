@@ -9,8 +9,8 @@ describe('Testing compute_state_display file', () => {
     const hass = createMock<HomeAssistant>();
     hass.localize = jest.fn();
     hass.locale = {
-        language: 'NL', 
-        number_format: NumberFormat.comma_decimal,
+        language: 'nl', 
+        number_format: NumberFormat.decimal_comma,
         time_format: TimeFormat.language
     }
     const stateObj = createMock<HomeAssistantEntity>();
@@ -41,7 +41,7 @@ describe('Testing compute_state_display file', () => {
     objstate | unit_of_measurement | device_class | expected | entity_id | state
     ${'100'}  ${'m'}   ${'sensor'}    ${'100 m'}    ${'sensor.distance'}    ${'100'}
     ${'100'}  ${undefined}   ${'sensor'}    ${'100'}    ${'sensor.distance'}    ${'100'}
-    ${'100.233'}  ${'€'}   ${'monetary'}    ${'100.23 €'}    ${'sensor.money'}  ${'100.233'}
+    ${'100.233'}  ${'€'}   ${'monetary'}    ${'100,23 €'}    ${'sensor.money'}  ${'100.233'}
     ${'2022-01-01 10:00'}  ${''}   ${''}    ${'1 januari 2022 10:00'}    ${'input_datetime.money'}  ${'2022-01-01 10:00'}
     ${'2022-01-01'}  ${''}   ${''}    ${'1 januari 2022'}    ${'input_datetime.money'}  ${'2022-01-01'}
     ${'10:00'}  ${''}   ${''}    ${'10:00'}    ${'input_datetime.money'}    ${'10:00'}

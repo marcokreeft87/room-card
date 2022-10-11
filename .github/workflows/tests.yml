@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
 
 env:
-  LANG: "en_US.UTF-8"
-  LANGUAGE: "en_US:nl"
-  LC_ALL: "en_US.UTF-8"
+  LANG: "nl_NL.UTF-8"
+  LANGUAGE: "nl_NL:nl"
+  LC_ALL: "nl_NL.UTF-8"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
