@@ -47,14 +47,14 @@ describe('Testing format_number file', () => {
     ${7200}  ${'7.200'}  ${NumberFormat.system}  ${true}  ${false}  ${undefined}
     ${7200}  ${'7.200'}  ${NumberFormat.system}  ${false}  ${true}  ${undefined}
     ${7200}  ${'7200 euro'}  ${NumberFormat.none}  ${false}  ${false}  ${{ currency: 'euro', style: 'currency' }}
-    ${7200}  ${'7200 euro'}  ${NumberFormat.none}  ${false}  ${true}  ${undefined}
-    `('Passing seconds should return expected duration', ({ num, expected, number_format, null_options, styleOptions }) => {  
+    ${7200}  ${'7200'}  ${NumberFormat.none}  ${false}  ${true}  ${undefined}
+    `('Passing seconds should return expected duration', ({ num, expected, number_format, null_options, null_f_option, styleOptions }) => {  
         const localeOptions = createMock<FrontendLocaleData>();
         localeOptions.number_format = number_format;
         const options = createMock<FormattingOptions>();
         options.style = styleOptions !== undefined ? styleOptions.style : options.style;
         options.currency = styleOptions !== undefined ? styleOptions.currency : options.currency;
         options.maximumFractionDigits = 3;
-        expect(formatNumber(num, null_options ? undefined: localeOptions, null_options ? undefined : options)).toBe(expected);
+        expect(formatNumber(num, null_options ? undefined: localeOptions, null_f_option === true ? undefined : options)).toBe(expected);
     })
 });
