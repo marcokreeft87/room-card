@@ -40,7 +40,6 @@ export const formatNumber = (num: string | number, localeOptions?: FrontendLocal
     if (typeof num === 'string') {
         return num;
     }
-    console.log(options);
     return `${round(num, options?.maximumFractionDigits).toString()}${
         options?.style === 'currency' ? ` ${options.currency}` : ''
     }`;
