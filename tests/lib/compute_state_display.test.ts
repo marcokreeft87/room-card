@@ -11,7 +11,7 @@ describe('Testing compute_state_display file', () => {
     hass.locale = {
         language: 'nl', 
         number_format: NumberFormat.decimal_comma,
-        time_format: TimeFormat.language
+        time_format: TimeFormat.twenty_four
     }
     const stateObj = createMock<HomeAssistantEntity>();
     stateObj.state = 'on';
