@@ -27,9 +27,6 @@ export const numberFormatToLocale = (localeOptions: FrontendLocaleData) => {
 export const formatNumber = (num: string | number, localeOptions?: FrontendLocaleData, options?: FormattingOptions) => {
     const locale = localeOptions ? numberFormatToLocale(localeOptions) : undefined;
 
-    // Polyfill for Number.isNaN, which is more reliable than the global isNaN()
-    Number.isNaN = Number.isNaN || isNaN;
-
     if (localeOptions?.number_format !== NumberFormat.none && !Number.isNaN(Number(num)) && Intl) {
         try {
             return new Intl.NumberFormat(locale, getDefaultFormatOptions(num, options)).format(Number(num));
@@ -47,10 +44,6 @@ export const formatNumber = (num: string | number, localeOptions?: FrontendLocal
         options.style === 'currency' ? ` ${options.currency}` : ''
     }`;
 };
-
-const isNaN = (input: unknown): boolean => {
-    return typeof input === 'number' && isNaN(input);
-}
 
 const getDefaultFormatOptions = (num: string | number, options: FormattingOptions) => {
     const defaultOptions = {

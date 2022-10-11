@@ -8,6 +8,7 @@ describe('Testing format_number file', () => {
     number | precision| expected
     ${7200.12345}  ${2}   ${7200.12}
     ${7200.12345}  ${3}   ${7200.123}
+    ${7200.12345}  ${undefined}   ${7200.12}
     `('Passing number and precision should return expected', ({ number, precision, expected }) => {  
         
         expect(round(number, precision)).toBe(expected);
@@ -45,20 +46,15 @@ describe('Testing format_number file', () => {
     ${7200}  ${'7200'}  ${NumberFormat.none}  ${false}  ${false}  ${undefined}
     ${7200}  ${'7.200'}  ${NumberFormat.system}  ${true}  ${false}  ${undefined}
     ${7200}  ${'7.200'}  ${NumberFormat.system}  ${false}  ${true}  ${undefined}
+    ${7200}  ${'7200 euro'}  ${NumberFormat.none}  ${false}  ${false}  ${{ currency: 'euro', style: 'currency' }}
+    ${7200}  ${'7200 euro'}  ${NumberFormat.none}  ${false}  ${true}  ${undefined}
     `('Passing seconds should return expected duration', ({ num, expected, number_format, null_options, styleOptions }) => {  
         const localeOptions = createMock<FrontendLocaleData>();
         localeOptions.number_format = number_format;
         const options = createMock<FormattingOptions>();
-        options.style = styleOptions !== undefined ? styleOptions : options.style;
+        options.style = styleOptions !== undefined ? styleOptions.style : options.style;
+        options.currency = styleOptions !== undefined ? styleOptions.currency : options.currency;
         options.maximumFractionDigits = 3;
         expect(formatNumber(num, null_options ? undefined: localeOptions, null_options ? undefined : options)).toBe(expected);
-    }),
-    test.each`
-    input | expected
-    ${7200}  ${false}
-    ${'7200'}  ${false}
-    ${'7200!'}  ${true}
-    `('Passing seconds should return expected duration', ({ input, expected }) => {  
-        expect(isNaN(input)).toBe(expected);
     })
 });

@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10620  %}
+- Added `Hide_if for cards`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 10614  %}
 - Fixed `Entity not updating when passed as string and not object`
