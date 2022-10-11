@@ -52,5 +52,13 @@ describe('Testing format_number file', () => {
         options.style = styleOptions !== undefined ? styleOptions : options.style;
         options.maximumFractionDigits = 3;
         expect(formatNumber(num, null_options ? undefined: localeOptions, null_options ? undefined : options)).toBe(expected);
+    }),
+    test.each`
+    input | expected
+    ${7200}  ${false}
+    ${'7200'}  ${false}
+    ${'7200!'}  ${true}
+    `('Passing seconds should return expected duration', ({ input, expected }) => {  
+        expect(isNaN(input)).toBe(expected);
     })
 });
