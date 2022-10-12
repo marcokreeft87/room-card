@@ -22,7 +22,6 @@ export const style = css`
         flex-direction: row;
         flex-wrap: wrap;
         display: inline-flex;
-        justify-content: left;
         align-items: center;
         padding: 0 20px 10px 20px;
     }
@@ -78,5 +77,14 @@ export const style = css`
     }
     .clickable {
         cursor: pointer;
+    }
+    .content-left {
+        justify-content: left;
+    }
+    .content-center {
+        justify-content: center;
+    }
+    .content-right {
+        justify-content: right;
     }
 `;

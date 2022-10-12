@@ -86,8 +86,8 @@ export default class RoomCard extends LitElement {
                         </div>
                     </div>
                     ${this.rows !== undefined && this.rows.length > 0 ? 
-                        renderRows(this.rows, this._hass, this) : 
-                        renderEntitiesRow(this.entities, this._hass, this)}
+                        renderRows(this.config, this.rows, this._hass, this) : 
+                        renderEntitiesRow(this.config, this.entities, this._hass, this)}
                     ${this._refCards}
                 </ha-card>
             `;
