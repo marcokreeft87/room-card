@@ -115,5 +115,25 @@ describe('Testing util file function getEntityIds', () => {
         expect(getEntityIds(config)).toMatchObject([
             'sensor.entity', 'sensor.entity2', 'sensor.entity3', 'sensor.entity4'
         ]);
+    }),
+    test('Passing cards should return row entites', () => {
+        const config: RoomCardConfig = {
+            info_entities: undefined,
+            entities: undefined,
+            entity: undefined,
+            cards: [{
+               type: 'custom:room-card',
+               entity: 'sensor.entity',
+            },
+            {
+                type: 'custom:room-card',
+                entity: 'sensor.entity2',
+             }],
+            entityIds: [],
+            type: ''
+        } 
+        expect(getEntityIds(config)).toMatchObject([
+            'sensor.entity', 'sensor.entity2'
+        ]);
     })
 })

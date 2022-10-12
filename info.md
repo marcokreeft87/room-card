@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10621  %}
+- Fixed `Cards not updating on every state change`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10620  %}
 - Added `Hide_if for cards`
 {% endif %}
