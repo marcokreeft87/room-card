@@ -9,5 +9,5 @@ export const formatDateTime = (dateObj: Date, locale: FrontendLocaleData) => new
     day: 'numeric',
     hour: useAmPm(locale) ? 'numeric' : '2-digit',
     minute: '2-digit',
-    hour12: useAmPm(locale),
+    hour12: useAmPm(locale)
 }).format(dateObj);

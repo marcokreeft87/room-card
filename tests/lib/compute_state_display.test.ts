@@ -97,6 +97,6 @@ describe('Testing compute_state_display file', () => {
             }
         }
 
-        expect(computeStateDisplay(hass.localize, stateObj, hass.locale, state)).toBe(expected);
+        expect(computeStateDisplay(hass.localize, stateObj, hass.locale, state)).toMatch(expected);
     })
 });
