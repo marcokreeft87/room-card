@@ -42,7 +42,14 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     title?: string;
     name?: string;
     styles?: EntityStyles;
-    templates?: RoomCardTemplateContainer[]
+    templates?: RoomCardTemplateContainer[];
+    content_alignment?: RoomCardAlignment
+}
+
+export enum RoomCardAlignment {
+    Left = 'left',
+    Center = 'center',
+    Right = 'right'
 }
 
 export interface RoomCardRow {

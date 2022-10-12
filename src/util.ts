@@ -106,3 +106,7 @@ export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity,
       throw e;
     }
   }
+
+export const renderClasses = (config: RoomCardConfig, classes?: string): string => {
+    return `entities-row ${config.content_alignment ? `content-${config.content_alignment}` : 'content-left'}${classes !== undefined ? ` ${classes}` : '' }`;
+}

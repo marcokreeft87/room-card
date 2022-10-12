@@ -1,7 +1,7 @@
 import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
-import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable } from './util';
+import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable, renderClasses } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
@@ -123,20 +123,20 @@ export const entityStyles = (styles: EntityStyles) =>
             .join('') 
         : '';
 
-export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
+export const renderRows = (config: RoomCardConfig, rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
     const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
 
     return html`${filteredRows.map((row) => {
-        return renderEntitiesRow(row.entities, hass, element);
+        return renderEntitiesRow(config, row.entities, hass, element);
     })}`;
 }
 
-export const renderEntitiesRow = (entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
+export const renderEntitiesRow = (config: RoomCardConfig, entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
     if(entities === undefined) {
         return null;
-    }
+    }   
 
-    return html`<div class="entities-row${classes !== undefined ? ` ${classes}` : '' }">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
+    return html`<div class="${renderClasses(config, classes)}">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 
 export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
