@@ -9,7 +9,7 @@ describe('Testing compute_state_display file', () => {
     const hass = createMock<HomeAssistant>();
     hass.localize = jest.fn();
     hass.locale = {
-        language: 'nl', 
+        language: 'en', 
         number_format: NumberFormat.decimal_comma,
         time_format: TimeFormat.twenty_four
     }
@@ -42,21 +42,21 @@ describe('Testing compute_state_display file', () => {
     ${'100'}  ${'m'}   ${'sensor'}    ${'100 m'}    ${'sensor.distance'}    ${'100'}
     ${'100'}  ${undefined}   ${'sensor'}    ${'100'}    ${'sensor.distance'}    ${'100'}
     ${'100.233'}  ${'€'}   ${'monetary'}    ${'100,23 €'}    ${'sensor.money'}  ${'100.233'}
-    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'1 januari 2022 om 10:00'}    ${'input_datetime.money'}  ${'2022-01-01 10:00'}
-    ${'2022-01-01'}  ${''}   ${''}    ${'1 januari 2022'}    ${'input_datetime.money'}  ${'2022-01-01'}
+    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'January 1, 2022, 10:00'}    ${'input_datetime.money'}  ${'2022-01-01 10:00'}
+    ${'2022-01-01'}  ${''}   ${''}    ${'January 1, 2022'}    ${'input_datetime.money'}  ${'2022-01-01'}
     ${'10:00'}  ${''}   ${''}    ${'10:00'}    ${'input_datetime.money'}    ${'10:00'}
     ${'test'}  ${''}   ${''}    ${'test'}    ${'input_datetime.money'}  ${'test'}
     ${'10:test'}  ${''}   ${''}    ${'10:test'}    ${'input_datetime.money'}    ${'10:test'}
-    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'1 januari 2022 om 10:00'}    ${'input_datetime.money'}  ${undefined}
-    ${'2022-01-01'}  ${''}   ${''}    ${'1 januari 2022'}    ${'input_datetime.money'}  ${undefined}
+    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'January 1, 2022, 10:00'}    ${'input_datetime.money'}  ${undefined}
+    ${'2022-01-01'}  ${''}   ${''}    ${'January 1, 2022'}    ${'input_datetime.money'}  ${undefined}
     ${'10:00'}  ${''}   ${''}    ${'10:00'}    ${'input_datetime.money'}  ${undefined}
     ${'test'}  ${''}   ${''}    ${'test'}    ${'input_datetime.money'}  ${undefined}
     ${'on'}  ${''}   ${''}    ${'24 %'}    ${'humidifier.money'}  ${undefined}
     ${'25'}  ${''}   ${''}    ${'25'}    ${'counter.money'}  ${undefined}
     ${'25'}  ${''}   ${''}    ${'25'}    ${'number.money'}  ${undefined}
     ${'25'}  ${''}   ${''}    ${'25'}    ${'input_number.money'}  ${undefined}
-    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'1 januari 2022 om 10:00'}    ${'button.money'}  ${undefined}
-    ${'2022-01-01 10:00'}  ${''}   ${'timestamp'}    ${'1 januari 2022 om 10:00'}    ${'sensor.money'}  ${undefined}
+    ${'2022-01-01 10:00'}  ${''}   ${''}    ${'January 1, 2022, 10:00'}    ${'button.money'}  ${undefined}
+    ${'2022-01-01 10:00'}  ${''}   ${'timestamp'}    ${'January 1, 2022, 10:00'}    ${'sensor.money'}  ${undefined}
     ${'testvalue'}  ${''}   ${'switch'}    ${'testvalue'}    ${'sensor.money'}  ${'testvalue'}
     `('Passing LocalizeFunc, HomeAssistantEntity, FrontendLocaleData with numeric stateObj should call localize function', 
     ({ objstate, unit_of_measurement, device_class, expected, entity_id, state}) => {        

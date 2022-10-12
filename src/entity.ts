@@ -10,7 +10,7 @@ import { templateStyling } from './template';
 import { hideIfEntity, hideIfRow } from './hide';
 
 export const checkConfig = (config: RoomCardConfig) => {
-    if (config.entities == undefined && config.entity == undefined && config.info_entities == undefined && config.rows == undefined) {
+    if (config.entities == undefined && config.entity == undefined && config.info_entities === undefined && config.rows === undefined && config.cards === undefined) {
         throw new Error('Please define entities.');
     }
 };

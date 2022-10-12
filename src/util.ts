@@ -23,6 +23,7 @@ export const getEntityIds = (config: RoomCardConfig) : string[] =>
         .concat(config.entities?.map((entity) => getEntity(entity)))
         .concat(config.info_entities?.map((entity) => getEntity(entity)))
         .concat(config.rows?.flatMap(row => row.entities).map((entity) => getEntity(entity)))
+        .concat(config.cards?.map((card) => getEntity(card.entity)))
         .filter((entity) => entity);
 
 export const getEntity = (entity?: string | RoomCardEntity) : string => {
