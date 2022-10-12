@@ -17,9 +17,9 @@ describe('Testing format_date_time file', () => {
     ${'2022-01-01T10:00'}  ${'1 januari 2022 10:00'}  ${TimeFormat.system} 
     `('Passing date and locale should return formatted datetime', ({ date, expected, time_format }) => {  
         
-        console.log(locale);
-
         locale.time_format = time_format
-        expect(formatDateTime(new Date(date), locale)).toMatch(expected);
+
+        const result = formatDateTime(new Date(date), locale).split(' ');
+        expected.split(' ').forEach((x: string) => expect(result).toContain(x));
     })
 });
