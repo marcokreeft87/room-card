@@ -1,11 +1,9 @@
-name: Tests
+name: Push to master checks
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
-  pull_request:
     branches: [ "master" ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -42,3 +40,7 @@ jobs:
         with:
           category: "plugin"
           ignore: brands
+
+      - name: Release
+        uses: justincy/github-action-npm-release@v1.2.0
+        id: release
