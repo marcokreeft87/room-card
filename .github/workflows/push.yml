@@ -42,4 +42,4 @@ jobs:
           ignore: brands
 
       - name: Automatic GitHub Release
-        uses: marcokreeft87/github-action-npm-release@0.0.1
+        uses: marcokreeft87/github-action-npm-release@0.0.2
