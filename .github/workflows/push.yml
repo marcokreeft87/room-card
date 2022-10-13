@@ -1,4 +1,4 @@
-name: Pull Request Checks
+name: Push to master checks
 
 # Controls when the workflow will run
 on:
@@ -40,7 +40,7 @@ jobs:
         with:
           category: "plugin"
           ignore: brands
-          
+
       - name: Release
         uses: justincy/github-action-npm-release@v1.2.0
         id: release
