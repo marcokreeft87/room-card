@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10640  %}
+- Added `content_alignment (left, center or right) for rows`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10630  %}
 - Added `content_alignment (left, center or right) for entities row`
 {% endif %}
