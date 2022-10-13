@@ -60,7 +60,7 @@ export default class RoomCard extends LitElement {
             this.rows = 
                 this.config.rows?.map((row) => {
                     const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass, this.config));
-                    return { entities: rowEntities, hide_if: row.hide_if };
+                    return { entities: rowEntities, hide_if: row.hide_if, content_alignment: row.content_alignment };
                 }) ?? [];
 
             this._refCards = this.config.cards?.map(card => createCardElement(card, hass));

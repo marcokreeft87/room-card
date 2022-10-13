@@ -4,7 +4,7 @@ import { PropertyValues } from 'lit';
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
 import RoomCard from '../src/index';
-import { RoomCardConfig, RoomCardRow } from '../src/types/room-card-types';
+import { RoomCardAlignment, RoomCardConfig, RoomCardRow } from '../src/types/room-card-types';
 import { createEntity, getRenderString } from './utils';
 
 describe('Testing index file class RoomCard', () => {
@@ -222,7 +222,8 @@ describe('Testing index file class RoomCard', () => {
             type: "custom:room-card",
             show_icon: true,
             rows: [{
-                entities: [createEntity('light.test_entity2', hass, 'on', { icon: 'mdi:table' })]
+                content_alignment: RoomCardAlignment.Center,
+                entities: [createEntity('light.test_entity2', hass, 'on', { icon: 'mdi:table' })]                
             } as RoomCardRow,
             {
                 entities: [createEntity('light.test_entity3', hass, 'on', { icon: 'mdi:chair' })]
@@ -236,7 +237,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-center"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
     }),
     test('Calling render with only rows without entities and title should return expected html', () => {   
 

@@ -2,7 +2,7 @@ import { HomeAssistant, createThing } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow } from './types/room-card-types';
 import { mapTemplate } from './template';
 import { hideIfCard } from './hide';
 
@@ -107,6 +107,6 @@ export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity,
     }
   }
 
-export const renderClasses = (config: RoomCardConfig, classes?: string): string => {
+export const renderClasses = (config: RoomCardConfig | RoomCardRow, classes?: string): string => {
     return `entities-row ${config.content_alignment ? `content-${config.content_alignment}` : 'content-left'}${classes !== undefined ? ` ${classes}` : '' }`;
 }

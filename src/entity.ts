@@ -127,11 +127,11 @@ export const renderRows = (config: RoomCardConfig, rows: RoomCardRow[], hass: Ho
     const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
 
     return html`${filteredRows.map((row) => {
-        return renderEntitiesRow(config, row.entities, hass, element);
+        return renderEntitiesRow(row, row.entities, hass, element);
     })}`;
 }
 
-export const renderEntitiesRow = (config: RoomCardConfig, entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
+export const renderEntitiesRow = (config: RoomCardConfig | RoomCardRow, entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
     if(entities === undefined) {
         return null;
     }   

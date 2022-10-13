@@ -43,7 +43,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     name?: string;
     styles?: EntityStyles;
     templates?: RoomCardTemplateContainer[];
-    content_alignment?: RoomCardAlignment
+    content_alignment?: RoomCardAlignment;
 }
 
 export enum RoomCardAlignment {
@@ -55,6 +55,7 @@ export enum RoomCardAlignment {
 export interface RoomCardRow {
     entities?: RoomCardEntity[];
     hide_if?: HideIfConfig;
+    content_alignment?: RoomCardAlignment;
 }
 
 export interface HomeAssistantEntity extends HassEntity {
