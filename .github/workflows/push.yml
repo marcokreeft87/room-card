@@ -42,5 +42,5 @@ jobs:
           ignore: brands
 
       - name: Release
-        uses: justincy/github-action-npm-release@v1.2.0
+        uses: justincy/github-action-npm-release
         id: release
