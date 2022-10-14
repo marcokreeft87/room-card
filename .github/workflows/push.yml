@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - run: npm install
       
@@ -42,4 +44,4 @@ jobs:
           ignore: brands
 
       - name: Automatic GitHub Release
-        uses: justincy/github-action-npm-release@2.0.2
+        uses: marcokreeft87/github-action-npm-release@0.01
