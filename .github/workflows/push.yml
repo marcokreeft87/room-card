@@ -44,7 +44,7 @@ jobs:
           ignore: brands
 
       - name: Automatic GitHub Release
-        uses: justincy/github-action-npm-release@v2.0.2        
+        uses: justincy/github-action-npm-release@2.0.2        
         
       - name: Print release output
         if: ${{ steps.release.outputs.released == 'true' }}
