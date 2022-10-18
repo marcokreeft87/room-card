@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { HomeAssistant } from "custom-card-helpers";
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, RoomCardIcon } from "./types/room-card-types";
 import { evalTemplate } from "./util";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const templateStyling = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant) : Function => {
     const icon = (config.icon as RoomCardIcon);
 

@@ -3,7 +3,7 @@ import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable, renderClasses } from './util';
 import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
-import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow } from './types/room-card-types';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { templateStyling } from './template';
@@ -116,14 +116,21 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
     return computeStateDisplay(hass.localize, modifiedStateObj, hass.locale);
 };
 
-export const entityStyles = (styles: EntityStyles) => 
-    isObject(styles)
-        ? Object.keys(styles)
-            .map((key) => `${key}: ${styles[key]};`)
+export const entityStyles = (styles: EntityStyles | RoomCardAttributeTemplate, stateObj: HomeAssistantEntity, hass: HomeAssistant) => {
+    if (<RoomCardAttributeTemplate>styles) {
+        const templateDefinition = styles as RoomCardAttributeTemplate;
+        return evalTemplate(hass, stateObj, templateDefinition.template);
+    }
+
+    const entityStyles = styles as EntityStyles;
+    isObject(entityStyles)
+        ? Object.keys(entityStyles)
+            .map((key) => `${key}: ${entityStyles[key]};`)
             .join('') 
         : '';
+}    
 
-export const renderRows = (config: RoomCardConfig, rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
+export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
     const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
 
     return html`${filteredRows.map((row) => {
@@ -183,7 +190,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
         }
     };
 
-    return html`<div class="entity" style="${entityStyles(entity.styles)}"
+    return html`<div class="entity" style="${entityStyles(entity.styles, hass.states[entity.entity], hass)}"
             @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}">
             ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity)}</span>` : ''}
             <div>${renderIcon(entity.stateObj, entity, hass)}</div>
@@ -204,7 +211,7 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
         .stateObj="${stateObj}"
         .overrideIcon="${isObject(customIcon) ? (customIcon as EntityCondition).icon : customIcon as string}"
         .stateColor="${config.state_color}"
-        style="${customStyling ?? entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null)}"
+        style="${customStyling ?? entityStyles(isObject(customIcon) ? (customIcon as EntityCondition).styles : null, hass.states[config.entity], hass)}"
     ></state-badge>`;
 }
 
@@ -245,9 +252,12 @@ export const renderMainEntity = (entity: RoomCardEntity | undefined, config: Roo
     if (entity === undefined) {
         return null;
     }
+
+    const stateObj = hass.states[entity.entity];
+
     return html`<div
         class="main-state entity"
-        style="${entityStyles(entity.styles)}">
+        style="${entityStyles(entity.styles, stateObj, hass)}">
         ${config.entities?.length === 0 || config.icon
             ? renderIcon(entity.stateObj, config, hass, "main-icon")
             : entity.show_state !== undefined && entity.show_state === false ? '' : renderValue(entity, hass)}
@@ -271,7 +281,7 @@ export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, el
     }
 
     const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
-    return html`<div class="state entity ${entity.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(entity.styles)}" @click="${onClick}">${renderValue(entity, hass)}</div>`;
+    return html`<div class="state entity ${entity.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(entity.styles, entity.stateObj, hass)}" @click="${onClick}">${renderValue(entity, hass)}</div>`;
 }
 
 export const clickHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {

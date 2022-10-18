@@ -18,7 +18,7 @@ export interface RoomCardEntity {
     stateObj: HomeAssistantEntity;
     attribute?: string;
     show_state?: boolean;
-    styles?: EntityStyles;
+    styles?: EntityStyles | RoomCardAttributeTemplate;
     icon?: string | RoomCardIcon;
     template?: string;
 }
@@ -41,7 +41,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     show_icon?: boolean;
     title?: string;
     name?: string;
-    styles?: EntityStyles;
+    styles?: EntityStyles | RoomCardAttributeTemplate;
     templates?: RoomCardTemplateContainer[];
     content_alignment?: RoomCardAlignment;
 }
@@ -107,4 +107,8 @@ export interface RoomCardTemplateDefinition {
 
 export interface RoomCardLovelaceCardConfig extends LovelaceCardConfig {
     hide_if?: HideIfConfig;
+}
+
+export interface RoomCardAttributeTemplate {
+    template: string;
 }
