@@ -117,17 +117,19 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
 };
 
 export const entityStyles = (styles: EntityStyles | RoomCardAttributeTemplate, stateObj: HomeAssistantEntity, hass: HomeAssistant) => {
-    if (<RoomCardAttributeTemplate>styles) {
+    if(!styles) {
+        return '';
+    }
+    
+    if ('template' in styles) {
         const templateDefinition = styles as RoomCardAttributeTemplate;
         return evalTemplate(hass, stateObj, templateDefinition.template);
     }
 
     const entityStyles = styles as EntityStyles;
-    isObject(entityStyles)
-        ? Object.keys(entityStyles)
+    return Object.keys(entityStyles)
             .map((key) => `${key}: ${entityStyles[key]};`)
-            .join('') 
-        : '';
+            .join('');
 }    
 
 export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
