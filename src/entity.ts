@@ -6,7 +6,7 @@ import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
-import { templateStyling } from './template';
+import { getTemplateOrAttribute, templateStyling } from './template';
 import { hideIfEntity, hideIfRow } from './hide';
 
 export const checkConfig = (config: RoomCardConfig) => {
@@ -17,9 +17,11 @@ export const checkConfig = (config: RoomCardConfig) => {
 
 export const computeEntity = (entityId: string) => entityId.substr(entityId.indexOf('.') + 1);
 
-export const entityName = (entity: RoomCardEntity) => {
+export const entityName = (entity: RoomCardEntity, hass: HomeAssistant) => {
+    const name = getTemplateOrAttribute(entity.name, hass, entity.stateObj)
+
     return (
-        entity.name ||
+        name ||
         (entity.entity ? entity.stateObj.attributes.friendly_name || computeEntity(entity.stateObj.entity_id) : null) ||
         null
     );
@@ -194,7 +196,7 @@ export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, elemen
 
     return html`<div class="entity" style="${entityStyles(entity.styles, hass.states[entity.entity], hass)}"
             @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}">
-            ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity)}</span>` : ''}
+            ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity, hass)}</span>` : ''}
             <div>${renderIcon(entity.stateObj, entity, hass)}</div>
             ${entity.show_state ? html`<span>${entityStateDisplay(hass, entity)}</span>` : ''}
         </div>`;
@@ -273,7 +275,7 @@ export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass
     const onClick = clickHandler(entity?.stateObj?.entity_id, config.tap_action, hass, element);
     const onDblClick = dblClickHandler(entity?.stateObj?.entity_id, config.double_tap_action, hass, element);
     const hasAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
-    const title = !config.title || typeof config.title == 'string' ? config.title : evalTemplate(hass, entity.stateObj, (config.title as RoomCardAttributeTemplate).template);
+    const title = getTemplateOrAttribute(config.title, hass, entity?.stateObj);
 
     return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${title}</div>`;
 }

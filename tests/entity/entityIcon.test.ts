@@ -82,27 +82,29 @@ describe('Testing entity file function entityIcon', () => {
         
         expect(entityIcon(stateObj, config, hass)).toBe('mdi:on-icon');
     }),
-    test.each`
-    entity_id
-    ${'light.test_entity'}
-    ${'switch.test_entity'}
-    ${'binary_sensor.test_entity'}
-    ${'input_boolean.test_entity'}
-    `('Passing config with icon state_on/state_off should return state_off icon', ({entity_id}) => {    
+
+
+    [
+        ['light.test_entity'],
+        ['switch.test_entity'],
+        ['binary_sensor.test_entity'],
+        ['input_boolean.test_entity']
+    ].forEach(([entity_id]) => {
+        test(`Passing config with icon and entity_id ${entity_id} state_on/state_off should return state_off icon`, () => {
+            stateObj.entity_id = entity_id;// 'input_boolean.test_entity';
+            stateObj.state = 'off';
+            const config: RoomCardConfig = {
+                entityIds: [],
+                type: '',
+                show_icon: true,
+                icon: {
+                    state_on: 'mdi:on-icon',
+                    state_off: 'mdi:off-icon',
+                }
+            };
         
-        stateObj.entity_id = entity_id;// 'input_boolean.test_entity';
-        stateObj.state = 'off';
-        const config: RoomCardConfig = {
-            entityIds: [],
-            type: '',
-            show_icon: true,
-            icon: {
-                state_on: 'mdi:on-icon',
-                state_off: 'mdi:off-icon',
-            }
-        };
-        
-        expect(entityIcon(stateObj, config, hass)).toBe('mdi:off-icon');
+            expect(entityIcon(stateObj, config, hass)).toBe('mdi:off-icon');
+        })
     }),
     test('Passing config with icon iconditions equals should return condition', () => {    
         

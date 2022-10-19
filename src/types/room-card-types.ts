@@ -2,7 +2,7 @@ import { ActionConfig, HomeAssistant, LovelaceCardConfig } from 'custom-card-hel
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface RoomCardEntity {
-    name?: string;
+    name?: string | RoomCardAttributeTemplate;
     entity?: string;
     tap_action?: ActionConfig;
     hold_action?: ActionConfig;
