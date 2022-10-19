@@ -2,7 +2,7 @@ import { ActionConfig, HomeAssistant, LovelaceCardConfig } from 'custom-card-hel
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface RoomCardEntity {
-    name?: string;
+    name?: string | RoomCardAttributeTemplate;
     entity?: string;
     tap_action?: ActionConfig;
     hold_action?: ActionConfig;
@@ -18,7 +18,7 @@ export interface RoomCardEntity {
     stateObj: HomeAssistantEntity;
     attribute?: string;
     show_state?: boolean;
-    styles?: EntityStyles;
+    styles?: EntityStyles | RoomCardAttributeTemplate;
     icon?: string | RoomCardIcon;
     template?: string;
 }
@@ -39,9 +39,8 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     icon?: string | RoomCardIcon;
     rows?: RoomCardRow[];
     show_icon?: boolean;
-    title?: string;
-    name?: string;
-    styles?: EntityStyles;
+    title?: string | RoomCardAttributeTemplate;
+    styles?: EntityStyles | RoomCardAttributeTemplate;
     templates?: RoomCardTemplateContainer[];
     content_alignment?: RoomCardAlignment;
 }
@@ -107,4 +106,8 @@ export interface RoomCardTemplateDefinition {
 
 export interface RoomCardLovelaceCardConfig extends LovelaceCardConfig {
     hide_if?: HideIfConfig;
+}
+
+export interface RoomCardAttributeTemplate {
+    template: string;
 }

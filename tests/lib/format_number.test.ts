@@ -4,14 +4,18 @@ import { formatNumber, isNumericState, numberFormatToLocale, round } from "../..
 import { FormattingOptions, HomeAssistantEntity } from "../../src/types/room-card-types";
 
 describe('Testing format_number file', () => {
-    test.each`
-    number | precision| expected
-    ${7200.12345}  ${2}   ${7200.12}
-    ${7200.12345}  ${3}   ${7200.123}
-    ${7200.12345}  ${undefined}   ${7200.12}
-    `('Passing number and precision should return expected', ({ number, precision, expected }) => {  
-        
-        expect(round(number, precision)).toBe(expected);
+    beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation(jest.fn());
+    });
+    
+    [
+        [7200.12345, 2, 7200.12],
+        [7200.12345, 3, 7200.123],
+        [7200.12345, undefined, 7200.12],
+    ].forEach(([number, precision, expected]) => {
+        test(`Passing number ${number} and precision ${precision} should return expected`, () => {          
+            expect(round(number, precision)).toBe(expected);
+        })
     }),
     test.each`
     unit_of_measurement | state_class| expected
