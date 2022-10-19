@@ -273,8 +273,9 @@ export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass
     const onClick = clickHandler(entity?.stateObj?.entity_id, config.tap_action, hass, element);
     const onDblClick = dblClickHandler(entity?.stateObj?.entity_id, config.double_tap_action, hass, element);
     const hasAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
+    const title = !config.title || typeof config.title == 'string' ? config.title : evalTemplate(hass, entity.stateObj, (config.title as RoomCardAttributeTemplate).template);
 
-    return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${config.title}</div>`;
+    return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${title}</div>`;
 }
 
 export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {

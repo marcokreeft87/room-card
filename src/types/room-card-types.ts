@@ -39,7 +39,7 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     icon?: string | RoomCardIcon;
     rows?: RoomCardRow[];
     show_icon?: boolean;
-    title?: string;
+    title?: string | RoomCardAttributeTemplate;
     name?: string;
     styles?: EntityStyles | RoomCardAttributeTemplate;
     templates?: RoomCardTemplateContainer[];

@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10700  %}
+- Added `Support for templating for styles`
+- Added `Support for templating for title`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10640  %}
 - Added `content_alignment (left, center or right) for rows`
 {% endif %}
