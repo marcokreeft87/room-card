@@ -135,5 +135,45 @@ describe('Testing util file function getEntityIds', () => {
         expect(getEntityIds(config)).toMatchObject([
             'sensor.entity', 'sensor.entity2'
         ]);
+    }),
+    test('Passing entities with icon conditions should return entities and icon condition entities', () => {
+        const config: RoomCardConfig = {
+            info_entities: [{
+                entity: 'sensor.entity',
+                stateObj: StubHomeAssistantEntity,
+                icon: {
+                    conditions: [{
+                        entity: 'sensor.icon_entity'
+                    }]
+                }
+            }],
+            entities: [{
+                entity: 'sensor.entity2',
+                stateObj: StubHomeAssistantEntity,
+                icon: {
+                    conditions: [{
+                        entity: 'sensor.icon_entity2'
+                    }]
+                }
+            }],
+            rows: [{
+                entities: [{
+                    entity: 'sensor.entity3',
+                    stateObj: StubHomeAssistantEntity,
+                    icon: {
+                        conditions: [{
+                            entity: 'sensor.icon_entity3'
+                        }]
+                    }
+                }]
+            }],
+            entity: undefined,
+            entityIds: [],
+            type: ''
+        } 
+
+        expect(getEntityIds(config)).toMatchObject([
+            'sensor.entity2', 'sensor.entity', 'sensor.entity3', 'sensor.icon_entity2', 'sensor.icon_entity', 'sensor.icon_entity3'
+        ]);
     })
 })

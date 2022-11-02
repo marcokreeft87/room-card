@@ -2,7 +2,7 @@ import { HomeAssistant, createThing } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon } from './types/room-card-types';
 import { mapTemplate } from './template';
 import { hideIfCard } from './hide';
 
@@ -24,10 +24,30 @@ export const getEntityIds = (config: RoomCardConfig) : string[] =>
         .concat(config.info_entities?.map((entity) => getEntity(entity)))
         .concat(config.rows?.flatMap(row => row.entities).map((entity) => getEntity(entity)))
         .concat(config.cards?.map((card) => getEntity(card.entity)))
+        .concat(getConditionEntitiesFromConfig(config))
         .filter((entity) => entity);
 
 export const getEntity = (entity?: string | RoomCardEntity) : string => {
     return entity === undefined ? null : typeof entity === 'string' ? entity : entity.entity;
+}
+
+export const getConditionEntities = (entities?: RoomCardEntity[]) : EntityCondition[] => {
+    let conditions: EntityCondition[] = [];
+    entities?.forEach(entity => {
+        const conditionsWithEntity = (entity?.icon as RoomCardIcon)?.conditions?.filter(x => x.entity !== undefined);
+        if(conditionsWithEntity) {
+            conditions = conditions.concat(conditionsWithEntity);            
+        }
+    });
+
+    return conditions;
+}
+
+export const getConditionEntitiesFromConfig = (config: RoomCardConfig) : string[] => {
+    const entities = [config.entities, config.info_entities, config.rows?.flatMap(row => row.entities)]
+    const conditionWithEntities = getConditionEntities(entities.flatMap(entities => entities));
+
+    return conditionWithEntities.filter(condition => condition.entity).map(condition => condition.entity);
 }
 
 export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: PropertyValues) => {
