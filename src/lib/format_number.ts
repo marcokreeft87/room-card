@@ -4,7 +4,7 @@ import { FrontendLocaleData } from 'custom-card-helpers';
 import { FormattingOptions, HomeAssistantEntity } from '../types/room-card-types';
 import { NumberFormat } from './constants';
 
-export const round = (value: number, precision = 2) => Math.round(value * 10 ** precision) / 10 ** precision;
+export const round = (value?: number, precision = 2) => Math.round(value * 10 ** precision) / 10 ** precision;
 
 export const isNumericState = (stateObj: HomeAssistantEntity) =>
     !!stateObj.attributes.unit_of_measurement || !!stateObj.attributes.state_class;

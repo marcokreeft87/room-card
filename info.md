@@ -1,8 +1,14 @@
 {% if installed %}
 
 ### Features
-{% if version_installed.replace("v", "").replace(".","") | int < 10641  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 10701  %}
 - Fixed `Entities given in icon conditions not triggering update of card`
+{% endif %}
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10700  %}
+- Added `Support for templating for styles`
+- Added `Support for templating for title`
+- Added `Support for templating for name`
 {% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 10640  %}

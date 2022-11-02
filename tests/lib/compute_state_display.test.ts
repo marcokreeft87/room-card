@@ -5,6 +5,9 @@ import { UNAVAILABLE, UNKNOWN } from '../../src/lib/constants';
 import { HomeAssistantEntity } from '../../src/types/room-card-types';
 
 describe('Testing compute_state_display file', () => {
+    beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation(jest.fn());
+    });
 
     const hass = createMock<HomeAssistant>();
     hass.localize = jest.fn();

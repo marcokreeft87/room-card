@@ -1,11 +1,9 @@
-name: Tests
+name: Push to master checks
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
-  pull_request:
     branches: [ "master" ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -24,6 +22,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - run: npm install
       
@@ -42,3 +42,10 @@ jobs:
         with:
           category: "plugin"
           ignore: brands
+
+      - name: Automatic GitHub Release
+        uses: marcokreeft87/github-action-npm-release@1.0.0      
+        
+      - name: Print release output
+        if: ${{ steps.release.outputs.released == 'true' }}
+        run: echo Release ID ${{ steps.release.outputs.release_id }}
