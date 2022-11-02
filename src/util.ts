@@ -31,29 +31,23 @@ export const getEntity = (entity?: string | RoomCardEntity) : string => {
     return entity === undefined ? null : typeof entity === 'string' ? entity : entity.entity;
 }
 
-export const getConditionEntities = (entities: RoomCardEntity[]) => {
-    return entities?.map(entity => {
-        if(!entity.icon) return;
+export const getConditionEntities = (entities?: RoomCardEntity[]) : EntityCondition[] => {
+    let conditions: EntityCondition[] = [];
+    entities?.forEach(entity => {
+        const conditionsWithEntity = (entity?.icon as RoomCardIcon)?.conditions?.filter(x => x.entity !== undefined);
+        if(conditionsWithEntity) {
+            conditions = conditions.concat(conditionsWithEntity);            
+        }
+    });
 
-        const entityIcon = entity.icon as RoomCardIcon;
-        if(entityIcon === undefined)  return;
-
-        return entityIcon.conditions?.filter(x => x.entity !== undefined);
-    }).filter(x => x !== undefined);
+    return conditions;
 }
 
 export const getConditionEntitiesFromConfig = (config: RoomCardConfig) : string[] => {
-    const conditionWithEntities = getConditionEntities(config.entities);
+    const entities = [config.entities, config.info_entities, config.rows?.flatMap(row => row.entities)]
+    const conditionWithEntities = getConditionEntities(entities.flatMap(entities => entities));
 
-    const conditionWithInfoEntities = getConditionEntities(config.info_entities);
-    conditionWithEntities?.concat(conditionWithInfoEntities);
-
-    const conditionWithRowEntities = config.rows?.flatMap(row => getConditionEntities(row.entities));
-    conditionWithEntities?.concat(conditionWithRowEntities);
-
-    console.log(conditionWithEntities);
-
-    return conditionWithEntities?.map(condition => (condition as EntityCondition).entity);
+    return conditionWithEntities.filter(condition => condition.entity).map(condition => condition.entity);
 }
 
 export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: PropertyValues) => {

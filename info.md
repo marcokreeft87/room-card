@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10641  %}
+- Fixed `Entities given in icon conditions not triggering update of card`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10640  %}
 - Added `content_alignment (left, center or right) for rows`
 {% endif %}
