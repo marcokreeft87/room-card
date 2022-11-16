@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+
+{% if version_installed.replace("v", "").replace(".","") | int < 10702  %}
+- Fixed `Upped loader-utils because of security issue with old version`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10701  %}
 - Fixed `Entities given in icon conditions not triggering update of card`
 {% endif %}
