@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10641  %}
+- Fixed `Upped loader-utils since there was a security issue with the old version`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10640  %}
 - Added `content_alignment (left, center or right) for rows`
 {% endif %}
