@@ -1,6 +1,9 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10703  %}
+- Fixed `hide if entities not triggering update`
+{% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 10702  %}
 - Fixed `Upped loader-utils because of security issue with old version`
