@@ -2,7 +2,7 @@ import { HomeAssistant, createThing } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon, HideIfConfig } from './types/room-card-types';
 import { mapTemplate } from './template';
 import { hideIfCard } from './hide';
 
@@ -34,9 +34,13 @@ export const getEntity = (entity?: string | RoomCardEntity) : string => {
 export const getConditionEntities = (entities?: RoomCardEntity[]) : EntityCondition[] => {
     let conditions: EntityCondition[] = [];
     entities?.forEach(entity => {
-        const conditionsWithEntity = (entity?.icon as RoomCardIcon)?.conditions?.filter(x => x.entity !== undefined);
-        if(conditionsWithEntity) {
-            conditions = conditions.concat(conditionsWithEntity);            
+        const iconConditionsWithEntity = (entity?.icon as RoomCardIcon)?.conditions?.filter(x => x.entity !== undefined);
+        if(iconConditionsWithEntity) {
+            conditions = conditions.concat(iconConditionsWithEntity);            
+        }
+        const hideConditionsWithEntity = (entity?.hide_if as HideIfConfig)?.conditions?.filter(x => x.entity !== undefined);
+        if(hideConditionsWithEntity) {
+            conditions = conditions.concat(hideConditionsWithEntity);            
         }
     });
 
