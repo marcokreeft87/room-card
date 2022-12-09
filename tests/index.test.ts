@@ -334,6 +334,83 @@ describe('Testing index file class RoomCard', () => {
         const htmlResult = getRenderString(result);
 
         expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @click="" @dblclick=""><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @click="">on</div><div class="state entity " style="" @click="">on</div> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @mousedown="start" @mouseup="end" @touchstart="start" @touchend="end" @touchcancel="end"> <span>row_test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+    }),
+    test('Calling getCardSize should return 2', () => {
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: "custom:room-card",
+            show_icon: true,
+            entities: [],
+            info_entities: [],
+            rows: [],
+            title: 'Test title'
+        }
+
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
+
+        expect(roomcard.getCardSize()).toBe(2);
+    }),test('Calling getCardSize should return 2', () => {
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: "custom:room-card",
+            show_icon: true,
+            entities: [],
+            info_entities: [],
+            rows: undefined,
+            cards: undefined,
+            title: 'Test title'
+        }
+
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
+
+        expect(roomcard.getCardSize()).toBe(2);
+    }),
+    test('Calling getCardSize should return 5', () => {
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: "custom:room-card",
+            show_icon: true,
+            entities: [createEntity('light.test_entity2', hass, 'on', { icon: 'mdi:table' }),
+                createEntity('light.test_entity3', hass, 'on', { icon: 'mdi:fox' })],
+            info_entities: [createEntity('light.info_test_entity', hass, 'on', { icon: 'mdi:chicken' }),
+                createEntity('light.info_test_entity2', hass, 'on', { icon: 'mdi:headphones' })],
+            rows: [{
+                entities: [createEntity('light.row_test_entity2', hass, 'on', { icon: 'mdi:notepad' })]
+            } as RoomCardRow,
+            {
+                entities: [createEntity('light.row_test_entity3', hass, 'on', { icon: 'mdi:light' })]
+            } as RoomCardRow],
+            title: 'Test title'
+        }
+
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
+
+        expect(roomcard.getCardSize()).toBe(5);
+    }),
+    test('Calling getCardSize should return 4', () => {
+
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: "custom:room-card",
+            show_icon: true,
+            cards: [{ type: 'entities' } as LovelaceCardConfig,  
+                    { type: 'custom:mini-graph' } as LovelaceCardConfig],
+            title: 'Test title'
+        }
+
+        roomcard.setConfig(config);
+
+        expect(roomcard.getCardSize()).toBe(4);
     })
 })
 
