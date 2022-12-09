@@ -97,9 +97,10 @@ export default class RoomCard extends LitElement {
     }
 
     getCardSize() {
-        var numberOfCards = this.config.cards ? this.config.cards.length : 0;
-        var numberOfRows = this.config.rows ? this.config.rows.length : 0;;
+        const numberOfCards = this.config.cards ? this.config.cards.length : 0;
+        const numberOfRows = this.config.rows ? this.config.rows.length : 0;
+        const mainSize = !this.config.info_entities && this.config.hide_title ? 1 : 2;
 
-        return numberOfCards + numberOfRows + (this.config.entities ? this.config.entities.length > 0 ? 1 : 0 : 0) + 2;
+        return numberOfCards + numberOfRows + (this.config.entities ? this.config.entities.length > 0 ? 1 : 0 : 0) + mainSize;
     }
 }

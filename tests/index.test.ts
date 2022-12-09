@@ -396,7 +396,7 @@ describe('Testing index file class RoomCard', () => {
 
         expect(roomcard.getCardSize()).toBe(5);
     }),
-    test('Calling getCardSize should return 4', () => {
+    test('Calling getCardSize should return 3', () => {
 
         const config: RoomCardConfig = {
             entity: 'light.test_entity',
@@ -405,12 +405,14 @@ describe('Testing index file class RoomCard', () => {
             show_icon: true,
             cards: [{ type: 'entities' } as LovelaceCardConfig,  
                     { type: 'custom:mini-graph' } as LovelaceCardConfig],
-            title: 'Test title'
+            title: 'Test title',
+            hide_title: true,
+            info_entities: undefined
         }
 
         roomcard.setConfig(config);
 
-        expect(roomcard.getCardSize()).toBe(4);
+        expect(roomcard.getCardSize()).toBe(3);
     })
 })
 

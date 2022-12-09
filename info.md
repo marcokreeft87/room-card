@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10705  %}
+- Fixed `used hide_title in card size calculation`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10704  %}
 - Added `card size for correct display`
 {% endif %}
