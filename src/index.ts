@@ -95,4 +95,11 @@ export default class RoomCard extends LitElement {
             return html`<hui-warning>${error.toString()}</hui-warning>`;
         }
     }
+
+    getCardSize() {
+        var numberOfCards = this.config.cards ? this.config.cards.length : 0;
+        var numberOfRows = this.config.rows ? this.config.rows.length : 0;;
+
+        return numberOfCards + numberOfRows + (this.config.entities ? this.config.entities.length > 0 ? 1 : 0 : 0) + 2;
+    }
 }

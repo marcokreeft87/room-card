@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10704  %}
+- Added `card size for correct display`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10703  %}
 - Fixed `hide if entities not triggering update`
 {% endif %}
