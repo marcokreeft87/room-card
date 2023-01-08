@@ -33,4 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "npm run workflow"
+          test-command: "npm run workflow"     
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3   
