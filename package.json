@@ -31,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "babel-loader": "^8.2.3",
+    "codecov": "^3.8.3",
     "compression-webpack-plugin": "^10.0.0",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.3.0",
