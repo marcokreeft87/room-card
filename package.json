@@ -19,7 +19,7 @@
     "jest-environment-jsdom": "^29.0.3",
     "jest-ts-auto-mock": "^2.1.0",
     "lit": "^2.0.2",
-    "ts-auto-mock": "^3.6.2",
+    "ts-auto-mock": "^3.6.4",
     "ttypescript": "^1.5.13",
     "yarn": "^1.22.18"
   },
