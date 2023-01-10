@@ -20,7 +20,7 @@
     "jest-ts-auto-mock": "^2.1.0",
     "lit": "^2.0.2",
     "ts-auto-mock": "^3.6.2",
-    "ttypescript": "^1.5.13",
+    "ttypescript": "^1.5.15",
     "yarn": "^1.22.18"
   },
   "devDependencies": {
