@@ -1,4 +1,4 @@
-import { ActionConfig, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
+import { ActionConfig, ActionHandlerOptions, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface RoomCardEntity {
@@ -110,4 +110,14 @@ export interface RoomCardLovelaceCardConfig extends LovelaceCardConfig {
 
 export interface RoomCardAttributeTemplate {
     template: string;
+}
+
+
+export interface ActionHandler extends HTMLElement {
+    holdTime: number;
+    bind(element: Element, options: ActionHandlerOptions): void;
+}
+
+export interface ActionHandlerElement extends HTMLElement {
+    actionHandler?: boolean;
 }
