@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10710  %}
+- Fixed `unwanted switching toggle entities while scrolling on phone`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10705  %}
 - Fixed `used hide_title in card size calculation`
 {% endif %}

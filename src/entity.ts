@@ -2,12 +2,13 @@ import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable, renderClasses } from './util';
-import { ActionConfig, handleClick, HomeAssistant } from 'custom-card-helpers';
+import { ActionHandlerEvent, handleAction, hasAction, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { getTemplateOrAttribute, templateStyling } from './template';
 import { hideIfEntity, hideIfRow } from './hide';
+import { actionHandler } from './directives/action-handler-directive';
 
 export const checkConfig = (config: RoomCardConfig) => {
     if (config.entities == undefined && config.entity == undefined && config.info_entities === undefined && config.rows === undefined && config.cards === undefined) {
@@ -134,74 +135,6 @@ export const entityStyles = (styles: EntityStyles | RoomCardAttributeTemplate, s
             .join('');
 }    
 
-export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
-    const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
-
-    return html`${filteredRows.map((row) => {
-        return renderEntitiesRow(row, row.entities, hass, element);
-    })}`;
-}
-
-export const renderEntitiesRow = (config: RoomCardConfig | RoomCardRow, entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
-    if(entities === undefined) {
-        return null;
-    }   
-
-    return html`<div class="${renderClasses(config, classes)}">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
-}
-
-export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
-    if (entity.stateObj == undefined || hideIfEntity(entity, hass)) {
-        return null;
-    }
-    
-    const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
-    const onDblClick = dblClickHandler(entity.stateObj.entity_id, entity.double_tap_action, hass, element);        
-    const onHold = holdHandler(entity.stateObj.entity_id, entity.hold_action, hass, element);
-    let held: boolean;
-    let timer: number;
-    let dblClickTimeout: number;
-
-    const start = () => {
-        held = false;
-        
-        timer = window.setTimeout(() => { held = true; }, 500);
-    };
-  
-    const end = (ev: MouseEvent) => {
-        // Prevent mouse event if touch event
-        ev.preventDefault();
-        if (['touchend', 'touchcancel'].includes(ev.type) && timer === undefined) {
-          return;
-        }
-        window.clearTimeout(timer);
-        timer = undefined;
-        if (held) {
-            onHold();
-        } else if (entity.double_tap_action !== undefined) {
-          if ((ev.type === 'click' && (ev).detail < 2) || !dblClickTimeout) {
-            dblClickTimeout = window.setTimeout(() => {
-              dblClickTimeout = undefined;                  
-              onClick();
-            }, 250);
-          } else {
-            window.clearTimeout(dblClickTimeout);
-            dblClickTimeout = undefined;
-            onDblClick();
-          }
-        } else {
-            onClick();
-        }
-    };
-
-    return html`<div class="entity" style="${entityStyles(entity.styles, hass.states[entity.entity], hass)}"
-            @mousedown="${start}" @mouseup="${end}" @touchstart="${start}" @touchend="${end}" @touchcancel="${end}">
-            ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity, hass)}</span>` : ''}
-            <div>${renderIcon(entity.stateObj, entity, hass)}</div>
-            ${entity.show_state ? html`<span>${entityStateDisplay(hass, entity)}</span>` : ''}
-        </div>`;
-}
-
 export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity | RoomCardConfig, hass: HomeAssistant, classes? : string) : HTMLTemplateResult => {
     if(config.show_icon !== undefined && config.show_icon === false) {
         return null;
@@ -266,37 +199,86 @@ export const renderMainEntity = (entity: RoomCardEntity | undefined, config: Roo
             ? renderIcon(entity.stateObj, config, hass, "main-icon")
             : entity.show_state !== undefined && entity.show_state === false ? '' : renderValue(entity, hass)}
     </div>`;
-}    
+}  
+
+export const clickHandler = (element: LitElement, hass: HomeAssistant, entity: RoomCardEntity, ev: ActionHandlerEvent) => {
+    handleAction(element, hass, entity, ev.detail.action);
+}
 
 export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
     if(config.hide_title === true)
         return null;
 
-    const onClick = clickHandler(entity?.stateObj?.entity_id, config.tap_action, hass, element);
-    const onDblClick = dblClickHandler(entity?.stateObj?.entity_id, config.double_tap_action, hass, element);
-    const hasAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
+    const _handleAction = (ev: ActionHandlerEvent): void => {
+        if (hass && entity && ev.detail.action) {
+            clickHandler(element, hass, entity, ev);
+        }
+    }
+
+    const hasConfigAction = config.tap_action !== undefined || config.double_tap_action !== undefined;
     const title = getTemplateOrAttribute(config.title, hass, entity?.stateObj);
 
-    return html`<div class="title${(hasAction ? ' clickable' : null)}" @click="${onClick}" @dblclick="${onDblClick}">${renderMainEntity(entity, config, hass)} ${title}</div>`;
+    return html`<div class="title${(hasConfigAction ? ' clickable' : null)}" @action=${_handleAction}
+    .actionHandler=${actionHandler({
+        hasHold: hasAction(entity?.hold_action),
+        hasDoubleClick: hasAction(entity?.double_tap_action),
+      })}>${renderMainEntity(entity, config, hass)} ${title}</div>`;
 }
 
 export const renderInfoEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
     if (entity === undefined || !entity.stateObj || hideIfEntity(entity, hass)) {
         return null;
+    }               
+    
+    const _handleAction = (ev: ActionHandlerEvent): void => {
+        if (hass && entity && ev.detail.action) {
+            clickHandler(element, hass, entity, ev);
+        }
     }
 
-    const onClick = clickHandler(entity.stateObj.entity_id, entity.tap_action, hass, element);
-    return html`<div class="state entity ${entity.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(entity.styles, entity.stateObj, hass)}" @click="${onClick}">${renderValue(entity, hass)}</div>`;
+    return html`<div class="state entity ${entity.show_icon === true ? 'icon-entity' : ''}" style="${entityStyles(entity.styles, entity.stateObj, hass)}" 
+    @action=${_handleAction}
+    .actionHandler=${actionHandler({
+        hasHold: hasAction(entity.hold_action),
+        hasDoubleClick: hasAction(entity.double_tap_action),
+      })}>${renderValue(entity, hass)}</div>`;
 }
 
-export const clickHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
-    return () => handleClick(element, hass, { entity, tap_action: actionConfig }, false, false);
+export const renderEntitiesRow = (config: RoomCardConfig | RoomCardRow, entities: RoomCardEntity[], hass: HomeAssistant, element: LitElement, classes?: string) : HTMLTemplateResult => {    
+    if(entities === undefined) {
+        return null;
+    }   
+
+    return html`<div class="${renderClasses(config, classes)}">${entities.map((entity) => renderEntity(entity, hass, element))}</div>`;
 }
 
-export const dblClickHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
-    return () => handleClick(element, hass, { entity, double_tap_action: actionConfig }, false, true);
+export const renderEntity = (entity: RoomCardEntity, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {    
+    if (entity.stateObj == undefined || hideIfEntity(entity, hass)) {
+        return null;
+    }                
+    
+    const _handleAction = (ev: ActionHandlerEvent): void => {
+        if (hass && entity && ev.detail.action) {
+            clickHandler(element, hass, entity, ev);
+        }
+    }
+    
+    return html`<div class="entity" style="${entityStyles(entity.styles, hass.states[entity.entity], hass)}"
+            @action=${_handleAction}
+            .actionHandler=${actionHandler({
+                hasHold: hasAction(entity.hold_action),
+                hasDoubleClick: hasAction(entity.double_tap_action),
+              })}>
+            ${entity.show_name === undefined || entity.show_name ? html`<span>${entityName(entity, hass)}</span>` : ''}
+            <div>${renderIcon(entity.stateObj, entity, hass)}</div>
+            ${entity.show_state ? html`<span>${entityStateDisplay(hass, entity)}</span>` : ''}
+        </div>`;
 }
 
-export const holdHandler = (entity: string, actionConfig: ActionConfig, hass: HomeAssistant, element: LitElement) => {
-    return () => handleClick(element, hass, { entity, hold_action: actionConfig }, true, false);
+export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: LitElement)  : HTMLTemplateResult => { 
+    const filteredRows = rows.filter(row => { return !hideIfRow(row, hass); });
+
+    return html`${filteredRows.map((row) => {
+        return renderEntitiesRow(row, row.entities, hass, element);
+    })}`;
 }
