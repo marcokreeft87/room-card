@@ -14,3 +14,4 @@ Moved the documentation to the [wiki](https://github.com/marcokreeft87/room-card
 # If you got questions or found a bug? Please first check the [wiki](https://github.com/marcokreeft87/room-card/wiki)
 
 ![room-card](https://raw.githubusercontent.com/marcokreeft87/room-card/master/example.png)
+
