@@ -91,6 +91,8 @@ describe('Testing entity file function renderInfoEntity', () => {
             icon: 'mdi:table'
         };
         const result = renderInfoEntity(entity, hass, element);
+        
+        // eslint-disable-next-line @typescript-eslint/ban-types
         const endFn = result.values[2] as Function;
 
         const mouseEvent = createMock<ActionHandlerEvent>({

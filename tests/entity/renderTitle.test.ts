@@ -113,6 +113,8 @@ describe('Testing entity file function renderValue', () => {
         };
         
         const result = renderTitle(entity, config, hass, element);
+        
+        // eslint-disable-next-line @typescript-eslint/ban-types
         const endFn = result.values[1] as Function;
 
         const mouseEvent = createMock<ActionHandlerEvent>({

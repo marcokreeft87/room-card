@@ -12,8 +12,6 @@ describe('Testing entity file function renderEntity', () => {
     const hass = createMock<HomeAssistant>();
     const stateObj = createMock<HomeAssistantEntity>();
     const element: LitElement = createMock<LitElement>();
-    const clearTimeoutFn = jest.spyOn(window, 'clearTimeout');        
-    const setTimeoutFn = jest.spyOn(window, 'setTimeout');
             
     stateObj.state = 'on';
     stateObj.attributes.friendly_name = 'Test Entity';
