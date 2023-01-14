@@ -42,8 +42,6 @@ describe('Testing entity file function renderInfoEntity', () => {
         
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-
-        console.log(htmlResult);
         
         expect(htmlResult).toMatch('<div class="state entity " style="" @action=_handleAction .actionHandler=>on</div>');
     }),

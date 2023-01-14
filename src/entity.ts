@@ -84,29 +84,7 @@ export const entityStateDisplay = (hass: HomeAssistant, entity: RoomCardEntity) 
             : entity.unit || entity.stateObj.attributes.unit_of_measurement;
 
     if (entity.format) {
-        if (entity.format.startsWith('precision')) {
-            
-            const precision = parseInt(entity.format.slice(-1), 10);
-            value = formatNumber(value, hass.locale, {
-                minimumFractionDigits: precision,
-                maximumFractionDigits: precision,
-            });
-        } 
-        else if (isNaN(parseFloat(value)) || !isFinite(value)) {
-            // do nothing if not a number
-        } else if (entity.format === 'brightness') {
-            value = Math.round((value / 255) * 100);
-            unit = '%';
-        } else if (entity.format.startsWith('duration')) {
-            value = secondsToDuration(entity.format === 'duration-m' ? value / 1000 : value);
-            unit = undefined;
-        } else if (entity.format === 'kilo') {
-            value = formatNumber(value / 1000, hass.locale, { maximumFractionDigits: 2 });
-        } else if (entity.format === 'invert') {
-            value = formatNumber(value - value * 2, hass.locale);
-        } else if (entity.format === 'position') {
-            value = formatNumber(100 - value, hass.locale);
-        }
+        ({ value, unit } = extractValue(entity, value, hass, unit));
         return `${value}${unit ? ` ${unit}` : ''}`;
     }
 
@@ -282,3 +260,34 @@ export const renderRows = (rows: RoomCardRow[], hass: HomeAssistant, element: Li
         return renderEntitiesRow(row, row.entities, hass, element);
     })}`;
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const extractValue = (entity: RoomCardEntity, value: any, hass: HomeAssistant, unit: string) => {
+    if (entity.format.startsWith('precision')) {
+
+        const precision = parseInt(entity.format.slice(-1), 10);
+        value = formatNumber(value, hass.locale, {
+            minimumFractionDigits: precision,
+            maximumFractionDigits: precision,
+        });
+    }
+    else if (isNaN(parseFloat(value)) || !isFinite(value)) {
+        // do nothing if not a number
+    } else if (entity.format === 'brightness') {
+        value = Math.round((value / 255) * 100);
+        unit = '%';
+    } else if (entity.format.startsWith('duration')) {
+        value = secondsToDuration(entity.format === 'duration-m' ? value / 1000 : value);
+        unit = undefined;
+    } else if (entity.format === 'kilo') {
+        value = formatNumber(value / 1000, hass.locale, { maximumFractionDigits: 2 });
+    } else if (entity.format === 'invert') {
+        value = formatNumber(value - value * 2, hass.locale);
+    } else if (entity.format === 'position') {
+        value = formatNumber(100 - value, hass.locale);
+    }
+
+    return { value, unit };
+}
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
