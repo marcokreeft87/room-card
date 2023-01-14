@@ -1,10 +1,11 @@
-import { HomeAssistant } from 'custom-card-helpers';
+import { ActionHandlerEvent, HomeAssistant } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { LitElement } from 'lit';
 import { renderInfoEntity } from '../../src/entity';
 import { HomeAssistantEntity, RoomCardEntity } from '../../src/types/room-card-types';
 import { getRenderString } from '../utils';
 import { UNAVAILABLE } from '../../src/lib/constants';
+import * as entityModule from '../../src/entity';
 
 describe('Testing entity file function renderInfoEntity', () => {
     const hass = createMock<HomeAssistant>();
@@ -28,7 +29,7 @@ describe('Testing entity file function renderInfoEntity', () => {
         
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="state entity " style="color: red;" @click="">on</div>');
+        expect(htmlResult).toMatch('<div class="state entity " style="color: red;" @action=_handleAction .actionHandler=>on</div>');
     }),
     test('Passing entity show_state false and show_name false should return expected html', () => {   
 
@@ -41,8 +42,10 @@ describe('Testing entity file function renderInfoEntity', () => {
         
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
+
+        console.log(htmlResult);
         
-        expect(htmlResult).toMatch('<div class="state entity " style="" @click="">on</div>');
+        expect(htmlResult).toMatch('<div class="state entity " style="" @action=_handleAction .actionHandler=>on</div>');
     }),
     test('Passing entity to be hidden should return null', () => {   
         
@@ -75,6 +78,31 @@ describe('Testing entity file function renderInfoEntity', () => {
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="state entity icon-entity" style="" @click=""><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div>');
+        expect(htmlResult).toMatch('<div class="state entity icon-entity" style="" @action=_handleAction .actionHandler=><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div>');
+    }),
+    test('Mouseclick should trigger action', () => {   
+        
+        const clickHandler = jest.spyOn(entityModule, 'clickHandler');
+
+        stateObj.attributes['title'] = "Test title";
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            show_icon: true,
+            icon: 'mdi:table'
+        };
+        const result = renderInfoEntity(entity, hass, element);
+        
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const endFn = result.values[2] as Function;
+
+        const mouseEvent = createMock<ActionHandlerEvent>({
+            detail: {
+                action: 'test'
+            }
+        });
+
+        endFn(mouseEvent);
+
+        expect(clickHandler).toHaveBeenCalled();
     })
 })
