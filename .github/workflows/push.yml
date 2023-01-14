@@ -26,19 +26,19 @@ jobs:
           fetch-depth: 0
 
       - run: npm install
-      
+       
       - name: Run Tests
         run: npm run workflow
-        
+
       - name: Run Jest
         uses: willcaul/jest-github-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "npm run workflow"      
+          test-command: "npm run workflow"
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3   
+        uses: codecov/codecov-action@v3
 
       - name: HACS validation
         uses: hacs/action@main
@@ -47,8 +47,8 @@ jobs:
           ignore: brands
 
       - name: Automatic GitHub Release
-        uses: marcokreeft87/github-action-npm-release@1.0.0      
-        
+        uses: marcokreeft87/github-action-npm-release@1.0.0
+
       - name: Print release output
         if: ${{ steps.release.outputs.released == 'true' }}
         run: echo Release ID ${{ steps.release.outputs.release_id }}
