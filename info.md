@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10711  %}
+- Added `title actions available without configuring a main entity`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10710  %}
 - Fixed `unwanted switching toggle entities while scrolling on phone`
 {% endif %}

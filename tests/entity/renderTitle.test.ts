@@ -1,4 +1,4 @@
-import { ActionHandlerEvent, HomeAssistant } from 'custom-card-helpers';
+import { ActionHandlerEvent, HomeAssistant, MoreInfoActionConfig } from 'custom-card-helpers';
 import { LitElement } from "lit";
 import { createMock } from "ts-auto-mock";
 import { renderTitle } from "../../src/entity";
@@ -13,7 +13,7 @@ describe('Testing entity file function renderValue', () => {
     stateObj.entity_id = 'light.test_entity';
     stateObj.state = 'on';
     
-    test('Passing  no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return null', () => {      
+    test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return null', () => {      
         const config: RoomCardConfig = {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
@@ -25,9 +25,9 @@ describe('Testing entity file function renderValue', () => {
             stateObj: stateObj
         };
 
-        expect(renderTitle(entity, config, hass, element)).toBeNull();
+        expect(renderTitle(config, hass, element, entity)).toBeNull();
     }),
-    test('Passing no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return expected html', () => {      
+    test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return expected html', () => {      
         const entity: RoomCardEntity = {
             stateObj: stateObj,
             show_icon: true,
@@ -38,13 +38,28 @@ describe('Testing entity file function renderValue', () => {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
             type: '',
-            tap_action: 'more-info'
+            tap_action: { } as MoreInfoActionConfig,
         };
 
-        const result = renderTitle(entity, config, hass, element);
+        const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
         expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+    }),
+    test('Passing no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return expected html', () => {      
+        
+        const config: RoomCardConfig = {
+            entityIds: ['light.test_entity'],
+            type: '',
+            tap_action: { } as MoreInfoActionConfig,
+        };
+
+        const result = renderTitle(config, hass, element, undefined);
+        const htmlResult = getRenderString(result);
+
+
+        
+        expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=> </div>');
     }),
     test('Passing  no RoomCardEntity, RoomcardConfig with action, HomeAssistant and LitElement should return expected html', () => {      
         const entity: RoomCardEntity = {
@@ -57,10 +72,10 @@ describe('Testing entity file function renderValue', () => {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
             type: '',
-            tap_action: 'more-info'
+            tap_action: { } as MoreInfoActionConfig,
         };
 
-        const result = renderTitle(entity, config, hass, element);
+        const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
         expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
@@ -82,16 +97,16 @@ describe('Testing entity file function renderValue', () => {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
             type: '',
-            tap_action: 'more-info',
+            tap_action: { } as MoreInfoActionConfig,
             title: {
                 template: "if (entity.state == 'on') return entity.attributes.title; else return 'Off'; "
             }
         };
 
-        const result = renderTitle(entity, config, hass, element);
+        const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch(`<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> ${expected}</div>`);;
+        expect(htmlResult).toMatch(`<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> ${expected}</div>`);
     }),
     test('Mouseclick should trigger action', () => {   
         
@@ -108,11 +123,11 @@ describe('Testing entity file function renderValue', () => {
             entity: 'light.test_entity',
             entityIds: ['light.test_entity'],
             type: '',
-            tap_action: 'more-info',
+            tap_action: { } as MoreInfoActionConfig,
             title: 'Test'
         };
         
-        const result = renderTitle(entity, config, hass, element);
+        const result = renderTitle(config, hass, element, entity);
         
         // eslint-disable-next-line @typescript-eslint/ban-types
         const endFn = result.values[1] as Function;

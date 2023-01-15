@@ -183,13 +183,17 @@ export const clickHandler = (element: LitElement, hass: HomeAssistant, entity: R
     handleAction(element, hass, entity, ev.detail.action);
 }
 
-export const renderTitle = (entity: RoomCardEntity, config: RoomCardConfig, hass: HomeAssistant, element: LitElement) : HTMLTemplateResult => {
+export const renderTitle = (config: RoomCardConfig, hass: HomeAssistant, element: LitElement, entity?: RoomCardEntity) : HTMLTemplateResult => {
     if(config.hide_title === true)
         return null;
 
     const _handleAction = (ev: ActionHandlerEvent): void => {
-        if (hass && entity && ev.detail.action) {
-            clickHandler(element, hass, entity, ev);
+        if (hass && ev.detail.action) {
+            clickHandler(element, hass, entity || { 
+                tap_action: config.tap_action,
+                double_tap_action: config.double_tap_action,
+                hold_action: config.hold_action
+              } as RoomCardEntity, ev);
         }
     }
 
