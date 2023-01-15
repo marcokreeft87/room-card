@@ -1,6 +1,6 @@
 {
   "name": "room-card",
-  "version": "1.07.10",
+  "version": "1.07.11",
   "description": "Show entities in Home Assistant's Lovelace UI",
   "keywords": [
     "home-assistant",
@@ -16,7 +16,7 @@
   "dependencies": {
     "babel-jest": "^29.0.3",
     "custom-card-helpers": "^1.8.0",
-    "jest-environment-jsdom": "^29.0.3",
+    "jest-environment-jsdom": "^29.3.1",
     "jest-ts-auto-mock": "^2.1.0",
     "lit": "^2.0.2",
     "ts-auto-mock": "^3.6.2",
@@ -50,7 +50,7 @@
     "build": "yarn lint && webpack -c webpack.config.js",
     "test": "jest",
     "coverage": "jest --coverage",
-    "workflow": "jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json",    
+    "workflow": "jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json",
     "prebuild": "copy git-hooks\\pre-commit .git\\hooks\\ && echo 'hook copied'"
   }
 }

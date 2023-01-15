@@ -43,6 +43,9 @@ export interface RoomCardConfig extends LovelaceCardConfig {
     styles?: EntityStyles | RoomCardAttributeTemplate;
     templates?: RoomCardTemplateContainer[];
     content_alignment?: RoomCardAlignment;
+    tap_action?: ActionConfig;
+    hold_action?: ActionConfig;
+    double_tap_action?: ActionConfig;
 }
 
 export enum RoomCardAlignment {
