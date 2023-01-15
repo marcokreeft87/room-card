@@ -51,13 +51,13 @@ describe('Testing entity file function renderValue', () => {
         const config: RoomCardConfig = {
             entityIds: ['light.test_entity'],
             type: '',
-            tap_action: { } as MoreInfoActionConfig,
+            tap_action: { action: 'more-info' } as MoreInfoActionConfig,
+            double_tap_action: { action: 'more-info' } as MoreInfoActionConfig,
+            hold_action: { action: 'more-info' } as MoreInfoActionConfig
         };
 
         const result = renderTitle(config, hass, element, undefined);
         const htmlResult = getRenderString(result);
-
-
         
         expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=> </div>');
     }),
@@ -128,6 +128,34 @@ describe('Testing entity file function renderValue', () => {
         };
         
         const result = renderTitle(config, hass, element, entity);
+        
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const endFn = result.values[1] as Function;
+
+        const mouseEvent = createMock<ActionHandlerEvent>({
+            detail: {
+                action: 'test'
+            }
+        });
+
+        endFn(mouseEvent);
+
+        expect(clickHandler).toHaveBeenCalled();
+    }),
+    test('Mouseclick should trigger action', () => {   
+        
+        const clickHandler = jest.spyOn(entityModule, 'clickHandler');
+
+        stateObj.attributes['title'] = "Test title";
+        
+        const config: RoomCardConfig = {
+            entityIds: ['light.test_entity'],
+            type: '',
+            tap_action: { } as MoreInfoActionConfig,
+            title: 'Test'
+        };
+        
+        const result = renderTitle(config, hass, element, undefined);
         
         // eslint-disable-next-line @typescript-eslint/ban-types
         const endFn = result.values[1] as Function;
