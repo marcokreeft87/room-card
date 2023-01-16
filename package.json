@@ -30,7 +30,7 @@
     "@types/jest": "^29.0.3",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^9.1.2",
     "codecov": "^3.8.3",
     "compression-webpack-plugin": "^10.0.0",
     "eslint": "^8.24.0",
