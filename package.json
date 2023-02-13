@@ -14,7 +14,7 @@
   "module": "room-card.js",
   "license": "MIT",
   "dependencies": {
-    "babel-jest": "^29.4.1",
+    "babel-jest": "^29.4.2",
     "custom-card-helpers": "^1.8.0",
     "jest-environment-jsdom": "^29.4.2",
     "jest-ts-auto-mock": "^2.1.0",
