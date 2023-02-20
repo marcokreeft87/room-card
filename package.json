@@ -16,7 +16,7 @@
   "dependencies": {
     "babel-jest": "^29.4.3",
     "custom-card-helpers": "^1.8.0",
-    "jest-environment-jsdom": "^29.4.2",
+    "jest-environment-jsdom": "^29.4.3",
     "jest-ts-auto-mock": "^2.1.0",
     "lit": "^2.0.2",
     "ts-auto-mock": "^3.6.2",
