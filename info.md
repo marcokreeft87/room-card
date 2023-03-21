@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10720  %}
+- Added `seperated card_styles and main entity styles`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10711  %}
 - Added `title actions available without configuring a main entity`
 {% endif %}
