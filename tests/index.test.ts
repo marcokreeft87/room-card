@@ -139,6 +139,25 @@ describe('Testing index file class RoomCard', () => {
         
         expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
     }),
+    test('Calling render without entities, info_entities and rows but with card_styles should return expected html', () => {   
+        
+        const config: RoomCardConfig = {
+            entity: 'light.test_entity',
+            entityIds: ['light.test_entity'],
+            type: 'custom:room-card',
+            card_styles: {
+                color: 'red'
+            }
+        }
+
+        roomcard.setConfig(config);
+        roomcard.hass = hass;
+
+        const result = roomcard.render();
+        const htmlResult = getRenderString(result);
+
+        expect(htmlResult).toMatch('<ha-card elevation="2" style="color: red;"> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
+    }),
     test('Calling render without entities, info_entities and rows but with styles should return expected html', () => {   
         
         const config: RoomCardConfig = {
@@ -156,7 +175,7 @@ describe('Testing index file class RoomCard', () => {
         const result = roomcard.render();
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<ha-card elevation="2" style="color: red;"> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style="color: red;"> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
+        expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style="color: red;"> on </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
     }),
     test('Calling render without only entities should return expected html', () => {   
 

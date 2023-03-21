@@ -78,7 +78,7 @@ export default class RoomCard extends LitElement {
 
         try {
             return html`
-                <ha-card elevation="2" style="${entityStyles(this.entity?.styles, this.stateObj, this._hass)}">
+                <ha-card elevation="2" style="${entityStyles(this.config.card_styles, this.stateObj, this._hass)}">
                     <div class="card-header">
                         ${renderTitle(this.config, this._hass, this, this.entity)}
                         <div class="entities-info-row">
