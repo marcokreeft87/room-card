@@ -24,7 +24,7 @@
     "yarn": "^1.22.18"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.0",
+    "@babel/core": "^7.21.4",
     "@babel/plugin-transform-runtime": "^7.21.0",
     "@babel/preset-env": "^7.21.4",
     "@types/jest": "^29.5.0",
