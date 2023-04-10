@@ -3683,10 +3683,10 @@ lit-html@^2.7.0:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit@^2.1.1, lit@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/lit/-/lit-2.7.0.tgz#94242caa20f7b9e60d49cc0b843e4a694c4af3bb"
-  integrity sha512-qSy2BAVA+OiWtNptP404egcC/izDdNRw6iHGIbUmkZtbMJvPKfNsaoKrNs8Zmsbjmv5ZX2tur1l9TfzkSWWT4g==
+lit@^2.1.1, lit@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/lit/-/lit-2.7.2.tgz#8084355a3b834a8e62685f2e641242fd7c1698ce"
+  integrity sha512-9QnZmG5mIKPRja96cpndMclLSi0Qrz2BXD6EbqNqCKMMjOWVm/BwAeXufFk2jqFsNmY07HOzU8X+8aTSVt3yrA==
   dependencies:
     "@lit/reactive-element" "^1.6.0"
     lit-element "^3.3.0"
