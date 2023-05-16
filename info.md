@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10721  %}
+- Fixed `entity alongside any type of tap_actions`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10720  %}
 - Added `seperated card_styles and main entity styles`
 {% endif %}
