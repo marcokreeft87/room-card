@@ -1,4 +1,4 @@
-import { ActionHandlerEvent, HomeAssistant, MoreInfoActionConfig } from 'custom-card-helpers';
+import { ActionHandlerEvent, HomeAssistant, MoreInfoActionConfig, NavigateActionConfig } from 'custom-card-helpers';
 import { LitElement } from "lit";
 import { createMock } from "ts-auto-mock";
 import { renderTitle } from "../../src/entity";
@@ -156,6 +156,39 @@ describe('Testing entity file function renderValue', () => {
         };
         
         const result = renderTitle(config, hass, element, undefined);
+        
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const endFn = result.values[1] as Function;
+
+        const mouseEvent = createMock<ActionHandlerEvent>({
+            detail: {
+                action: 'test'
+            }
+        });
+
+        endFn(mouseEvent);
+
+        expect(clickHandler).toHaveBeenCalled();
+    }),
+    test('Mouseclick should trigger action', () => {   
+        
+        const clickHandler = jest.spyOn(entityModule, 'clickHandler');
+        const entity: RoomCardEntity = {
+            stateObj: stateObj,
+            show_icon: true,
+            icon: 'mdi:table'
+        };
+
+        stateObj.attributes['title'] = "Test title";
+        
+        const config: RoomCardConfig = {
+            entityIds: ['light.test_entity'],
+            type: '',
+            tap_action: { action: 'navigate' } as NavigateActionConfig,
+            title: 'Test'
+        };
+        
+        const result = renderTitle(config, hass, element, entity);
         
         // eslint-disable-next-line @typescript-eslint/ban-types
         const endFn = result.values[1] as Function;
