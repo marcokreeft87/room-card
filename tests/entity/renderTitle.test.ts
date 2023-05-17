@@ -176,7 +176,8 @@ describe('Testing entity file function renderValue', () => {
         const entity: RoomCardEntity = {
             stateObj: stateObj,
             show_icon: true,
-            icon: 'mdi:table'
+            icon: 'mdi:table',
+            tap_action: { action: 'navigate' } as NavigateActionConfig
         };
 
         stateObj.attributes['title'] = "Test title";
