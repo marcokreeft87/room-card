@@ -1,6 +1,11 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10723  %}
+- Fixed `actions no longer working`
+- Removed `entity alongside more-info tap_actions`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10722  %}
 - Fixed `Navigation header url not working`
 {% endif %}
