@@ -2,7 +2,7 @@ import { secondsToDuration } from './lib/seconds_to_duration';
 import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable, renderClasses } from './util';
-import { ActionConfig, ActionHandlerEvent, handleAction, hasAction, HomeAssistant } from 'custom-card-helpers';
+import { ActionHandlerEvent, handleAction, hasAction, HomeAssistant } from 'custom-card-helpers';
 import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
@@ -183,25 +183,17 @@ export const clickHandler = (element: LitElement, hass: HomeAssistant, entity: R
     handleAction(element, hass, entity, ev.detail.action);
 }
 
-export const generateActions = (config: RoomCardConfig, entity: RoomCardEntity) => {
-    return { 
-        tap_action: checkAction(config.tap_action, entity?.tap_action),
-        double_tap_action: checkAction(config.double_tap_action, entity?.double_tap_action),
-        hold_action: checkAction(config.hold_action, entity?.hold_action),
-      } as RoomCardEntity
-}
-
-export const checkAction = (action: ActionConfig, entityAction: ActionConfig) => {
-    return entityAction ?? action;
-}
-
 export const renderTitle = (config: RoomCardConfig, hass: HomeAssistant, element: LitElement, entity?: RoomCardEntity) : HTMLTemplateResult => {
     if(config.hide_title === true)
         return null;
 
     const _handleAction = (ev: ActionHandlerEvent): void => {
         if (hass && ev.detail.action) {
-            clickHandler(element, hass, generateActions(config, entity), ev);
+            clickHandler(element, hass, entity ?? { 
+                tap_action: config.tap_action,
+                double_tap_action: config.double_tap_action,
+                hold_action: config.hold_action
+              } as RoomCardEntity, ev);
         }
     }
 
