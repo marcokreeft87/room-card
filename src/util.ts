@@ -18,12 +18,12 @@ export const getValue = (entity: RoomCardEntity) => {
     return entity.attribute ? entity.stateObj.attributes[entity.attribute] : entity.stateObj.state;
 }
 
-export const getEntityIds = (config: RoomCardConfig) : string[] => 
+export const getEntityIds = (config: RoomCardConfig): string[] =>
     [config.entity]
         .concat(config.entities?.map((entity) => getEntity(entity)))
         .concat(config.info_entities?.map((entity) => getEntity(entity)))
-        .concat(config.rows?.flatMap(row => row.entities).map((entity) => getEntity(entity)))
-        .concat(config.cards?.map((card) => getEntity(card.entity)))
+        .concat(config.rows?.flatMap((row) => row.entities).map((entity) => getEntity(entity)))
+        .concat(config.cards?.flatMap((card) => getCardEntities(card)))
         .concat(getConditionEntitiesFromConfig(config))
         .filter((entity) => entity);
 
@@ -52,6 +52,13 @@ export const getConditionEntitiesFromConfig = (config: RoomCardConfig) : string[
     const conditionWithEntities = getConditionEntities(entities.flatMap(entities => entities));
 
     return conditionWithEntities.filter(condition => condition.entity).map(condition => condition.entity);
+}
+
+export const getCardEntities = (card: RoomCardLovelaceCardConfig) : string[] => {
+    return [getEntity(card.entity)]
+        .concat(card.cards?.flatMap((card) => getCardEntities(card)))
+        .concat(card.entities?.flatMap((entity) => getEntity(entity as RoomCardEntity)))
+        .filter((entity) => entity);
 }
 
 export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: PropertyValues) => {

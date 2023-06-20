@@ -136,6 +136,50 @@ describe('Testing util file function getEntityIds', () => {
             'sensor.entity', 'sensor.entity2'
         ]);
     }),
+    test('Passing stackable cards should return row entities', () => {
+        const config: RoomCardConfig = {
+            info_entities: undefined,
+            entities: undefined,
+            entity: undefined,
+            cards: [
+                {
+                    type: 'grid',
+                    cards: [
+                        {
+                            type: 'custom:room-card',
+                            entity: 'sensor.entity1'
+                        },
+                        {
+                            type: 'grid',
+                            cards: [
+                                {
+                                    type: 'custom:room-card',
+                                    entity: 'sensor.entity2'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: 'glance',
+                    entities: [
+                        'sensor.entity3',
+                        {
+                            entity: 'sensor.entity4'
+                        }
+                    ]
+                }
+            ],
+            entityIds: [],
+            type: ''
+        }; 
+        expect(getEntityIds(config)).toMatchObject([
+            'sensor.entity1',
+            'sensor.entity2',
+            'sensor.entity3',
+            'sensor.entity4'
+        ]);
+    }),
     test('Passing entities with icon conditions should return entities and icon condition entities', () => {
         const config: RoomCardConfig = {
             info_entities: [{
