@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10724  %}
+- Added `support for stack, grid and glance cards`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10723  %}
 - Fixed `actions no longer working`
 - Removed `entity alongside more-info tap_actions`

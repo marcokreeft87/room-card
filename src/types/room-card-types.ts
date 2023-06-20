@@ -28,7 +28,7 @@ export interface EntityStyles {
     template?: string;
 }
 
-export interface RoomCardConfig extends LovelaceCardConfig {    
+export interface RoomCardConfig extends LovelaceCardConfig {
     info_entities?: RoomCardEntity[];
     entities?: RoomCardEntity[];
     entity?: string;
@@ -78,7 +78,7 @@ export interface RoomCardIconTemplate {
     styles?: string;
 }
 
-export interface HideIfConfig {    
+export interface HideIfConfig {
     conditions?: EntityCondition[];
 }
 
@@ -98,7 +98,7 @@ export interface FormattingOptions {
     currency?: string;
 }
 
-export interface RoomCardTemplateContainer {    
+export interface RoomCardTemplateContainer {
     name: string;
     template: RoomCardTemplateDefinition;
 }
@@ -110,12 +110,13 @@ export interface RoomCardTemplateDefinition {
 
 export interface RoomCardLovelaceCardConfig extends LovelaceCardConfig {
     hide_if?: HideIfConfig;
+    cards?: RoomCardLovelaceCardConfig[];
+    entities?: (string | { entity: string })[];
 }
 
 export interface RoomCardAttributeTemplate {
     template: string;
 }
-
 
 export interface ActionHandler extends HTMLElement {
     holdTime: number;
