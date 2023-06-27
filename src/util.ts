@@ -1,10 +1,9 @@
-import { HomeAssistant, createThing } from 'custom-card-helpers';
+import { HomeAssistant } from 'custom-card-helpers';
 import { html, PropertyValues } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
 import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon, HideIfConfig } from './types/room-card-types';
 import { mapTemplate } from './template';
-import { hideIfCard } from './hide';
 
 export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
@@ -36,11 +35,11 @@ export const getConditionEntities = (entities?: RoomCardEntity[]) : EntityCondit
     entities?.forEach(entity => {
         const iconConditionsWithEntity = (entity?.icon as RoomCardIcon)?.conditions?.filter(x => x.entity !== undefined);
         if(iconConditionsWithEntity) {
-            conditions = conditions.concat(iconConditionsWithEntity);            
+            conditions = conditions.concat(iconConditionsWithEntity);
         }
         const hideConditionsWithEntity = (entity?.hide_if as HideIfConfig)?.conditions?.filter(x => x.entity !== undefined);
         if(hideConditionsWithEntity) {
-            conditions = conditions.concat(hideConditionsWithEntity);            
+            conditions = conditions.concat(hideConditionsWithEntity);
         }
     });
 
@@ -73,7 +72,7 @@ export const hasConfigOrEntitiesChanged = (node: RoomCardConfig, changedProps: P
     return false;
 };
 
-export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {    
+export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {
     const itemValue = typeof item.value === 'boolean' ? String(item.value) : item.value;
     if(item.condition == 'equals' && checkValue == itemValue) {
         return true;
@@ -97,27 +96,6 @@ export const mapStateObject = (entity: RoomCardEntity | string, hass: HomeAssist
     return { ...conf, stateObj: hass.states[conf.entity] };
 }
 
-export const createCardElement = (cardConfig: RoomCardLovelaceCardConfig, hass: HomeAssistant) => {    
-    if (hideIfCard(cardConfig, hass) || cardConfig.show_states && !cardConfig.show_states.includes(hass.states[cardConfig.entity].state)) {
-        return;
-    }
-
-    let tag = cardConfig.type;
-    if (tag.startsWith('divider')) {
-        tag = `hui-divider-row`;
-    } else if (tag.startsWith('custom:')) {
-        tag = tag.substr('custom:'.length);
-    } else {
-        tag = `hui-${tag}-card`;
-    }
-
-    const element = createThing(cardConfig);
-    element.hass = hass;
-    element.style.boxShadow = 'none';
-    element.style.borderRadius = '0';
-    return element;
-}
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity, func: string): Function => {
     /* eslint no-new-func: 0 */
@@ -131,10 +109,10 @@ export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity,
             html,
         );
     } catch (e) {
-      const funcTrimmed = func.length <= 100 ? func.trim() : `${func.trim().substring(0, 98)}...`;
-      e.message = `${e.name}: ${e.message} in '${funcTrimmed}'`;
-      e.name = 'RoomCardJSTemplateError';
-      throw e;
+        const funcTrimmed = func.length <= 100 ? func.trim() : `${func.trim().substring(0, 98)}...`;
+        e.message = `${e.name}: ${e.message} in '${funcTrimmed}'`;
+        e.name = 'RoomCardJSTemplateError';
+        throw e;
     }
   }
 
