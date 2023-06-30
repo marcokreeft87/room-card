@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10725  %}
+- Fixed `broken card creation`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10724  %}
 - Added `support for stack, grid and glance cards`
 {% endif %}
