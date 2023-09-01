@@ -14,7 +14,7 @@
   "module": "room-card.js",
   "license": "MIT",
   "dependencies": {
-    "babel-jest": "^29.4.3",
+    "babel-jest": "^29.6.4",
     "custom-card-helpers": "^1.8.0",
     "jest-environment-jsdom": "^29.5.0",
     "jest-ts-auto-mock": "^2.1.0",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.1",
     "@babel/plugin-transform-runtime": "^7.22.4",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-env": "^7.22.14",
     "@types/jest": "^29.5.2",
     "@typescript-eslint/parser": "^5.59.1",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
@@ -41,7 +41,7 @@
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.4",
     "typescript": "^4.9.5",
-    "webpack": "^5.81.0",
+    "webpack": "^5.88.2",
     "webpack-cli": "^5.0.2"
   },
   "scripts": {
