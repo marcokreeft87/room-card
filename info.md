@@ -1,8 +1,8 @@
 {% if installed %}
 
 ### Features
-{% if version_installed.replace("v", "").replace(".","") | int < 10730  %}
-- Fixed `Custom element doesn't exist`
+{% if version_installed.replace("v", "").replace(".","") | int < 10800  %}
+- Fixed `Changed loading of cards to await dependencies`
 {% endif %}
 
 {% if version_installed.replace("v", "").replace(".","") | int < 10725  %}
