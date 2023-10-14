@@ -452,9 +452,9 @@ describe('Testing index file class RoomCard', () => {
             show_states: ['test'],
             type: 'custom'
         }
-        roomcard._helpers = { createCardElement(_: LovelaceCardConfig): LovelaceCard {
+        roomcard._helpers = { createCardElement(_config: LovelaceCardConfig): LovelaceCard {
             const element = {
-                style: {},
+                style: {}
             } as LovelaceCard;
 
             return element;
@@ -465,4 +465,3 @@ describe('Testing index file class RoomCard', () => {
         expect(result).toHaveProperty('hass');
     })
 })
-
