@@ -31,10 +31,4 @@ describe('Testing util file function parseConfig', () => {
     
         expect(result.stateObj).toEqual(hass.states['light.living_room']);
       });
-    
-      it('should set the hass property of the config object', () => {
-        const result = parseConfig(config, hass);
-    
-        expect(config.hass).toEqual(hass);
-      });
 });

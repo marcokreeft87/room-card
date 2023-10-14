@@ -430,8 +430,7 @@ describe('Testing index file class RoomCard', () => {
                 type: 'custom'
             }
             // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-            roomcard._helpers = {
-                createCardElement(_config: LovelaceCardConfig): LovelaceCard {
+            roomcard._helpers = { createCardElement(_config: LovelaceCardConfig): LovelaceCard {
                     const element = {
                         style: {}
                     } as LovelaceCard;
