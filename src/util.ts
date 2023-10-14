@@ -119,3 +119,24 @@ export const evalTemplate = (hass: HomeAssistant | undefined, state: HassEntity,
 export const renderClasses = (config: RoomCardConfig | RoomCardRow, classes?: string): string => {
     return `entities-row ${config.content_alignment ? `content-${config.content_alignment}` : 'content-left'}${classes !== undefined ? ` ${classes}` : '' }`;
 }
+
+export const parseConfig = (config?: RoomCardConfig, hass?: HomeAssistant): { entity?: RoomCardEntity, info_entities: RoomCardEntity[], entities: RoomCardEntity[], rows?: RoomCardRow[], stateObj?: HomeAssistantEntity } => {
+    const result = { info_entities: [], entities: [] } as { entity?: RoomCardEntity, info_entities: RoomCardEntity[], entities: RoomCardEntity[], rows?: RoomCardRow[], stateObj?: HomeAssistantEntity };
+
+    if (!hass || !config) return result;
+
+    result.stateObj = config.entity !== undefined ? hass.states[config.entity] : undefined;
+    result.entity = config.entity !== undefined ? { ...config, stateObj: result.stateObj } : undefined;
+    result.info_entities = config.info_entities?.map(entity => mapStateObject(entity, hass, config)) ?? [];
+    result.entities = config.entities?.map(entity => mapStateObject(entity, hass, config)) ?? [];
+
+    result.rows =
+        config.rows?.map((row) => {
+            const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass, config));
+            return { entities: rowEntities, hide_if: row.hide_if, content_alignment: row.content_alignment };
+        }) ?? [];
+
+    config.hass = hass;
+
+    return result;
+}
