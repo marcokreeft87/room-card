@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10730  %}
+- Fixed `Custom element doesn't exist`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10725  %}
 - Fixed `broken card creation`
 {% endif %}
