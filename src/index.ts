@@ -29,25 +29,43 @@ console.info(
 export default class RoomCard extends LitElement {
     @property() _hass?: HomeAssistant;
     @property() config?: RoomCardConfig;
+    @property() _helpers: { createCardElement(config: LovelaceCardConfig): LovelaceCard }
 
     private entity: RoomCardEntity | undefined;
     private info_entities: RoomCardEntity[] = [];
     private entities: RoomCardEntity[] = [];
     private rows: RoomCardRow[] = [];
     private stateObj: HomeAssistantEntity | undefined;
-    private _refCards: LovelaceCard[] = [];
-    private _helpers: { createCardElement(config: LovelaceCardConfig): LovelaceCard };
+
+    getChildCustomCardTypes(cards: RoomCardLovelaceCardConfig[], target: Set<string>) {
+        if (!cards) return;        
+
+        for (const card of cards) {
+            if (card.type.indexOf('custom:') === 0) {
+                target.add(card.type.substring(7, card.type.length));
+            }
+            this.getChildCustomCardTypes(card.cards, target)
+        }
+    }
+
+    async waitForDependentComponents(config: RoomCardConfig) {
+        const distinctTypes = new Set<string>();
+        this.getChildCustomCardTypes(config.cards, distinctTypes);        
+        await Promise.all(Array.from(distinctTypes).map(type => customElements.whenDefined(type)));
+    }
 
     async setConfig(config: RoomCardConfig) {
         checkConfig(config);
+        const entityIds = getEntityIds(config);
+        this.config = { ...config, entityIds: entityIds };
 
-        this.config = { ...config, entityIds: getEntityIds(config) };
+        await this.waitForDependentComponents(config);
 
+        /* istanbul ignore next */
         /* eslint-disable @typescript-eslint/no-explicit-any */
         if ((window as any).loadCardHelpers) {
             this._helpers = await (window as any).loadCardHelpers();
         }
-        /* eslint-enable @typescript-eslint/no-explicit-any */
     }
 
     protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -69,8 +87,6 @@ export default class RoomCard extends LitElement {
                     const rowEntities = row.entities?.map(entity => mapStateObject(entity, hass, this.config));
                     return { entities: rowEntities, hide_if: row.hide_if, content_alignment: row.content_alignment };
                 }) ?? [];
-
-            this._refCards = this.config.cards?.map((card) => this.createCardElement(card, hass));
 
             this.config.hass = hass;
         }
@@ -95,7 +111,7 @@ export default class RoomCard extends LitElement {
                     ${this.rows !== undefined && this.rows.length > 0 ? 
                         renderRows(this.rows, this._hass, this) : 
                         renderEntitiesRow(this.config, this.entities, this._hass, this)}
-                    ${this._refCards}
+                    ${this.config.cards?.map((card) => this.createCardElement(card, this._hass))}
                 </ha-card>
             `;
         } catch (error) {

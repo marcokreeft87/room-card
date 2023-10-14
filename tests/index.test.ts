@@ -4,11 +4,12 @@ import { PropertyValues } from 'lit';
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
 import RoomCard from '../src/index';
-import { RoomCardAlignment, RoomCardConfig, RoomCardRow } from '../src/types/room-card-types';
+import { RoomCardAlignment, RoomCardConfig, RoomCardLovelaceCardConfig, RoomCardRow } from '../src/types/room-card-types';
 import { createEntity, getRenderString } from './utils';
 
 describe('Testing index file class RoomCard', () => {
     const roomcard = new RoomCard();
+
     const hass = createMock<HomeAssistant>();
     // Create Main Entity
     createEntity('light.test_entity', hass, 'on', { icon: 'mdi:table' });
@@ -432,6 +433,36 @@ describe('Testing index file class RoomCard', () => {
         roomcard.setConfig(config);
 
         expect(roomcard.getCardSize()).toBe(3);
+    }),
+    test('Calling createCardElement with config.show_states true', () => {
+        const config: RoomCardLovelaceCardConfig = {
+            entity: 'light.test_entity',
+            show_states: 'test',
+            type: 'custom'
+        }
+
+        const result = roomcard.createCardElement(config, hass);
+
+        expect(result).toBeUndefined();
+    }),
+    test('Calling createCardElement with config.show_states true', () => {
+        hass.states['light.test_entity'].state = 'test';
+        const config: RoomCardLovelaceCardConfig = {
+            entity: 'light.test_entity',
+            show_states: ['test'],
+            type: 'custom'
+        }
+        // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+        roomcard._helpers = { createCardElement(_config: LovelaceCardConfig): LovelaceCard {
+            const element = {
+                style: {}
+            } as LovelaceCard;
+
+            return element;
+        }}
+
+        const result = roomcard.createCardElement(config, hass);
+
+        expect(result).toHaveProperty('hass');
     })
 })
-
