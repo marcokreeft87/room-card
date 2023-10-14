@@ -1,4 +1,4 @@
-import { HomeAssistant, LovelaceCard, LovelaceCardConfig } from "custom-card-helpers";
+import { HomeAssistant } from "custom-card-helpers";
 import { HTMLTemplateResult } from "lit";
 import { createMock } from "ts-auto-mock";
 import { HassEntity, HassEntityAttributeBase } from 'home-assistant-js-websocket';

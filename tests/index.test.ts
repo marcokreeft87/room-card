@@ -452,7 +452,7 @@ describe('Testing index file class RoomCard', () => {
             show_states: ['test'],
             type: 'custom'
         }
-        roomcard._helpers = { createCardElement(config: LovelaceCardConfig): LovelaceCard {
+        roomcard._helpers = { createCardElement(_: LovelaceCardConfig): LovelaceCard {
             const element = {
                 style: {},
             } as LovelaceCard;
