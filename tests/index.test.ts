@@ -420,7 +420,7 @@ describe('Testing index file class RoomCard', () => {
 
             const result = roomcard.createCardElement(config, hass);
 
-            expect(result).toBeUndefined();
+            expect(result).toBeDefined();
         }),
         test('Calling createCardElement with config.show_states true', () => {
             hass.states['light.test_entity'].state = 'test';

@@ -69,7 +69,27 @@ class EditorForm extends lit_element_1.LitElement {
             }
         }
         else if (target.configValue) {
-            if (target.configValue.indexOf(".") > -1) {
+            const match = target.configValue.match(/\[(.*)\]/);
+            if (match) {
+                const index = match[1];
+                const [domain, configValue] = target.configValue.split(`[${index}].`);
+                /*
+                info_entities: <--- domain
+                - entity: sensor.bewegingssensor_blauwe_kamer_battery
+                    attribute: battery_voltage <-- configValue
+                    show_icon: true*/
+                const entity = this._config[domain][index];
+                entity[configValue] = target.checked !== undefined || !(detail === null || detail === void 0 ? void 0 : detail.value) ? target.value || target.checked : target.checked || detail.value;
+                this._config = {
+                    ...this._config,
+                    [domain]: {
+                        ...this._config[domain],
+                        entity
+                    }
+                };
+                console.log(domain, configValue, index, target.checked, target.value, detail === null || detail === void 0 ? void 0 : detail.value);
+            }
+            else if (target.configValue.indexOf(".") > -1) {
                 const [domain, configValue] = target.configValue.split(".");
                 this._config = {
                     ...this._config,
@@ -162,7 +182,7 @@ const renderFiller = () => {
 };
 exports.renderFiller = renderFiller;
 const renderEntityDropdown = (card, control) => {
-    var _a;
+    var _a, _b;
     const domains = (_a = control.domain) === null || _a === void 0 ? void 0 : _a.split(',').map(d => d.trim());
     const entities = (domains === null || domains === void 0 ? void 0 : domains.length) > 0 ? domains.map(domain => (0, entities_1.getEntitiesByDomain)(card._hass, domain)) : (0, entities_1.getAllEntities)(card._hass);
     const items = entities.flat().sort((a, b) => { var _a, _b, _c; return (_c = (_a = a.label) === null || _a === void 0 ? void 0 : _a.localeCompare((_b = b.label) !== null && _b !== void 0 ? _b : '')) !== null && _c !== void 0 ? _c : 0; });
@@ -170,7 +190,7 @@ const renderEntityDropdown = (card, control) => {
     <div class="form-control">
         <ha-combo-box
             label="${control.label}"
-            .value="${card._config[control.configValue]}"
+            .value="${(_b = control.value) !== null && _b !== void 0 ? _b : card._config[control.configValue]}"
             .configValue="${control.configValue}"
             .items="${items}"
             @value-changed="${card._valueChanged}"
@@ -181,12 +201,12 @@ const renderEntityDropdown = (card, control) => {
 };
 exports.renderEntityDropdown = renderEntityDropdown;
 const renderTextbox = (card, control) => {
-    var _a;
+    var _a, _b;
     return (0, lit_element_1.html) `
     <div class="form-control">
         <ha-textfield
             label="${control.label}"
-            .value="${(_a = card._config[control.configValue]) !== null && _a !== void 0 ? _a : ''}"
+            .value="${(_b = (_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]) !== null && _b !== void 0 ? _b : ''}"
             .configValue="${control.configValue}"
             @change="${card._valueChanged}">
         </ha-textfield>
@@ -195,12 +215,13 @@ const renderTextbox = (card, control) => {
 };
 exports.renderTextbox = renderTextbox;
 const renderSwitch = (card, control) => {
+    var _a;
     return (0, lit_element_1.html) `
     <div class="form-control">
         <ha-switch
             id="${control.configValue}"
             name="${control.configValue}"
-            .checked="${card._config[control.configValue]}"
+            .checked="${(_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]}"
             .configValue="${control.configValue}"
             @change="${card._valueChanged}"
         >
@@ -211,13 +232,13 @@ const renderSwitch = (card, control) => {
 };
 exports.renderSwitch = renderSwitch;
 const renderDropdown = (card, control) => {
-    var _a;
+    var _a, _b;
     const items = (_a = control.items) !== null && _a !== void 0 ? _a : (0, entities_1.getEntitiesByDomain)(card._hass, control.domain);
     return (0, lit_element_1.html) `  
     <div class="form-control">
         <ha-combo-box
             label="${control.label}"
-            .value="${card._config[control.configValue]}"
+            .value="${(_b = control.value) !== null && _b !== void 0 ? _b : card._config[control.configValue]}"
             .configValue="${control.configValue}"
             .items="${items}"
             @value-changed="${card._valueChanged}"
@@ -659,12 +680,12 @@ const decorators_js_1 = __webpack_require__(662);
 const room_card_types_1 = __webpack_require__(814);
 let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.default {
     render() {
-        var _a, _b;
+        var _a;
         if (!this._hass || !this._config) {
             return (0, lit_1.html) ``;
         }
         const contentAlignments = (0, entities_1.getDropdownOptionsFromEnum)(room_card_types_1.RoomCardAlignment);
-        return this.renderForm([
+        const formRows = [
             {
                 label: "Main entity",
                 controls: [
@@ -683,15 +704,24 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] },
             {
                 label: "Info entities",
-                controls: (_b = (_a = this._config.info_entities) === null || _a === void 0 ? void 0 : _a.map((entity, index) => {
-                    return {
-                        label: `Entity ${index + 1}`,
-                        configValue: `info_entities.${index}`,
-                        type: interfaces_1.FormControlType.EntityDropdown
-                    };
-                })) !== null && _b !== void 0 ? _b : []
-            }
-        ]);
+                controls: [{ type: interfaces_1.FormControlType.Filler }]
+            },
+        ];
+        (_a = this._config.info_entities) === null || _a === void 0 ? void 0 : _a.forEach((entity, index) => {
+            var _a, _b;
+            const entityAttributes = (_a = this._hass.states[entity.entity]) === null || _a === void 0 ? void 0 : _a.attributes;
+            const options = (0, entities_1.getDropdownOptionsFromEnum)(entityAttributes, true);
+            formRows.push({ controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: interfaces_1.FormControlType.EntityDropdown }] });
+            formRows.push({
+                cssClass: "side-by-side",
+                controls: [
+                    { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options },
+                    { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
+                    { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Textbox }
+                ]
+            });
+        });
+        return this.renderForm(formRows);
     }
 };
 RoomcardEditor = __decorate([
@@ -1140,14 +1170,13 @@ let RoomCard = class RoomCard extends lit_1.LitElement {
             && changedProps.size > 0
             && this._helpers !== undefined
             && this._helpers.createCardElement !== undefined;
-        if (this.config.entity == 'light.woonkamer_lampen')
-            console.log('shouldUpdate', result, this.monitoredStates, this.config, changedProps, this._helpers);
         return result;
     }
     updateMonitoredStates(hass) {
+        var _a, _b;
         const newStates = Object.assign({}, this.monitoredStates);
         let anyUpdates = false;
-        for (const entityId of this.config.entityIds) {
+        for (const entityId of (_b = (_a = this.config) === null || _a === void 0 ? void 0 : _a.entityIds) !== null && _b !== void 0 ? _b : []) {
             if (entityId in hass.states) {
                 const monitoredEntity = this.monitoredStates && this.monitoredStates[entityId];
                 if (!this.monitoredStates || (monitoredEntity === null || monitoredEntity === void 0 ? void 0 : monitoredEntity.last_updated) < hass.states[entityId].last_updated ||
@@ -1685,7 +1714,7 @@ var RoomCardAlignment;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseConfig = exports.renderClasses = exports.evalTemplate = exports.mapStateObject = exports.checkConditionalValue = exports.hasConfigOrEntitiesChanged = exports.getCardEntities = exports.getConditionEntitiesFromConfig = exports.getConditionEntities = exports.getEntity = exports.getEntityIds = exports.getValue = exports.isUnavailable = exports.isObject = void 0;
+exports.parseConfig = exports.renderClasses = exports.evalTemplate = exports.mapStateObject = exports.checkConditionalValue = exports.getCardEntities = exports.getConditionEntitiesFromConfig = exports.getConditionEntities = exports.getEntity = exports.getEntityIds = exports.getValue = exports.isUnavailable = exports.isObject = void 0;
 const lit_1 = __webpack_require__(370);
 const constants_1 = __webpack_require__(623);
 const template_1 = __webpack_require__(704);
@@ -1746,17 +1775,6 @@ const getCardEntities = (card) => {
         .filter((entity) => entity);
 };
 exports.getCardEntities = getCardEntities;
-const hasConfigOrEntitiesChanged = (node, changedProps) => {
-    if (changedProps.has('config')) {
-        return true;
-    }
-    const oldHass = changedProps.get('_hass');
-    if (oldHass) {
-        return node.entityIds.some((entity) => oldHass.states[entity] !== node.hass.states[entity]);
-    }
-    return false;
-};
-exports.hasConfigOrEntitiesChanged = hasConfigOrEntitiesChanged;
 const checkConditionalValue = (item, checkValue) => {
     const itemValue = typeof item.value === 'boolean' ? String(item.value) : item.value;
     if (item.condition == 'equals' && checkValue == itemValue) {
@@ -2268,7 +2286,7 @@ const o=!1;
 /***/ 147:
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"room-card","version":"1.08.00","description":"Show entities in Home Assistant\'s Lovelace UI","keywords":["home-assistant","homeassistant","lovelace","custom-cards","multiple","entity","row"],"module":"room-card.js","license":"MIT","dependencies":{"babel-jest":"^29.6.4","custom-card-helpers":"^1.8.0","jest-environment-jsdom":"^29.5.0","jest-ts-auto-mock":"^2.1.0","lit":"^2.7.5","ts-auto-mock":"3.5.0","ttypescript":"^1.5.13","yarn":"^1.22.18"},"devDependencies":{"@babel/core":"^7.22.1","@babel/plugin-transform-runtime":"^7.22.4","@babel/preset-env":"^7.22.5","@types/jest":"^29.5.3","@typescript-eslint/eslint-plugin":"^5.60.1","@typescript-eslint/parser":"^5.59.1","babel-loader":"^9.1.3","codecov":"^3.8.3","compression-webpack-plugin":"^10.0.0","eslint":"^8.44.0","eslint-config-prettier":"^8.8.0","eslint-plugin-prettier":"^4.0.0","jest":"^29.6.2","prettier":"^2.8.8","ts-jest":"^29.1.1","ts-loader":"^9.4.4","typescript":"^4.9.5","webpack":"^5.88.2","webpack-cli":"^5.0.2"},"scripts":{"lint":"eslint src/**/*.ts","dev":"webpack -c webpack.config.js","build":"yarn lint && webpack -c webpack.config.js","test":"jest","coverage":"jest --coverage","workflow":"jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json","prebuild":"copy git-hooks\\\\pre-commit .git\\\\hooks\\\\ && echo \'hook copied\'"}}');
+module.exports = JSON.parse('{"name":"room-card","version":"1.08.01","description":"Show entities in Home Assistant\'s Lovelace UI","keywords":["home-assistant","homeassistant","lovelace","custom-cards","multiple","entity","row"],"module":"room-card.js","license":"MIT","dependencies":{"babel-jest":"^29.6.4","custom-card-helpers":"^1.8.0","jest-environment-jsdom":"^29.5.0","jest-ts-auto-mock":"^2.1.0","lit":"^2.7.5","ts-auto-mock":"3.5.0","ttypescript":"^1.5.13","yarn":"^1.22.18"},"devDependencies":{"@babel/core":"^7.22.1","@babel/plugin-transform-runtime":"^7.22.4","@babel/preset-env":"^7.22.5","@types/jest":"^29.5.3","@typescript-eslint/eslint-plugin":"^5.60.1","@typescript-eslint/parser":"^5.59.1","babel-loader":"^9.1.3","codecov":"^3.8.3","compression-webpack-plugin":"^10.0.0","eslint":"^8.44.0","eslint-config-prettier":"^8.8.0","eslint-plugin-prettier":"^4.0.0","jest":"^29.6.2","prettier":"^2.8.8","ts-jest":"^29.1.1","ts-loader":"^9.4.4","typescript":"^4.9.5","webpack":"^5.88.2","webpack-cli":"^5.0.2"},"scripts":{"lint":"eslint src/**/*.ts","dev":"webpack -c webpack.config.js","build":"yarn lint && webpack -c webpack.config.js","test":"jest","coverage":"jest --coverage","workflow":"jest --coverage --json --outputFile=/home/runner/work/room-card/room-card/jest.results.json","prebuild":"copy git-hooks\\\\pre-commit .git\\\\hooks\\\\ && echo \'hook copied\'"}}');
 
 /***/ })
 

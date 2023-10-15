@@ -86,7 +86,7 @@ export default class RoomCard extends LitElement {
         const newStates = { ...this.monitoredStates };
         let anyUpdates = false;
 
-        for (const entityId of this.config.entityIds) {
+        for (const entityId of this.config?.entityIds ?? []) {
             if (entityId in hass.states) {
                 const monitoredEntity = this.monitoredStates && this.monitoredStates[entityId];
 

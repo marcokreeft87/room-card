@@ -1,10 +1,10 @@
 import EditorForm from "@marcokreeft/ha-editor-formbuilder";
-import { FormControlType } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
+import { FormControlType, FormControlRow } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
 import { getDropdownOptionsFromEnum } from "@marcokreeft/ha-editor-formbuilder/dist/utils/entities";
 import { TemplateResult, html } from "lit";
 import { CARD_EDITOR_NAME } from "./consts";
 import { customElement } from "lit/decorators.js";
-import { RoomCardAlignment } from "./types/room-card-types";
+import { RoomCardAlignment, RoomCardEntity } from "./types/room-card-types";
 
 @customElement(CARD_EDITOR_NAME)
 export class RoomcardEditor extends EditorForm {
@@ -14,8 +14,9 @@ export class RoomcardEditor extends EditorForm {
             return html``;
         }
 
-        const contentAlignments = getDropdownOptionsFromEnum(RoomCardAlignment);
-        return this.renderForm([
+        const contentAlignments = getDropdownOptionsFromEnum(RoomCardAlignment);       
+
+        const formRows: FormControlRow[] = [
             { 
                 label: "Main entity",
                 controls: [
@@ -34,14 +35,27 @@ export class RoomcardEditor extends EditorForm {
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: FormControlType.Dropdown, items: contentAlignments } ] },
             {
                 label: "Info entities",
-                controls: this._config.info_entities?.map((entity: string, index: number) => {
-                    return { 
-                        label: `Entity ${index + 1}`, 
-                        configValue: `info_entities.${index}`, 
-                        type: FormControlType.EntityDropdown 
-                    }
-                }) ?? []
-            }
-        ]);
+                controls: [{ type: FormControlType.Filler }]
+            },
+        ];
+
+        this._config.info_entities?.forEach((entity: RoomCardEntity, index: number) => {
+            const entityAttributes = this._hass.states[entity.entity]?.attributes;
+            const options = getDropdownOptionsFromEnum(entityAttributes, true);
+
+            formRows.push({ controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: FormControlType.EntityDropdown }] });
+            formRows.push({
+                cssClass: "side-by-side",
+                controls: [                    
+                    { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, items: options },
+                    { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
+                    { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Textbox }
+                ]
+            })
+
+        });
+
+
+        return this.renderForm(formRows);
     }
 }
