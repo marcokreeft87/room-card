@@ -29,7 +29,7 @@ console.info(
 @customElement('room-card')
 export default class RoomCard extends LitElement {
     private _hass?: HomeAssistant;
-    @property() monitoredStates?: HassEntities;
+    @property() monitoredStates?: HassEntities = {};
     @property() config?: RoomCardConfig;
     @property() _helpers: { createCardElement(config: LovelaceCardConfig): LovelaceCard }
 
