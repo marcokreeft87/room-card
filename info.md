@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10802  %}
+- Fixed `Entity icons not updating on state change`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10800  %}
 - Fixed `Changed loading of cards to await dependencies`
 {% endif %}

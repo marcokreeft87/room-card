@@ -7,7 +7,7 @@ import { checkConfig, entityStyles, renderEntitiesRow, renderInfoEntity, renderR
 import { getEntityIds, parseConfig } from './util';
 import { hideIfCard } from './hide';
 import { style } from './styles';
-import { RoomCardConfig, RoomCardLovelaceCardConfig } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardLovelaceCardConfig } from './types/room-card-types';
 import * as packageJson from '../package.json';
 
 console.info(
@@ -28,9 +28,7 @@ console.info(
 
 @customElement('room-card')
 export default class RoomCard extends LitElement {
-    private _hass?: HomeAssistant;
     @property() monitoredStates?: HassEntities = {};
-    @property() config?: RoomCardConfig;
     @property() _helpers: { createCardElement(config: LovelaceCardConfig): LovelaceCard }
 
     getChildCustomCardTypes(cards: RoomCardLovelaceCardConfig[], target: Set<string>) {
@@ -50,20 +48,6 @@ export default class RoomCard extends LitElement {
         await Promise.all(Array.from(distinctTypes).map(type => customElements.whenDefined(type)));
     }
 
-    async setConfig(config: RoomCardConfig) {
-        checkConfig(config);
-        const entityIds = getEntityIds(config);
-        this.config = { ...config, entityIds: entityIds };
-
-        await this.waitForDependentComponents(config);
-
-        /* istanbul ignore next */
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        if ((window as any).loadCardHelpers) {
-            this._helpers = await (window as any).loadCardHelpers();
-        }
-    }
-
     protected shouldUpdate(changedProps: PropertyValues): boolean {
         const result = this.monitoredStates !== undefined
             && this.config !== undefined
@@ -81,7 +65,7 @@ export default class RoomCard extends LitElement {
         for (const entityId of this.config.entityIds) {
             if (entityId in hass.states) {
                 const monitoredEntity = this.monitoredStates && this.monitoredStates[entityId];
-                
+
                 /* istanbul ignore next */
                 if (!this.monitoredStates || monitoredEntity?.last_updated < hass.states[entityId].last_updated ||
                     monitoredEntity?.last_changed < hass.states[entityId].last_changed) {
@@ -99,11 +83,34 @@ export default class RoomCard extends LitElement {
         }
     }
 
-    @property()
-    get hass() { return this._hass; }
+    @property() _hass?: HomeAssistant;
+    @property() config?: RoomCardConfig;
+    
+    private stateObj: HomeAssistantEntity | undefined;
+
+    async setConfig(config: RoomCardConfig) {        
+
+        checkConfig(config);     
+
+        this.config = { ...config, entityIds: getEntityIds(config) };
+
+        await this.waitForDependentComponents(config);
+
+        /* istanbul ignore next */
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        if ((window as any).loadCardHelpers) {
+            this._helpers = await (window as any).loadCardHelpers();
+        }
+    }
+
     set hass(hass: HomeAssistant) {
-        this.updateMonitoredStates(hass);        
         this._hass = hass;
+
+        if (hass && this.config) {
+            this.updateMonitoredStates(hass);
+
+            this.config.hass = hass;
+        }
     }
 
     static get styles(): CSSResult {
@@ -148,7 +155,7 @@ export default class RoomCard extends LitElement {
             hideIfCard(config, hass) ||
             (config.show_states && !config.show_states.includes(hass.states[config.entity].state))
         ) {
-            return;
+            return null;
         }
 
         let element: LovelaceCard;
