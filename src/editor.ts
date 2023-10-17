@@ -35,23 +35,33 @@ export class RoomcardEditor extends EditorForm {
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: FormControlType.Dropdown, items: contentAlignments } ] },
             {
                 label: "Info entities",
-                controls: [{ type: FormControlType.Filler }]
+                controls: [{ type: FormControlType.Filler }],
+                buttons: [
+                    {
+                        icon: "mdi:plus",
+                        label: "Add info entity",
+                        action: () => {
+                            this._config.info_entities = [...this._config.info_entities, { entity: "" }];
+                            this.requestUpdate();
+                        }
+                    }
+                ]
             },
         ];
 
         this._config.info_entities?.forEach((entity: RoomCardEntity, index: number) => {
-            const entityAttributes = this._hass.states[entity.entity]?.attributes;
-            const options = getDropdownOptionsFromEnum(entityAttributes, true);
+            //const entityAttributes = this._hass.states[entity.entity]?.attributes;
+            //const options = getDropdownOptionsFromEnum(entityAttributes);
 
             formRows.push({ controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: FormControlType.EntityDropdown }] });
-            formRows.push({
-                cssClass: "side-by-side",
-                controls: [                    
-                    { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, items: options },
-                    { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
-                    { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Textbox }
-                ]
-            })
+            // formRows.push({
+            //     cssClass: "side-by-side",
+            //     controls: [                    
+            //         { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, items: options },
+            //         { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
+            //         { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Textbox }
+            //     ]
+            // })
 
         });
 
