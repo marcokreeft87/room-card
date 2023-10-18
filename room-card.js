@@ -38,8 +38,8 @@ class EditorForm extends lit_element_1.LitElement {
             const cssClass = row.cssClass ? `form-row ${row.cssClass}` : "form-row";
             return row.hidden ? '' : (0, lit_element_1.html) `
                         <div class="${cssClass}">                            
-                            ${(_a = row.buttons) === null || _a === void 0 ? void 0 : _a.map(button => (0, lit_element_1.html) `<button @click="${button.action}">${button.label}</button>`)}
                             <label>${row.label}</label>
+                            ${(_a = row.buttons) === null || _a === void 0 ? void 0 : _a.map(button => (0, lit_element_1.html) `<button @click="${button.action}">${button.label}</button>`)}
                             ${row.controls.map(control => this.renderControl(control))}
                         </div>
                         `;
@@ -164,7 +164,7 @@ var FormControlType;
     FormControlType["Textbox"] = "textbox";
     FormControlType["Filler"] = "filler";
     FormControlType["EntityDropdown"] = "entity-dropdown";
-})(FormControlType = exports.FormControlType || (exports.FormControlType = {}));
+})(FormControlType || (exports.FormControlType = FormControlType = {}));
 
 
 /***/ }),
@@ -690,6 +690,7 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] },
             {
                 label: "Info entities",
+                cssClass: "form-row-header",
                 controls: [{ type: interfaces_1.FormControlType.Filler }],
                 buttons: [
                     {
@@ -704,9 +705,63 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             },
         ];
         (_a = this._config.info_entities) === null || _a === void 0 ? void 0 : _a.forEach((entity, index) => {
-            formRows.push({ controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: interfaces_1.FormControlType.EntityDropdown }] });
+            var _a, _b;
+            const entityAttributes = (_a = this._hass.states[entity.entity]) === null || _a === void 0 ? void 0 : _a.attributes;
+            const options = Object.keys(entityAttributes).map((key) => ({ label: key, value: key }));
+            formRows.push({
+                cssClass: "form-control-attributes",
+                controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: interfaces_1.FormControlType.EntityDropdown }]
+            });
+            formRows.push({
+                cssClass: "side-by-side",
+                controls: [
+                    { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
+                    { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Textbox },
+                    { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
+                ]
+            });
         });
         return this.renderForm(formRows);
+    }
+    static get styles() {
+        return (0, lit_1.css) `
+            .form-row {
+                margin-bottom: 10px;
+            }
+            .form-control {
+                display: flex;
+                align-items: center;
+            }
+            ha-switch {
+                padding: 16px 6px;
+            }
+            .side-by-side {
+                display: flex;
+                flex-flow: row wrap;
+            }            
+            .side-by-side > label {
+                width: 100%;
+            }
+            .side-by-side > .form-control {
+                width: 49%;
+                padding: 2px;
+            }
+            ha-textfield { 
+                width: 100%;
+            }
+            .form-row-header {
+                margin-top: 25px;
+            }
+            .form-row-header > .form-control > button {
+                float: right;
+            }
+            .form-row-header > .form-control > label {
+                font-size: 16px;
+            }
+            .form-control-attributes {
+                margin-bottom: 20px;
+            }
+        `;
     }
 };
 RoomcardEditor = __decorate([
