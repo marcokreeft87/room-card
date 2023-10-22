@@ -14,6 +14,7 @@ const controls_1 = __webpack_require__(926);
 class EditorForm extends lit_element_1.LitElement {
     constructor() {
         super(...arguments);
+        this.selectedTabIndex = 0;
         this.controlRenderers = {
             [interfaces_1.FormControlType.Dropdown]: controls_1.renderDropdown,
             [interfaces_1.FormControlType.Radio]: controls_1.renderRadio,
@@ -33,17 +34,30 @@ class EditorForm extends lit_element_1.LitElement {
     renderForm(formRows) {
         return (0, lit_element_1.html) `
             <div class="card-config">
-                ${formRows.map(row => {
-            var _a;
-            const cssClass = row.cssClass ? `form-row ${row.cssClass}` : "form-row";
-            return row.hidden ? '' : (0, lit_element_1.html) `
-                        <div class="${cssClass}">                            
-                            <label>${row.label}</label>
-                            ${(_a = row.buttons) === null || _a === void 0 ? void 0 : _a.map(button => (0, lit_element_1.html) `<button @click="${button.action}">${button.label}</button>`)}
-                            ${row.controls.map(control => this.renderControl(control))}
-                        </div>
-                        `;
-        })}            
+                ${formRows.map(row => this.renderRow(row))}            
+            </div>
+            `;
+    }
+    renderRow(row) {
+        var _a, _b, _c, _d;
+        const cssClass = row.cssClass ? `form-row ${row.cssClass}` : "form-row";
+        return row.hidden ? '' : (0, lit_element_1.html) `
+            <div class="${cssClass}">                            
+                <label>${row.label}</label>
+                ${(_a = row.buttons) === null || _a === void 0 ? void 0 : _a.map(button => (0, lit_element_1.html) `<button @click="${button.action}">${button.label}</button>`)}
+                ${(_b = row.controls) === null || _b === void 0 ? void 0 : _b.map(control => this.renderControl(control))}
+                ${row.tabs ?
+            (0, lit_element_1.html) `<mwc-tab-bar @MDCTabBar:activated=${(ev) => {
+                this.selectedTabIndex = ev.detail.index;
+                console.log(this.selectedTabIndex);
+                this.requestUpdate();
+            }}>
+                            ${row.tabs.map(tab => (0, lit_element_1.html) `<mwc-tab label="${tab.label}"></mwc-tab>`)}
+                        </mwc-tab-bar>
+                        <section>
+                        ${(_d = (_c = row.tabs.find((_, index) => index == this.selectedTabIndex)) === null || _c === void 0 ? void 0 : _c.rows) === null || _d === void 0 ? void 0 : _d.map(row => (0, lit_element_1.html) `<article>${this.renderRow(row)}</article>`)}                        
+                    </section>` : (0, lit_element_1.html) ``}
+    
             </div>
             `;
     }
@@ -666,7 +680,6 @@ const decorators_js_1 = __webpack_require__(662);
 const room_card_types_1 = __webpack_require__(814);
 let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.default {
     render() {
-        var _a;
         if (!this._hass || !this._config) {
             return (0, lit_1.html) ``;
         }
@@ -687,41 +700,50 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             },
             { hidden: !this._config.show_icon, controls: [{ label: "Icon", configValue: "icon", type: interfaces_1.FormControlType.Textbox }] },
             { hidden: this._config.hide_title, controls: [{ label: "Title", configValue: "title", type: interfaces_1.FormControlType.Textbox }] },
-            { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] },
-            {
-                label: "Info entities",
-                cssClass: "form-row-header",
-                controls: [{ type: interfaces_1.FormControlType.Filler }],
-                buttons: [
-                    {
-                        icon: "mdi:plus",
-                        label: "Add info entity",
-                        action: () => {
-                            this._config.info_entities = [...this._config.info_entities, { entity: "" }];
-                            this.requestUpdate();
-                        }
-                    }
-                ]
-            },
+            { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] }
         ];
+        this.renderInfoEntities(formRows);
+        return this.renderForm(formRows);
+    }
+    renderInfoEntities(formRows) {
+        var _a;
+        const entityTabs = [];
         (_a = this._config.info_entities) === null || _a === void 0 ? void 0 : _a.forEach((entity, index) => {
             var _a, _b;
             const entityAttributes = (_a = this._hass.states[entity.entity]) === null || _a === void 0 ? void 0 : _a.attributes;
-            const options = Object.keys(entityAttributes).map((key) => ({ label: key, value: key }));
-            formRows.push({
-                cssClass: "form-control-attributes",
-                controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: interfaces_1.FormControlType.EntityDropdown }]
-            });
-            formRows.push({
-                cssClass: "side-by-side",
-                controls: [
-                    { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
-                    { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Textbox },
-                    { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
+            const options = entityAttributes ? Object.keys(entityAttributes).map((key) => ({ label: key, value: key })) : [];
+            entityTabs.push({
+                label: `${index + 1}`,
+                rows: [{
+                        cssClass: "form-control-attributes",
+                        controls: [{ label: `Entity ${index + 1}`, configValue: `info_entities[${index}].entity`, value: entity.entity, type: interfaces_1.FormControlType.EntityDropdown }]
+                    },
+                    {
+                        cssClass: "side-by-side",
+                        controls: [
+                            { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
+                            { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Textbox },
+                            { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
+                        ]
+                    }
                 ]
             });
         });
-        return this.renderForm(formRows);
+        formRows.push({
+            label: "Info entities",
+            cssClass: "form-row-header",
+            tabs: entityTabs,
+            buttons: [
+                {
+                    icon: "mdi:plus",
+                    label: "Add info entity",
+                    action: () => {
+                        this._config.info_entities = [...this._config.info_entities, { entity: "" }];
+                        this.requestUpdate();
+                    }
+                }
+            ]
+        });
     }
     static get styles() {
         return (0, lit_1.css) `
