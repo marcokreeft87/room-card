@@ -52,7 +52,7 @@ class EditorForm extends lit_element_1.LitElement {
                 this.selectedTabIndex = ev.detail.index;
                 this.requestUpdate();
             }}>
-                            ${row.tabs.map(tab => (0, lit_element_1.html) `<mwc-tab label="${tab.label}"></mwc-tab>`)}
+                        ${row.tabs.map(tab => (0, lit_element_1.html) `<mwc-tab label="${tab.label}"></mwc-tab>`)}
                         </mwc-tab-bar>
                         <section>
                         ${(_d = (_c = row.tabs.find((_, index) => index == this.selectedTabIndex)) === null || _c === void 0 ? void 0 : _c.rows) === null || _d === void 0 ? void 0 : _d.map(row => (0, lit_element_1.html) `<article>${this.renderRow(row)}</article>`)}                        
@@ -61,6 +61,9 @@ class EditorForm extends lit_element_1.LitElement {
             `;
     }
     renderControl(control) {
+        if (control.hidden) {
+            return (0, controls_1.renderFiller)();
+        }
         const renderer = this.controlRenderers[control.type];
         if (!renderer) {
             throw new Error(`Unsupported control type: ${control.type}`);
@@ -199,7 +202,7 @@ const renderIconPicker = (card, control) => {
             label="${control.label}"
             .value="${(_b = (_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]) !== null && _b !== void 0 ? _b : ''}"
             .configValue="${control.configValue}"
-            @change="${card._valueChanged}">
+            @value-changed="${card._valueChanged}">
         </ha-icon-picker>
     </div>
     `;
@@ -230,12 +233,13 @@ const renderTextbox = (card, control) => {
 };
 exports.renderTextbox = renderTextbox;
 const renderSwitch = (card, control) => {
+    var _a;
     return (0, lit_element_1.html) `
     <div class="form-control">
         <ha-switch
             id="${control.configValue}"
             name="${control.configValue}"
-            .checked="${card._config[control.configValue]}"
+            .checked="${(_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]}"
             .configValue="${control.configValue}"
             @change="${card._valueChanged}"
         >
@@ -736,7 +740,7 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
                         cssClass: "side-by-side",
                         controls: [
                             { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
-                            { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Icon },
+                            { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Icon, hidden: !entity.show_icon },
                             { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
                         ]
                     }
