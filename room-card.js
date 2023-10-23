@@ -23,6 +23,7 @@ class EditorForm extends lit_element_1.LitElement {
             [interfaces_1.FormControlType.Switch]: controls_1.renderSwitch,
             [interfaces_1.FormControlType.Textbox]: controls_1.renderTextbox,
             [interfaces_1.FormControlType.Filler]: controls_1.renderFiller,
+            [interfaces_1.FormControlType.Icon]: controls_1.renderIconPicker,
         };
     }
     setConfig(config) {
@@ -49,15 +50,13 @@ class EditorForm extends lit_element_1.LitElement {
                 ${row.tabs ?
             (0, lit_element_1.html) `<mwc-tab-bar @MDCTabBar:activated=${(ev) => {
                 this.selectedTabIndex = ev.detail.index;
-                console.log(this.selectedTabIndex);
                 this.requestUpdate();
             }}>
                             ${row.tabs.map(tab => (0, lit_element_1.html) `<mwc-tab label="${tab.label}"></mwc-tab>`)}
                         </mwc-tab-bar>
                         <section>
                         ${(_d = (_c = row.tabs.find((_, index) => index == this.selectedTabIndex)) === null || _c === void 0 ? void 0 : _c.rows) === null || _d === void 0 ? void 0 : _d.map(row => (0, lit_element_1.html) `<article>${this.renderRow(row)}</article>`)}                        
-                    </section>` : (0, lit_element_1.html) ``}
-    
+                    </section>` : (0, lit_element_1.html) ``}    
             </div>
             `;
     }
@@ -177,6 +176,7 @@ var FormControlType;
     FormControlType["Switch"] = "switch";
     FormControlType["Textbox"] = "textbox";
     FormControlType["Filler"] = "filler";
+    FormControlType["Icon"] = "icon";
     FormControlType["EntityDropdown"] = "entity-dropdown";
 })(FormControlType || (exports.FormControlType = FormControlType = {}));
 
@@ -188,9 +188,23 @@ var FormControlType;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.renderCheckboxes = exports.renderRadio = exports.renderDropdown = exports.renderSwitch = exports.renderTextbox = exports.renderEntityDropdown = exports.renderFiller = void 0;
+exports.renderCheckboxes = exports.renderRadio = exports.renderDropdown = exports.renderSwitch = exports.renderTextbox = exports.renderEntityDropdown = exports.renderFiller = exports.renderIconPicker = void 0;
 const lit_element_1 = __webpack_require__(936);
 const entities_1 = __webpack_require__(49);
+const renderIconPicker = (card, control) => {
+    var _a, _b;
+    return (0, lit_element_1.html) `
+    <div class="form-control">
+        <ha-icon-picker
+            label="${control.label}"
+            .value="${(_b = (_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]) !== null && _b !== void 0 ? _b : ''}"
+            .configValue="${control.configValue}"
+            @change="${card._valueChanged}">
+        </ha-icon-picker>
+    </div>
+    `;
+};
+exports.renderIconPicker = renderIconPicker;
 const renderFiller = () => {
     return (0, lit_element_1.html) `<div class="form-control"></div>`;
 };
@@ -722,7 +736,7 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
                         cssClass: "side-by-side",
                         controls: [
                             { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
-                            { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Textbox },
+                            { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Icon },
                             { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
                         ]
                     }
@@ -774,10 +788,10 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             .form-row-header {
                 margin-top: 25px;
             }
-            .form-row-header > .form-control > button {
+            .form-row-header > button {
                 float: right;
             }
-            .form-row-header > .form-control > label {
+            .form-row-header > label {
                 font-size: 16px;
             }
             .form-control-attributes {

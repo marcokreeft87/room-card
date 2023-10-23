@@ -56,7 +56,7 @@ export class RoomcardEditor extends EditorForm {
                     cssClass: "side-by-side",
                     controls: [
                         { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
-                        { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Textbox },
+                        { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Icon },
                         { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, items: options }
                     ]
                 }
@@ -111,10 +111,10 @@ export class RoomcardEditor extends EditorForm {
             .form-row-header {
                 margin-top: 25px;
             }
-            .form-row-header > .form-control > button {
+            .form-row-header > button {
                 float: right;
             }
-            .form-row-header > .form-control > label {
+            .form-row-header > label {
                 font-size: 16px;
             }
             .form-control-attributes {
