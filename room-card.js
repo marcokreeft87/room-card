@@ -181,7 +181,7 @@ var FormControlType;
     FormControlType["Filler"] = "filler";
     FormControlType["Icon"] = "icon";
     FormControlType["EntityDropdown"] = "entity-dropdown";
-})(FormControlType || (exports.FormControlType = FormControlType = {}));
+})(FormControlType = exports.FormControlType || (exports.FormControlType = {}));
 
 
 /***/ }),
@@ -713,11 +713,11 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
                 cssClass: "side-by-side",
                 controls: [
                     { label: "Show icon", configValue: "show_icon", type: interfaces_1.FormControlType.Switch },
-                    { label: "Hide title", configValue: "hide_title", type: interfaces_1.FormControlType.Switch }
+                    { hidden: !this._config.show_icon, label: "Icon", configValue: "icon", value: this._config.icon, type: interfaces_1.FormControlType.Icon },
+                    { label: "Hide title", configValue: "hide_title", type: interfaces_1.FormControlType.Switch },
+                    { hidden: this._config.hide_title, label: "Title", configValue: "title", type: interfaces_1.FormControlType.Textbox }
                 ]
             },
-            { hidden: !this._config.show_icon, controls: [{ label: "Icon", configValue: "icon", type: interfaces_1.FormControlType.Textbox }] },
-            { hidden: this._config.hide_title, controls: [{ label: "Title", configValue: "title", type: interfaces_1.FormControlType.Textbox }] },
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] }
         ];
         this.renderInfoEntities(formRows);
@@ -741,7 +741,7 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
                         controls: [
                             { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: (_b = entity.show_icon) === null || _b === void 0 ? void 0 : _b.toString(), type: interfaces_1.FormControlType.Switch },
                             { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon, type: interfaces_1.FormControlType.Icon, hidden: !entity.show_icon },
-                            { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, items: options }
+                            { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: interfaces_1.FormControlType.Dropdown, hidden: entity.show_icon, items: options }
                         ]
                     }
                 ]

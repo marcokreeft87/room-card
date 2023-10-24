@@ -27,11 +27,11 @@ export class RoomcardEditor extends EditorForm {
                 cssClass: "side-by-side",
                 controls: [
                     { label: "Show icon", configValue: "show_icon", type: FormControlType.Switch },
-                    { label: "Hide title", configValue: "hide_title", type: FormControlType.Switch }
+                    { hidden: !this._config.show_icon, label: "Icon", configValue: "icon", value: this._config.icon, type: FormControlType.Icon } ,
+                    { label: "Hide title", configValue: "hide_title", type: FormControlType.Switch },
+                    { hidden: this._config.hide_title, label: "Title", configValue: "title", type: FormControlType.Textbox }
                 ]
             },
-            { hidden: !this._config.show_icon, controls: [{ label: "Icon", configValue: "icon", type: FormControlType.Textbox } ] },
-            { hidden: this._config.hide_title, controls: [{ label: "Title", configValue: "title", type: FormControlType.Textbox } ] },
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: FormControlType.Dropdown, items: contentAlignments } ] }
         ];
 
@@ -57,7 +57,7 @@ export class RoomcardEditor extends EditorForm {
                     controls: [
                         { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
                         { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Icon, hidden: !entity.show_icon },
-                        { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, items: options }
+                        { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, hidden: entity.show_icon, items: options }
                     ]
                 }
                 ]
