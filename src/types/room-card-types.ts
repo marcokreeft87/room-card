@@ -2,24 +2,24 @@ import { ActionConfig, ActionHandlerOptions, HomeAssistant, LovelaceCardConfig }
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface RoomCardEntity {
-    name?: string | RoomCardAttributeTemplate;
-    entity?: string;
+    name?: string | RoomCardAttributeTemplate; // main
+    entity?: string; // main, info
     tap_action?: ActionConfig;
     hold_action?: ActionConfig;
     double_tap_action?: ActionConfig;
-    state_color?: boolean;
-    show_name?: boolean;
-    show_icon?: boolean;
-    toggle?: boolean;
+    state_color?: boolean;  // main
+    show_name?: boolean; // main
+    show_icon?: boolean; // main
+    toggle?: boolean; // x
     format?: string;
     unit?: string;
     hide_unavailable?: boolean;
     hide_if?: HideIfConfig;
     stateObj: HomeAssistantEntity;
     attribute?: string;
-    show_state?: boolean;
+    show_state?: boolean; // x
     styles?: EntityStyles | RoomCardAttributeTemplate;
-    icon?: string | RoomCardIcon;
+    icon?: string | RoomCardIcon; // half
     template?: string;
 }
 

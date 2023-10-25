@@ -1,5 +1,5 @@
 import EditorForm from "@marcokreeft/ha-editor-formbuilder";
-import { FormControlType, FormControlRow, FormControlTab } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
+import { FormControlType, FormControlRow, FormControlTab, mwcTabBarEvent } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
 import { getDropdownOptionsFromEnum } from "@marcokreeft/ha-editor-formbuilder/dist/utils/entities";
 import { TemplateResult, css, html } from "lit";
 import { CARD_EDITOR_NAME } from "./consts";
@@ -8,17 +8,39 @@ import { RoomCardAlignment, RoomCardEntity } from "./types/room-card-types";
 
 @customElement(CARD_EDITOR_NAME)
 export class RoomcardEditor extends EditorForm {
+    protected _selectedTabIndex = 0;
 
     protected render(): TemplateResult {
         if (!this._hass || !this._config) {
             return html``;
         }
 
-        const contentAlignments = getDropdownOptionsFromEnum(RoomCardAlignment);       
+        const tabs: FormControlTab[] = [{
+            label: "Main entity",
+            rows: this.renderMainEntity()
+        }, { 
+            label: "Info entities",
+            rows: this.renderInfoEntities()
+        }, { 
+            label: "Entities",
+            rows: []
+        }];        
 
-        const formRows: FormControlRow[] = [
+        return html`<mwc-tab-bar @MDCTabBar:activated=${(ev: mwcTabBarEvent) => {
+            this._selectedTabIndex = ev.detail.index;
+            this.requestUpdate();
+        }}>
+            ${tabs.map(tab => html`<mwc-tab label="${tab.label}"></mwc-tab>`)}
+            </mwc-tab-bar>
+            <section>
+                <article>${this.renderForm(tabs[this._selectedTabIndex].rows)}</article>
+            </section>`;
+    }
+
+    private renderMainEntity() {
+        const contentAlignments = getDropdownOptionsFromEnum(RoomCardAlignment);     
+        return [
             { 
-                label: "Main entity",
                 controls: [
                     { label: "Entity", configValue: "entity", type: FormControlType.EntityDropdown },
                 ] 
@@ -26,6 +48,8 @@ export class RoomcardEditor extends EditorForm {
             {  
                 cssClass: "side-by-side",
                 controls: [
+                    { label: "State color", configValue: "state_color", type: FormControlType.Switch },
+                    { label: "Show state", configValue: "show_state", type: FormControlType.Switch },
                     { label: "Show icon", configValue: "show_icon", type: FormControlType.Switch },
                     { hidden: !this._config.show_icon, label: "Icon", configValue: "icon", value: this._config.icon, type: FormControlType.Icon } ,
                     { label: "Hide title", configValue: "hide_title", type: FormControlType.Switch },
@@ -34,13 +58,9 @@ export class RoomcardEditor extends EditorForm {
             },
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: FormControlType.Dropdown, items: contentAlignments } ] }
         ];
-
-        this.renderInfoEntities(formRows);
-
-        return this.renderForm(formRows);
     }
 
-    private renderInfoEntities(formRows: FormControlRow[]) {
+    private renderInfoEntities() {
         const entityTabs: FormControlTab[] = [];
         this._config.info_entities?.forEach((entity: RoomCardEntity, index: number) => {
             const entityAttributes = this._hass.states[entity.entity]?.attributes;
@@ -55,6 +75,8 @@ export class RoomcardEditor extends EditorForm {
                 {
                     cssClass: "side-by-side",
                     controls: [
+                        // { label: "State color", configValue: `info_entities[${index}].state_color`, value: entity.state_color?.toString(), type: FormControlType.Switch },
+                        // { label: "Show state", configValue: `info_entities[${index}].show_state`, value: entity.show_state?.toString(), type: FormControlType.Switch },
                         { label: "Show icon", configValue: `info_entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
                         { label: "Icon", configValue: `info_entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Icon, hidden: !entity.show_icon },
                         { label: "Attribute", configValue: `info_entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, hidden: entity.show_icon, items: options }
@@ -65,7 +87,7 @@ export class RoomcardEditor extends EditorForm {
 
         });
 
-        formRows.push({
+        return [{
             label: "Info entities",
             cssClass: "form-row-header",
             tabs: entityTabs,
@@ -79,7 +101,7 @@ export class RoomcardEditor extends EditorForm {
                     }
                 }
             ]
-        });
+        }];
     }
 
     static get styles() {

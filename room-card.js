@@ -181,7 +181,7 @@ var FormControlType;
     FormControlType["Filler"] = "filler";
     FormControlType["Icon"] = "icon";
     FormControlType["EntityDropdown"] = "entity-dropdown";
-})(FormControlType = exports.FormControlType || (exports.FormControlType = {}));
+})(FormControlType || (exports.FormControlType = FormControlType = {}));
 
 
 /***/ }),
@@ -238,7 +238,7 @@ const renderSwitch = (card, control) => {
     <div class="form-control">
         <ha-switch
             id="${control.configValue}"
-            name="${control.configValue}"
+            name="${control.configValue}[]"
             .checked="${(_a = control.value) !== null && _a !== void 0 ? _a : card._config[control.configValue]}"
             .configValue="${control.configValue}"
             @change="${card._valueChanged}"
@@ -697,14 +697,38 @@ const consts_1 = __webpack_require__(312);
 const decorators_js_1 = __webpack_require__(662);
 const room_card_types_1 = __webpack_require__(814);
 let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.default {
+    constructor() {
+        super(...arguments);
+        this._selectedTabIndex = 0;
+    }
     render() {
         if (!this._hass || !this._config) {
             return (0, lit_1.html) ``;
         }
-        const contentAlignments = (0, entities_1.getDropdownOptionsFromEnum)(room_card_types_1.RoomCardAlignment);
-        const formRows = [
-            {
+        const tabs = [{
                 label: "Main entity",
+                rows: this.renderMainEntity()
+            }, {
+                label: "Info entities",
+                rows: this.renderInfoEntities()
+            }, {
+                label: "Entities",
+                rows: []
+            }];
+        return (0, lit_1.html) `<mwc-tab-bar @MDCTabBar:activated=${(ev) => {
+            this._selectedTabIndex = ev.detail.index;
+            this.requestUpdate();
+        }}>
+            ${tabs.map(tab => (0, lit_1.html) `<mwc-tab label="${tab.label}"></mwc-tab>`)}
+            </mwc-tab-bar>
+            <section>
+                <article>${this.renderForm(tabs[this._selectedTabIndex].rows)}</article>
+            </section>`;
+    }
+    renderMainEntity() {
+        const contentAlignments = (0, entities_1.getDropdownOptionsFromEnum)(room_card_types_1.RoomCardAlignment);
+        return [
+            {
                 controls: [
                     { label: "Entity", configValue: "entity", type: interfaces_1.FormControlType.EntityDropdown },
                 ]
@@ -712,6 +736,8 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             {
                 cssClass: "side-by-side",
                 controls: [
+                    { label: "State color", configValue: "state_color", type: interfaces_1.FormControlType.Switch },
+                    { label: "Show state", configValue: "show_state", type: interfaces_1.FormControlType.Switch },
                     { label: "Show icon", configValue: "show_icon", type: interfaces_1.FormControlType.Switch },
                     { hidden: !this._config.show_icon, label: "Icon", configValue: "icon", value: this._config.icon, type: interfaces_1.FormControlType.Icon },
                     { label: "Hide title", configValue: "hide_title", type: interfaces_1.FormControlType.Switch },
@@ -720,10 +746,8 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
             },
             { controls: [{ label: "Content alignment", configValue: "content_alignment", type: interfaces_1.FormControlType.Dropdown, items: contentAlignments }] }
         ];
-        this.renderInfoEntities(formRows);
-        return this.renderForm(formRows);
     }
-    renderInfoEntities(formRows) {
+    renderInfoEntities() {
         var _a;
         const entityTabs = [];
         (_a = this._config.info_entities) === null || _a === void 0 ? void 0 : _a.forEach((entity, index) => {
@@ -747,21 +771,21 @@ let RoomcardEditor = class RoomcardEditor extends ha_editor_formbuilder_1.defaul
                 ]
             });
         });
-        formRows.push({
-            label: "Info entities",
-            cssClass: "form-row-header",
-            tabs: entityTabs,
-            buttons: [
-                {
-                    icon: "mdi:plus",
-                    label: "Add info entity",
-                    action: () => {
-                        this._config.info_entities = [...this._config.info_entities, { entity: "" }];
-                        this.requestUpdate();
+        return [{
+                label: "Info entities",
+                cssClass: "form-row-header",
+                tabs: entityTabs,
+                buttons: [
+                    {
+                        icon: "mdi:plus",
+                        label: "Add info entity",
+                        action: () => {
+                            this._config.info_entities = [...this._config.info_entities, { entity: "" }];
+                            this.requestUpdate();
+                        }
                     }
-                }
-            ]
-        });
+                ]
+            }];
     }
     static get styles() {
         return (0, lit_1.css) `
