@@ -1,5 +1,5 @@
 import EditorForm from "@marcokreeft/ha-editor-formbuilder";
-import { FormControlType, FormControlRow, FormControlTab, mwcTabBarEvent } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
+import { FormControlType, FormControlTab, mwcTabBarEvent } from "@marcokreeft/ha-editor-formbuilder/dist/interfaces";
 import { getDropdownOptionsFromEnum } from "@marcokreeft/ha-editor-formbuilder/dist/utils/entities";
 import { TemplateResult, css, html } from "lit";
 import { CARD_EDITOR_NAME } from "./consts";
@@ -23,7 +23,7 @@ export class RoomcardEditor extends EditorForm {
             rows: this.renderInfoEntities()
         }, { 
             label: "Entities",
-            rows: []
+            rows: this.renderEntities()
         }];        
 
         return html`<mwc-tab-bar @MDCTabBar:activated=${(ev: mwcTabBarEvent) => {
@@ -96,7 +96,53 @@ export class RoomcardEditor extends EditorForm {
                     icon: "mdi:plus",
                     label: "Add info entity",
                     action: () => {
-                        this._config.info_entities = [...this._config.info_entities, { entity: "" }];
+                        this._config.info_entities = [...this._config.info_entities ?? [], { entity: "" }];
+                        this.requestUpdate();
+                    }
+                }
+            ]
+        }];
+    }
+
+    private renderEntities() {
+        const entityTabs: FormControlTab[] = [];
+        this._config.entities?.forEach((entity: RoomCardEntity, index: number) => {
+            const entityAttributes = this._hass.states[entity.entity]?.attributes;
+            const options = entityAttributes ? Object.keys(entityAttributes).map((key: string) => ({ label: key, value: key })) : [];
+
+            entityTabs.push({
+                label: `${index + 1}`,
+                rows: [{
+                    cssClass: "form-control-attributes",
+                    controls: [{ label: `Entity ${index + 1}`, configValue: `entities[${index}].entity`, value: entity.entity, type: FormControlType.EntityDropdown }]
+                },
+                {
+                    cssClass: "side-by-side",
+                    controls: [
+                        { label: "Show name", configValue: `entities[${index}].show_name`, value: entity.show_name?.toString(), type: FormControlType.Switch },
+                        { type: FormControlType.Filler },
+                        { label: "State color", configValue: `entities[${index}].state_color`, value: entity.state_color?.toString(), type: FormControlType.Switch },
+                        { label: "Show state", configValue: `entities[${index}].show_state`, value: entity.show_state?.toString(), type: FormControlType.Switch },
+                        { label: "Show icon", configValue: `entities[${index}].show_icon`, value: entity.show_icon?.toString(), type: FormControlType.Switch },
+                        { label: "Icon", configValue: `entities[${index}].icon`, value: entity.icon as string, type: FormControlType.Icon, hidden: !entity.show_icon },
+                        { label: "Attribute", configValue: `entities[${index}].attribute`, value: entity.attribute, type: FormControlType.Dropdown, hidden: entity.show_icon, items: options }
+                    ]
+                }
+                ]
+            });
+
+        });
+
+        return [{
+            label: "Entities",
+            cssClass: "form-row-header",
+            tabs: entityTabs,
+            buttons: [
+                {
+                    icon: "mdi:plus",
+                    label: "Add entity",
+                    action: () => {
+                        this._config.entities = [...this._config.entities ?? [], { entity: "" }];
                         this.requestUpdate();
                     }
                 }
