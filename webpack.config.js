@@ -12,6 +12,7 @@ module.exports = {
     optimization: {
         minimize: true
     },
+    
     module: {
         rules: [
             {
@@ -24,7 +25,13 @@ module.exports = {
                     },
                 },
             },
-            { test: /\.tsx?$/, loader: "ts-loader" }
+            {
+                test: /\.(js|jsx|ts|tsx)$/,
+                use: [
+                  { loader: 'minify-html-literals-loader' }
+                ],
+              },
+            { test: /\.tsx?$/, loader: "ts-loader" },
         ],
     },
     plugins: [
