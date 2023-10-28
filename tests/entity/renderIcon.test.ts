@@ -1,7 +1,7 @@
 import { HomeAssistant } from "custom-card-helpers";
 import { createMock } from "ts-auto-mock";
 import { HassEntity } from 'home-assistant-js-websocket';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from "../../src/types/room-card-types";
+import { ConditionOption, HomeAssistantEntity, RoomCardConfig, RoomCardEntity } from "../../src/types/room-card-types";
 import { renderIcon } from "../../src/entity";
 import { getRenderString } from "../utils";
 
@@ -129,7 +129,7 @@ describe('Testing entity file function renderIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'equals',
+                    condition: ConditionOption.Equals,
                     value: 'on',
                     icon: 'mdi:table',
                     styles: {
@@ -248,7 +248,7 @@ describe('Testing entity file function renderIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'equals',
+                    condition: ConditionOption.Equals,
                     value: 'on',
                     icon: 'mdi:table',
                     styles: {

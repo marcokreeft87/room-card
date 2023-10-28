@@ -2,7 +2,7 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { entityIcon } from '../../src/entity';
-import { HomeAssistantEntity, RoomCardConfig } from '../../src/types/room-card-types';
+import { ConditionOption, HomeAssistantEntity, RoomCardConfig } from '../../src/types/room-card-types';
 
 describe('Testing entity file function entityIcon', () => {
     const hass = createMock<HomeAssistant>();
@@ -116,7 +116,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'equals',
+                    condition: ConditionOption.Equals,
                     value: 'off',
                     icon: 'mdi:off-icon'
                 }]
@@ -135,7 +135,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'below',
+                    condition: ConditionOption.Below,
                     value: 30,
                     icon: 'mdi:30-icon'
                 }]
@@ -154,7 +154,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon'
                 }]
@@ -173,11 +173,11 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon'
                 },{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon'
                 }]
@@ -197,11 +197,11 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon'
                 },{
-                    condition: 'equals',
+                    condition: ConditionOption.Equals,
                     attribute: 'money',
                     value: 'broke',
                     icon: 'mdi:20-icon'
@@ -226,7 +226,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon',
                     entity: 'sensor.check_entity'
@@ -251,7 +251,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon',
                     entity: 'sensor.check_entity'
@@ -272,7 +272,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon',
                     attribute: 'visibility'
@@ -298,7 +298,7 @@ describe('Testing entity file function entityIcon', () => {
             show_icon: true,
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: 10,
                     icon: 'mdi:10-icon',
                     entity: 'sensor.check_entity',

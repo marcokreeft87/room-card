@@ -1,6 +1,6 @@
 import { createMock } from 'ts-auto-mock';
 import { mapTemplate } from '../../src/template';
-import { RoomCardConfig, RoomCardEntity } from '../../src/types/room-card-types';
+import { ConditionOption, RoomCardConfig, RoomCardEntity } from '../../src/types/room-card-types';
 
 describe('Testing template file function mapTemplate', () => {
     const entity = createMock<RoomCardEntity>();
@@ -50,7 +50,7 @@ describe('Testing template file function mapTemplate', () => {
             show_state: true, 
             icon: {
                 conditions: [{
-                    condition: 'above',
+                    condition: ConditionOption.Above,
                     value: '1',
                     icon: 'mdi:test'
                 }]

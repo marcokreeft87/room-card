@@ -16,7 +16,7 @@ export interface RoomCardEntity {
     hide_unavailable?: boolean;
     hide_if?: HideIfConfig;
     stateObj: HomeAssistantEntity;
-    attribute?: string;
+    attribute?: string; // x
     show_state?: boolean; // x
     styles?: EntityStyles | RoomCardAttributeTemplate;
     icon?: string | RoomCardIcon; // half
@@ -83,12 +83,19 @@ export interface HideIfConfig {
 }
 
 export interface EntityCondition {
-    condition?: string;
+    condition?: ConditionOption;
     value?: string | number | boolean;
     attribute?: string;
     entity?: string;
     icon?: string;
     styles?: EntityStyles;
+}
+
+export enum ConditionOption {
+    Equals = 'equals',
+    NotEquals = 'not_equals',
+    Above = 'above',
+    Below = 'below'
 }
 
 export interface FormattingOptions {
@@ -125,4 +132,11 @@ export interface ActionHandler extends HTMLElement {
 
 export interface ActionHandlerElement extends HTMLElement {
     actionHandler?: boolean;
+}
+
+export enum CustomIconDomain {
+    InputBoolean = 'input_boolean',
+    Light = 'light',
+    Switch = 'switch',
+    BinarySensor = 'binary_sensor',
 }

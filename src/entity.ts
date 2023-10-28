@@ -3,7 +3,7 @@ import { formatNumber } from './lib/format_number';
 import { computeStateDisplay, computeStateDomain } from './lib/compute_state_display';
 import { checkConditionalValue, evalTemplate, getValue, isObject, isUnavailable, renderClasses } from './util';
 import { ActionHandlerEvent, handleAction, hasAction, HomeAssistant } from 'custom-card-helpers';
-import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate } from './types/room-card-types';
+import { HomeAssistantEntity, EntityCondition, RoomCardEntity, RoomCardIcon, RoomCardConfig, EntityStyles, RoomCardRow, RoomCardAttributeTemplate, CustomIconDomain } from './types/room-card-types';
 import { html, HTMLTemplateResult, LitElement } from 'lit';
 import { LAST_CHANGED, LAST_UPDATED, TIMESTAMP_FORMATS } from './lib/constants';
 import { getTemplateOrAttribute, templateStyling } from './template';
@@ -65,10 +65,10 @@ export const renderCustomStateIcon = (stateObj: HomeAssistantEntity, icon: RoomC
     const domain = computeStateDomain(stateObj);
     
     switch(domain) {
-        case 'light':
-        case 'switch':
-        case 'binary_sensor':
-        case 'input_boolean':
+        case CustomIconDomain.Light:
+        case CustomIconDomain.Switch:
+        case CustomIconDomain.BinarySensor:
+        case CustomIconDomain.InputBoolean:
             return stateObj.state === 'on' ? icon.state_on : icon.state_off;
     }
 }

@@ -2,7 +2,7 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { html } from 'lit';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { UNAVAILABLE_STATES } from './lib/constants';
-import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon, HideIfConfig } from './types/room-card-types';
+import { HomeAssistantEntity, RoomCardConfig, RoomCardEntity, EntityCondition, RoomCardLovelaceCardConfig, RoomCardRow, RoomCardIcon, HideIfConfig, ConditionOption } from './types/room-card-types';
 import { mapTemplate } from './template';
 
 export const isObject = (obj: unknown) : boolean => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
@@ -62,16 +62,16 @@ export const getCardEntities = (card: RoomCardLovelaceCardConfig) : string[] => 
 
 export const checkConditionalValue = (item: EntityCondition, checkValue: unknown) => {
     const itemValue = typeof item.value === 'boolean' ? String(item.value) : item.value;
-    if(item.condition == 'equals' && checkValue == itemValue) {
+    if(item.condition == ConditionOption.Equals && checkValue == itemValue) {
         return true;
     }
-    if(item.condition == 'not_equals' && checkValue != itemValue) {
+    if(item.condition == ConditionOption.NotEquals && checkValue != itemValue) {
         return true;
     }
-    if(item.condition == 'above' && checkValue > itemValue) {
+    if(item.condition == ConditionOption.Above && checkValue > itemValue) {
         return true;
     }
-    if(item.condition == 'below' && checkValue < itemValue) {
+    if(item.condition == ConditionOption.Below && checkValue < itemValue) {
         return true;
     }
 }

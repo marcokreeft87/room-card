@@ -1,6 +1,6 @@
 import { createMock } from 'ts-auto-mock';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { RoomCardLovelaceCardConfig } from '../../src/types/room-card-types';
+import { ConditionOption, RoomCardLovelaceCardConfig } from '../../src/types/room-card-types';
 import { hideIfCard } from '../../src/hide';
 import { StubHomeAssistant } from '../testdata';
 
@@ -19,7 +19,7 @@ describe('Testing util file function hideIfCard', () => {
 
         card.hide_if = {
             conditions: [{
-                condition: 'equals',
+                condition: ConditionOption.Equals,
                 entity: 'sensor.test_entity',
                 value: 'on'
             }]
@@ -52,7 +52,7 @@ describe('Testing util file function hideIfCard', () => {
 
         card.hide_if = {
             conditions: [{
-                condition: 'equals',
+                condition: ConditionOption.Equals,
                 entity: 'sensor.test_entity',
                 attribute: 'test',
                 value: 'money'
@@ -70,7 +70,7 @@ describe('Testing util file function hideIfCard', () => {
 
         card.hide_if = {
             conditions: [{
-                condition: 'equals',
+                condition: ConditionOption.Equals,
                 entity: 'sensor.test_entity',
                 attribute: 'test',
                 value: true
@@ -88,7 +88,7 @@ describe('Testing util file function hideIfCard', () => {
 
         card.hide_if = {
             conditions: [{
-                condition: 'equals',
+                condition: ConditionOption.Equals,
                 entity: 'sensor.test_entity',
                 attribute: 'test',
                 value: 'paper'
@@ -107,7 +107,7 @@ describe('Testing util file function hideIfCard', () => {
         card.entity = 'sensor.test_entity';
         card.hide_if = {
             conditions: [{
-                condition: 'equals',
+                condition: ConditionOption.Equals,
                 value: 'show',
                 attribute: 'hide_attribute'
             }]
