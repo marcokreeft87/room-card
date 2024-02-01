@@ -21,7 +21,7 @@
     "lit": "^3.1.0",
     "ts-auto-mock": "3.5.0",
     "ttypescript": "^1.5.13",
-    "yarn": "^1.22.18"
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
