@@ -123,6 +123,7 @@ export const renderIcon = (stateObj: HomeAssistantEntity, config: RoomCardEntity
 
     return html`<state-badge
         class="icon-small ${classes}"
+        .hass=${hass}
         .stateObj="${stateObj}"
         .overrideIcon="${isObject(customIcon) ? (customIcon as EntityCondition).icon : customIcon as string}"
         .stateColor="${config.state_color}"
