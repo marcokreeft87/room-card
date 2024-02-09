@@ -44,7 +44,7 @@ describe('Testing entity file function renderValue', () => {
         const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+        expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
     }),
     test('Passing no RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement should return expected html', () => {      
         
@@ -78,7 +78,7 @@ describe('Testing entity file function renderValue', () => {
         const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
+        expect(htmlResult).toMatch('<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> </div>');
     }),
     test.each`
     state | expected
@@ -106,7 +106,7 @@ describe('Testing entity file function renderValue', () => {
         const result = renderTitle(config, hass, element, entity);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch(`<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> ${expected}</div>`);
+        expect(htmlResult).toMatch(`<div class="title clickable" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div> ${expected}</div>`);
     }),
     test('Mouseclick should trigger action', () => {   
         

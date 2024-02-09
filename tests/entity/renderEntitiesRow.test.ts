@@ -47,7 +47,7 @@ describe('Testing entity file function renderEntitiesRow', () => {
         const result = renderEntitiesRow(config, entities, hass, element);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:light" .stateColor="" style="" ></state-badge></div> </div></div>');
+        expect(htmlResult).toMatch('<div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:light" .stateColor="" style="" ></state-badge></div> </div></div>');
     }),
     test('Passing entities and classes should return entities-row with one child element', () => {   
         
@@ -64,6 +64,6 @@ describe('Testing entity file function renderEntitiesRow', () => {
         const result = renderEntitiesRow(config, entities, hass, element, 'test-class');
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="entities-row content-left test-class"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:light" .stateColor="" style="" ></state-badge></div> </div></div>');
+        expect(htmlResult).toMatch('<div class="entities-row content-left test-class"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:light" .stateColor="" style="" ></state-badge></div> </div></div>');
     })
 })

@@ -72,7 +72,7 @@ describe('Testing entity file function renderMainEntity', () => {
         const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge> </div>');
     }),
     test('Passing RoomCardEntity with icon, RoomcardConfig, HomeAssistant and LitElement with icon expected html with icon', () => {      
         
@@ -91,7 +91,7 @@ describe('Testing entity file function renderMainEntity', () => {
         const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge> </div>');
     }),
     test('Passing RoomCardEntity, RoomcardConfig, HomeAssistant and LitElement with empty entities', () => {      
         
@@ -110,6 +110,6 @@ describe('Testing entity file function renderMainEntity', () => {
         const result = renderMainEntity(entity, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div>');
+        expect(htmlResult).toMatch('<div class="main-state entity" style=""> <state-badge class="icon-small main-icon" .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div>');
     })
 });

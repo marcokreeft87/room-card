@@ -38,7 +38,7 @@ describe('Testing entity file function renderValue', () => {
         const result = renderValue(entity, hass)
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
     }),
     test.each`
     attribute 

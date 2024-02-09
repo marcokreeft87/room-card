@@ -76,7 +76,7 @@ describe('Testing entity file function renderInfoEntity', () => {
         const result = renderInfoEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<div class="state entity icon-entity" style="" @action=_handleAction .actionHandler=><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div>');
+        expect(htmlResult).toMatch('<div class="state entity icon-entity" style="" @action=_handleAction .actionHandler=><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div>');
     }),
     test('Mouseclick should trigger action', () => {   
         
