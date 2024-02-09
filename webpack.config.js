@@ -24,6 +24,12 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.(js|jsx|ts|tsx)$/,
+                use: [
+                  { loader: 'minify-html-literals-loader' }
+                ],
+            },
             { test: /\.tsx?$/, loader: "ts-loader" }
         ],
     },

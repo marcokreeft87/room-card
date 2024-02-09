@@ -30,7 +30,7 @@ describe('Testing entity file function renderEntity', () => {
         
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="entity" style="color: red;" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="color: red;" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
     }),
     test('Passing entity show_state false and show_name false should return expected html', () => {   
 
@@ -43,7 +43,7 @@ describe('Testing entity file function renderEntity', () => {
         
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
     }),
     test('Passing entity show_state false and show_name true should return expected html', () => {   
 
@@ -56,7 +56,7 @@ describe('Testing entity file function renderEntity', () => {
         
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div>');
     }),
     test('Passing entity show_state and show_name false should return expected html', () => {   
 
@@ -69,7 +69,7 @@ describe('Testing entity file function renderEntity', () => {
         
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>on</span> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>on</span> </div>');
     }),
     test('Passing entity show_state and show_name should return expected html', () => {   
 
@@ -82,7 +82,7 @@ describe('Testing entity file function renderEntity', () => {
         
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
-        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>on</span> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span>Test Entity</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>on</span> </div>');
     }),
     test('Passing entity to be hidden should return null', () => {   
         
@@ -116,7 +116,7 @@ describe('Testing entity file function renderEntity', () => {
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
         
-        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span></span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div> </div>');
+        expect(htmlResult).toMatch('<div class="entity" style="" @action=_handleAction .actionHandler=> <span></span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge></div> </div>');
     }),
     test.each`
     format | state | expected
@@ -148,7 +148,9 @@ describe('Testing entity file function renderEntity', () => {
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch(`<div class="entity" style="" @action=_handleAction .actionHandler=> <span></span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>${expected}</span> </div>`);
+        console.log(htmlResult);
+
+        expect(htmlResult).toMatch(`<div class="entity" style="" @action=_handleAction .actionHandler=> <span></span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>${expected}</span> </div>`);
     }),
     test('Mouseclick should trigger action', () => {   
         

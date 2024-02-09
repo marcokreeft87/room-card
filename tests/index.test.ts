@@ -47,7 +47,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling setconfig should set config', () => {
 
@@ -197,7 +197,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> </div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling render with only entities and title should return expected html', () => {
 
@@ -216,7 +216,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling render with only info_entities and title should return expected html', () => {
 
@@ -235,7 +235,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
         }),
         test('Calling render with only rows and title should return expected html', () => {
 
@@ -260,7 +260,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-center"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-center"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity3</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling render with only rows without entities and title should return expected html', () => {
 
@@ -280,7 +280,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> </ha-card>');
         }),
         test('Calling render with entities, info_entities and title should return expected html', () => {
 
@@ -302,7 +302,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div><div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div><div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div><div class="entity" style="" @action=_handleAction .actionHandler=> <span>test_entity3</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling render with entities, info_entities and rows title, rows should override and should return expected html', () => {
 
@@ -330,7 +330,7 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div><div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>row_test_entity2</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>row_test_entity3</span> <div><state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> <div class="state entity " style="" @action=_handleAction .actionHandler=>on</div><div class="state entity " style="" @action=_handleAction .actionHandler=>on</div> </div> </div> <div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>row_test_entity2</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div><div class="entities-row content-left"><div class="entity" style="" @action=_handleAction .actionHandler=> <span>row_test_entity3</span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> </div></div> </ha-card>');
         }),
         test('Calling getCardSize should return 2', () => {
 
@@ -542,6 +542,6 @@ describe('Testing index file class RoomCard', () => {
             const result = roomcard.render();
             const htmlResult = getRenderString(result);
 
-            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
+            expect(htmlResult).toMatch('<ha-card elevation="2" style=""> <div class="card-header"> <div class="title" @action=_handleAction .actionHandler=><div class="main-state entity" style=""> <state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge> </div> Test title</div> <div class="entities-info-row"> </div> </div> <div class="entities-row content-left"></div> </ha-card>');
         })
 })

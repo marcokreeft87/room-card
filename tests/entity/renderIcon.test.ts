@@ -29,7 +29,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardConfig and HomeAssistant with show_icon should render nothing', async () => {   
 
@@ -56,7 +56,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardConfig and HomeAssistant state_on/state_off should render state_on icon', async () => {   
 
@@ -74,7 +74,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:on-icon" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:on-icon" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardConfig and HomeAssistant and class should render css class', async () => {   
 
@@ -87,7 +87,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass, 'main-icon');
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small main-icon" .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
     }),
     test.each`
     state | condition | value | icon | expected
@@ -117,7 +117,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch(`<state-badge class="icon-small " .stateObj="" .overrideIcon="${expected}" .stateColor="" style="" ></state-badge>`);
+        expect(htmlResult).toMatch(`<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="${expected}" .stateColor="" style="" ></state-badge>`);
     }),
     test('Passing HomeAssistantEntity, RoomCardConfig and HomeAssistant and styles should render styles', async () => {   
 
@@ -142,7 +142,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, config, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="color: red;" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="color: red;" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardEntity and HomeAssistant should render main icon', async () => {   
 
@@ -154,7 +154,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardEntity and HomeAssistant with show_icon should render nothing', async () => {   
 
@@ -179,7 +179,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardEntity and HomeAssistant state_on/state_off should render state_on icon', async () => {   
 
@@ -196,7 +196,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:on-icon" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:on-icon" .stateColor="" style="" ></state-badge>');
     }),
     test('Passing HomeAssistantEntity, RoomCardEntity and HomeAssistant and class should render css class', async () => {   
 
@@ -208,7 +208,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass, 'main-icon');
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small main-icon" .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small main-icon" .hass= .stateObj="" .overrideIcon="mdi:desk" .stateColor="" style="" ></state-badge>');
     }),
     test.each`
     state | condition | value | icon | expected
@@ -237,7 +237,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch(`<state-badge class="icon-small " .stateObj="" .overrideIcon="${expected}" .stateColor="" style="" ></state-badge>`);
+        expect(htmlResult).toMatch(`<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="${expected}" .stateColor="" style="" ></state-badge>`);
     }),
     test('Passing HomeAssistantEntity, RoomCardEntity and HomeAssistant and styles should render styles', async () => {   
 
@@ -261,7 +261,7 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="color: red;" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:table" .stateColor="" style="color: red;" ></state-badge>');
     }),
     test('Passing config with icon template icon should return expected html', () => {    
 
@@ -281,6 +281,6 @@ describe('Testing entity file function renderIcon', () => {
         const result = renderIcon(stateObj, entity, hass);
         const htmlResult = getRenderString(result);
 
-        expect(htmlResult).toMatch('<state-badge class="icon-small " .stateObj="" .overrideIcon="mdi:test3" .stateColor="" style="color:red" ></state-badge>');
+        expect(htmlResult).toMatch('<state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="mdi:test3" .stateColor="" style="color:red" ></state-badge>');
     })
 });
