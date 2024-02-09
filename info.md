@@ -1,6 +1,10 @@
 {% if installed %}
 
 ### Features
+{% if version_installed.replace("v", "").replace(".","") | int < 10803  %}
+- Fixed `State badges updating again thanks to @elupus`
+{% endif %}
+
 {% if version_installed.replace("v", "").replace(".","") | int < 10802  %}
 - Fixed `Entity icons not updating on state change`
 {% endif %}
