@@ -148,8 +148,6 @@ describe('Testing entity file function renderEntity', () => {
         const result = renderEntity(entity, hass, element);
         const htmlResult = getRenderString(result);
 
-        console.log(htmlResult);
-
         expect(htmlResult).toMatch(`<div class="entity" style="" @action=_handleAction .actionHandler=> <span></span> <div><state-badge class="icon-small " .hass= .stateObj="" .overrideIcon="" .stateColor="" style="" ></state-badge></div> <span>${expected}</span> </div>`);
     }),
     test('Mouseclick should trigger action', () => {   
