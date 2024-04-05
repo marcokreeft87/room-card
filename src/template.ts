@@ -15,7 +15,7 @@ export const mapTemplate = (entity: RoomCardEntity, config: RoomCardConfig) => {
         if(templatesWithMatchingName.length > 0) {
             const templateFromConfig = templatesWithMatchingName[0];
 
-            return { stateObj: entity.stateObj, ...entity, ...templateFromConfig.template };
+            return { stateObj: entity.stateObj, ...templateFromConfig.template, ...entity };
         }
     }
 
