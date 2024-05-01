@@ -22,7 +22,7 @@
     "minify-html-literals-loader": "^1.1.1",
     "ts-auto-mock": "3.5.0",
     "ttypescript": "^1.5.13",
-    "yarn": "^1.22.18"
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
